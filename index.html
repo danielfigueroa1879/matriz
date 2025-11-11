@@ -873,21 +873,21 @@
                 window.scrollTo(0, 0);
             });
 
+
             // <!-- Evento para el botón "Descargar PDF" -->
             downloadBtn.addEventListener('click', function() {
                 loader.classList.remove('hidden');
                 downloadBtn.classList.add('hidden');
-                backBtn.classList.add('hidden'); // Oculta "volver" durante la descarga
+                backBtn.classList.add('hidden');
 
                 const options = {
                     scale: 2,
-                    // useCORS: true, // CAMBIO: Vamos a probar deshabilitando esto.
+                    useCORS: true,
+                    allowTaint: false,
+                    backgroundColor: '#ffffff',
                     logging: false,
                     onclone: (documentClone) => {
-                        // Sincroniza todos los valores del formulario al clonar
-                        // Busca el formulario por su ID
                         const form = document.getElementById('fiscalizacionForm');
-                        // Busca el formulario clonado dentro del documento clonado
                         const clonedForm = documentClone.getElementById('fiscalizacionForm');
                         
                         if (!form || !clonedForm) {
@@ -921,10 +921,21 @@
                     }
                 };
                 
-                // Apunta a #form-content para generar el PDF
                 html2canvas(formContent, options).then(canvas => {
                     try {
-                        const imgData = canvas.toDataURL('image/png');
+                        // Verificar que el canvas no esté vacío
+                        if (canvas.width === 0 || canvas.height === 0) {
+                            throw new Error('Canvas vacío - no se pudo renderizar el contenido');
+                        }
+
+                        // Obtener datos de imagen en formato PNG
+                        const imgData = canvas.toDataURL('image/png', 1.0);
+                        
+                        // Verificar que el data URL sea válido
+                        if (!imgData || imgData === 'data:,' || !imgData.startsWith('data:image/png')) {
+                            throw new Error('Data URL inválido o vacío');
+                        }
+
                         const { jsPDF } = window.jspdf;
                         const pdf = new jsPDF('p', 'mm', 'a4');
                         
@@ -932,38 +943,48 @@
                         const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
                         const pdfHeight = pdf.internal.pageSize.getHeight() - (margin * 2);
 
-                        const imgProps = pdf.getImageProperties(imgData);
-                        const ratio = pdfWidth / imgProps.width;
-                        const scaledImgHeight = imgProps.height * ratio;
+                        // Calcular dimensiones
+                        const imgWidth = canvas.width;
+                        const imgHeight = canvas.height;
+                        const ratio = pdfWidth / imgWidth;
+                        const scaledImgHeight = imgHeight * ratio;
                         
                         let heightLeft = scaledImgHeight;
                         let position = margin;
 
-                        pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight);
+                        // Agregar primera página
+                        pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
                         heightLeft -= pdfHeight;
 
+                        // Agregar páginas adicionales si es necesario
                         while (heightLeft > 0) {
                             position = -heightLeft + margin;
                             pdf.addPage();
-                            pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight);
+                            pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
                             heightLeft -= pdfHeight;
                         }
 
                         pdf.save('Formulario_Fiscalizacion_Completado.pdf');
                     } catch (e) {
                         console.error("Error al generar el PDF:", e);
-                        // No uses alert() en este entorno
+                        console.error("Detalles del error:", {
+                            message: e.message,
+                            stack: e.stack
+                        });
                     } finally {
                         loader.classList.add('hidden');
                         downloadBtn.classList.remove('hidden');
-                        backBtn.classList.remove('hidden'); // Muestra "volver" de nuevo
+                        backBtn.classList.remove('hidden');
                     }
                 }).catch(err => {
                     console.error("Error con html2canvas:", err);
-                    // No uses alert() en este entorno
+                    console.error("Detalles del error:", {
+                        message: err.message,
+                        stack: err.stack
+                    });
                     loader.classList.add('hidden');
                     downloadBtn.classList.remove('hidden');
-                    backBtn.classList.remove('hidden'); // Muestra "volver" de nuevo
+                    backBtn.classList.remove('hidden');
                 });
             });
         });
