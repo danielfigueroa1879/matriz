@@ -14,7 +14,12 @@
     <!-- Fuente Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!--
+      NUEVO CAMBIO AQUÍ: Se agregó crossorigin="anonymous" al link de la fuente.
+      Esto es necesario para permitir que html2canvas lea la fuente sin
+      causar un error de seguridad (CORS) al generar el PDF.
+    -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     
     <style>
         /* Estilos personalizados con los colores solicitados */
@@ -148,12 +153,7 @@
                         <div class="flex flex-col items-center">
                         </div>
                         
-                        <!-- 
-                          IMAGEN DE PLACEHOLD.CO ELIMINADA 
-                          La imagen invisible (https://placehold.co/...) que estaba aquí se eliminó.
-                          Causaba un error de seguridad (CORS) que impedía a html2canvas
-                          generar el PDF. Como era invisible, borrarla no afecta el diseño.
-                        -->
+                        <!-- IMAGEN DE PLACEHOLD.CO ELIMINADA -->
                     
                     </div>
                     <h1 class="text-2xl font-bold text-gray-800 mt-4">Ley N°21.659, sobre Seguridad Privada</h1>
