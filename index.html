@@ -875,117 +875,148 @@
 
 
             // <!-- Evento para el botón "Descargar PDF" -->
+           // <!-- Evento para el botón "Descargar PDF" -->
             downloadBtn.addEventListener('click', function() {
                 loader.classList.remove('hidden');
                 downloadBtn.classList.add('hidden');
                 backBtn.classList.add('hidden');
 
-                const options = {
-                    scale: 2,
-                    useCORS: true,
-                    allowTaint: false,
-                    backgroundColor: '#ffffff',
-                    logging: false,
-                    onclone: (documentClone) => {
-                        const form = document.getElementById('fiscalizacionForm');
-                        const clonedForm = documentClone.getElementById('fiscalizacionForm');
-                        
-                        if (!form || !clonedForm) {
-                            console.error("No se pudo encontrar el formulario original o el clonado.");
-                            return;
-                        }
-
-                        const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                        const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                        textInputs.forEach((input, index) => {
-                            if (clonedTextInputs[index]) clonedTextInputs[index].value = input.value;
-                        });
-                        
-                        const textareas = form.querySelectorAll('textarea');
-                        const clonedTextareas = clonedForm.querySelectorAll('textarea');
-                        textareas.forEach((textarea, index) => {
-                            if (clonedTextareas[index]) clonedTextareas[index].value = textarea.value;
-                        });
-
-                        const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-                        const clonedCheckboxes = clonedForm.querySelectorAll('input[type="checkbox"]');
-                        checkboxes.forEach((checkbox, index) => {
-                             if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
-                        });
-
-                        const radios = form.querySelectorAll('input[type="radio"]');
-                        const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
-                        radios.forEach((radio, index) => {
-                            if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
-                        });
-                    }
-                };
+                // Mostrar temporalmente el formulario para capturarlo
+                // Guardamos las posiciones del scroll
+                const currentScrollPos = window.pageYOffset;
                 
-                html2canvas(formContent, options).then(canvas => {
-                    try {
-                        // Verificar que el canvas no esté vacío
-                        if (canvas.width === 0 || canvas.height === 0) {
-                            throw new Error('Canvas vacío - no se pudo renderizar el contenido');
+                // Ocultamos resultados y mostramos formulario temporalmente
+                resultsPage.classList.add('hidden');
+                formPage.classList.remove('hidden');
+                
+                // Ocultamos el botón de calcular para el PDF
+                const calculateBtnContainer = document.getElementById('calculateButtonContainer');
+                calculateBtnContainer.style.display = 'none';
+
+                // Esperamos un momento para que el DOM se actualice
+                setTimeout(() => {
+                    const options = {
+                        scale: 2,
+                        useCORS: true,
+                        allowTaint: false,
+                        backgroundColor: '#ffffff',
+                        logging: false,
+                        windowWidth: formContent.scrollWidth,
+                        windowHeight: formContent.scrollHeight,
+                        onclone: (documentClone) => {
+                            const form = document.getElementById('fiscalizacionForm');
+                            const clonedForm = documentClone.getElementById('fiscalizacionForm');
+                            
+                            if (!form || !clonedForm) {
+                                console.error("No se pudo encontrar el formulario original o el clonado.");
+                                return;
+                            }
+
+                            const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            textInputs.forEach((input, index) => {
+                                if (clonedTextInputs[index]) clonedTextInputs[index].value = input.value;
+                            });
+                            
+                            const textareas = form.querySelectorAll('textarea');
+                            const clonedTextareas = clonedForm.querySelectorAll('textarea');
+                            textareas.forEach((textarea, index) => {
+                                if (clonedTextareas[index]) clonedTextareas[index].value = textarea.value;
+                            });
+
+                            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+                            const clonedCheckboxes = clonedForm.querySelectorAll('input[type="checkbox"]');
+                            checkboxes.forEach((checkbox, index) => {
+                                if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
+                            });
+
+                            const radios = form.querySelectorAll('input[type="radio"]');
+                            const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
+                            radios.forEach((radio, index) => {
+                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
+                            });
                         }
+                    };
+                    
+                    html2canvas(formContent, options).then(canvas => {
+                        try {
+                            // Verificar que el canvas no esté vacío
+                            if (canvas.width === 0 || canvas.height === 0) {
+                                throw new Error('Canvas vacío - no se pudo renderizar el contenido');
+                            }
 
-                        // Obtener datos de imagen en formato PNG
-                        const imgData = canvas.toDataURL('image/png', 1.0);
-                        
-                        // Verificar que el data URL sea válido
-                        if (!imgData || imgData === 'data:,' || !imgData.startsWith('data:image/png')) {
-                            throw new Error('Data URL inválido o vacío');
-                        }
+                            // Obtener datos de imagen en formato PNG
+                            const imgData = canvas.toDataURL('image/png', 1.0);
+                            
+                            // Verificar que el data URL sea válido
+                            if (!imgData || imgData === 'data:,' || !imgData.startsWith('data:image/png')) {
+                                throw new Error('Data URL inválido o vacío');
+                            }
 
-                        const { jsPDF } = window.jspdf;
-                        const pdf = new jsPDF('p', 'mm', 'a4');
-                        
-                        const margin = 10;
-                        const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
-                        const pdfHeight = pdf.internal.pageSize.getHeight() - (margin * 2);
+                            const { jsPDF } = window.jspdf;
+                            const pdf = new jsPDF('p', 'mm', 'a4');
+                            
+                            const margin = 10;
+                            const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
+                            const pdfHeight = pdf.internal.pageSize.getHeight() - (margin * 2);
 
-                        // Calcular dimensiones
-                        const imgWidth = canvas.width;
-                        const imgHeight = canvas.height;
-                        const ratio = pdfWidth / imgWidth;
-                        const scaledImgHeight = imgHeight * ratio;
-                        
-                        let heightLeft = scaledImgHeight;
-                        let position = margin;
+                            // Calcular dimensiones
+                            const imgWidth = canvas.width;
+                            const imgHeight = canvas.height;
+                            const ratio = pdfWidth / imgWidth;
+                            const scaledImgHeight = imgHeight * ratio;
+                            
+                            let heightLeft = scaledImgHeight;
+                            let position = margin;
 
-                        // Agregar primera página
-                        pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
-                        heightLeft -= pdfHeight;
-
-                        // Agregar páginas adicionales si es necesario
-                        while (heightLeft > 0) {
-                            position = -heightLeft + margin;
-                            pdf.addPage();
+                            // Agregar primera página
                             pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
                             heightLeft -= pdfHeight;
-                        }
 
-                        pdf.save('Formulario_Fiscalizacion_Completado.pdf');
-                    } catch (e) {
-                        console.error("Error al generar el PDF:", e);
+                            // Agregar páginas adicionales si es necesario
+                            while (heightLeft > 0) {
+                                position = -heightLeft + margin;
+                                pdf.addPage();
+                                pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
+                                heightLeft -= pdfHeight;
+                            }
+
+                            pdf.save('Formulario_Fiscalizacion_Completado.pdf');
+                        } catch (e) {
+                            console.error("Error al generar el PDF:", e);
+                            console.error("Detalles del error:", {
+                                message: e.message,
+                                stack: e.stack
+                            });
+                        } finally {
+                            // Restaurar la vista de resultados
+                            calculateBtnContainer.style.display = 'block';
+                            formPage.classList.add('hidden');
+                            resultsPage.classList.remove('hidden');
+                            window.scrollTo(0, currentScrollPos);
+                            
+                            loader.classList.add('hidden');
+                            downloadBtn.classList.remove('hidden');
+                            backBtn.classList.remove('hidden');
+                        }
+                    }).catch(err => {
+                        console.error("Error con html2canvas:", err);
                         console.error("Detalles del error:", {
-                            message: e.message,
-                            stack: e.stack
+                            message: err.message,
+                            stack: err.stack
                         });
-                    } finally {
+                        
+                        // Restaurar la vista de resultados
+                        calculateBtnContainer.style.display = 'block';
+                        formPage.classList.add('hidden');
+                        resultsPage.classList.remove('hidden');
+                        window.scrollTo(0, currentScrollPos);
+                        
                         loader.classList.add('hidden');
                         downloadBtn.classList.remove('hidden');
                         backBtn.classList.remove('hidden');
-                    }
-                }).catch(err => {
-                    console.error("Error con html2canvas:", err);
-                    console.error("Detalles del error:", {
-                        message: err.message,
-                        stack: err.stack
                     });
-                    loader.classList.add('hidden');
-                    downloadBtn.classList.remove('hidden');
-                    backBtn.classList.remove('hidden');
-                });
+                }, 100); // Pequeña pausa para que el DOM se actualice
             });
         });
     </script>
