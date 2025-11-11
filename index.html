@@ -890,17 +890,18 @@
                 calculateBtnContainer.style.display = 'none';
 
                 // Esperamos un momento para que el DOM se actualice
-                await new Promise(resolve => setTimeout(resolve, 200));
+                await new Promise(resolve => setTimeout(resolve, 300));
 
                 try {
                     const options = {
-                        scale: 3,
+                        scale: 2,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
+                        width: formContent.scrollWidth,
+                        height: formContent.scrollHeight,
                         onclone: (documentClone) => {
-                            const clonedContent = documentClone.getElementById('form-content');
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
@@ -909,41 +910,13 @@
                                 return;
                             }
 
-                            // Aplicar estilos para mejorar renderizado
-                            const style = documentClone.createElement('style');
-                            style.textContent = `
-                                * { -webkit-print-color-adjust: exact !important; color-adjust: exact !important; }
-                                input, textarea, select { 
-                                    border: 1px solid #9ca3af !important;
-                                    padding: 8px !important;
-                                    line-height: 1.5 !important;
-                                    min-height: 38px !important;
-                                }
-                                input[type="text"], input[type="date"], input[type="time"], input[type="number"] {
-                                    display: block !important;
-                                    width: 100% !important;
-                                }
-                                textarea {
-                                    display: block !important;
-                                    width: 100% !important;
-                                    min-height: 80px !important;
-                                }
-                            `;
-                            documentClone.head.appendChild(style);
-
-                            // Copiar valores y crear divs visibles con el texto
+                            // Copiar valores de inputs
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             textInputs.forEach((input, index) => {
                                 if (clonedTextInputs[index] && input.value) {
                                     clonedTextInputs[index].value = input.value;
                                     clonedTextInputs[index].setAttribute('value', input.value);
-                                    // Crear un div visible con el valor
-                                    const valueDiv = documentClone.createElement('div');
-                                    valueDiv.textContent = input.value;
-                                    valueDiv.style.cssText = 'position: absolute; padding: 8px; pointer-events: none; background: white; width: 100%; box-sizing: border-box;';
-                                    clonedTextInputs[index].parentNode.style.position = 'relative';
-                                    clonedTextInputs[index].parentNode.appendChild(valueDiv);
                                 }
                             });
                             
@@ -953,12 +926,6 @@
                                 if (clonedTextareas[index] && textarea.value) {
                                     clonedTextareas[index].value = textarea.value;
                                     clonedTextareas[index].textContent = textarea.value;
-                                    // Crear un div visible con el valor
-                                    const valueDiv = documentClone.createElement('div');
-                                    valueDiv.textContent = textarea.value;
-                                    valueDiv.style.cssText = 'position: absolute; padding: 8px; pointer-events: none; background: white; width: 100%; min-height: 80px; white-space: pre-wrap; box-sizing: border-box;';
-                                    clonedTextareas[index].parentNode.style.position = 'relative';
-                                    clonedTextareas[index].parentNode.appendChild(valueDiv);
                                 }
                             });
 
@@ -987,68 +954,94 @@
                     formPage.classList.add('hidden');
                     resultsPage.classList.remove('hidden');
                     
-                    await new Promise(resolve => setTimeout(resolve, 200));
+                    await new Promise(resolve => setTimeout(resolve, 300));
                     
                     const resultsBox = document.getElementById('results-box');
-                    const resultsCanvas = await html2canvas(resultsBox, options);
+                    const resultsCanvas = await html2canvas(resultsBox, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#ffffff',
+                        logging: false
+                    });
 
                     // Crear PDF
                     const { jsPDF } = window.jspdf;
                     const pdf = new jsPDF('p', 'mm', 'a4');
                     
-                    const margin = 10;
                     const pageWidth = pdf.internal.pageSize.getWidth();
                     const pageHeight = pdf.internal.pageSize.getHeight();
-                    const contentWidth = pageWidth - (margin * 2);
-                    const contentHeight = pageHeight - (margin * 2);
+                    const margin = 10;
+                    const contentWidth = pageWidth - (2 * margin);
+                    const contentHeight = pageHeight - (2 * margin);
 
-                    // Agregar formulario
-                    const formImgData = formCanvas.toDataURL('image/jpeg', 0.95);
-                    const formRatio = contentWidth / formCanvas.width;
-                    const formScaledHeight = formCanvas.height * formRatio;
+                    // Calcular dimensiones del formulario
+                    const formImgData = formCanvas.toDataURL('image/png', 1.0);
+                    const formImgWidth = formCanvas.width;
+                    const formImgHeight = formCanvas.height;
                     
-                    let yOffset = 0;
-                    let pageCount = 0;
+                    // Escalar al ancho de la página
+                    const formRatio = contentWidth / formImgWidth;
+                    const formScaledWidth = contentWidth;
+                    const formScaledHeight = formImgHeight * formRatio;
+
+                    // Agregar páginas del formulario
+                    let currentY = 0;
+                    let isFirstPage = true;
                     
-                    while (yOffset < formScaledHeight) {
-                        if (pageCount > 0) {
+                    while (currentY < formScaledHeight) {
+                        if (!isFirstPage) {
                             pdf.addPage();
                         }
+                        isFirstPage = false;
                         
-                        const sourceY = yOffset / formRatio;
-                        const sourceHeight = Math.min(contentHeight / formRatio, formCanvas.height - sourceY);
-                        const destHeight = sourceHeight * formRatio;
+                        // Calcular qué parte de la imagen va en esta página
+                        const sourceY = currentY / formRatio; // Posición en píxeles originales
+                        const remainingHeight = formScaledHeight - currentY;
+                        const heightToAdd = Math.min(contentHeight, remainingHeight);
+                        const sourceHeight = heightToAdd / formRatio;
                         
-                        pdf.addImage(
-                            formImgData,
-                            'JPEG',
-                            margin,
-                            margin,
-                            contentWidth,
-                            destHeight,
-                            undefined,
-                            'FAST'
+                        // Crear un canvas temporal con solo la parte que necesitamos
+                        const tempCanvas = document.createElement('canvas');
+                        tempCanvas.width = formImgWidth;
+                        tempCanvas.height = sourceHeight;
+                        const tempCtx = tempCanvas.getContext('2d');
+                        
+                        tempCtx.drawImage(
+                            formCanvas,
+                            0, sourceY,           // source x, y
+                            formImgWidth, sourceHeight,  // source width, height
+                            0, 0,                 // dest x, y
+                            formImgWidth, sourceHeight   // dest width, height
                         );
                         
-                        yOffset += contentHeight;
-                        pageCount++;
+                        const tempImgData = tempCanvas.toDataURL('image/png', 1.0);
+                        
+                        pdf.addImage(
+                            tempImgData,
+                            'PNG',
+                            margin,
+                            margin,
+                            formScaledWidth,
+                            heightToAdd
+                        );
+                        
+                        currentY += contentHeight;
                     }
 
                     // Agregar página de resultados al final
                     pdf.addPage();
-                    const resultsImgData = resultsCanvas.toDataURL('image/jpeg', 0.95);
+                    
+                    const resultsImgData = resultsCanvas.toDataURL('image/png', 1.0);
                     const resultsRatio = contentWidth / resultsCanvas.width;
                     const resultsScaledHeight = resultsCanvas.height * resultsRatio;
                     
                     pdf.addImage(
                         resultsImgData,
-                        'JPEG',
+                        'PNG',
                         margin,
                         margin,
                         contentWidth,
-                        resultsScaledHeight,
-                        undefined,
-                        'FAST'
+                        resultsScaledHeight
                     );
 
                     pdf.save('Formulario_Fiscalizacion_Completado.pdf');
@@ -1067,8 +1060,6 @@
                     backBtn.classList.remove('hidden');
                 }
             });
-
-        });
     </script>
 
 </body>
