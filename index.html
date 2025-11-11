@@ -881,7 +881,7 @@
 
                 const options = {
                     scale: 2,
-                    useCORS: true, // Esta línea es CRUCIAL para que html2canvas pueda leer las fuentes de Google.
+                    // useCORS: true, // CAMBIO: Vamos a probar deshabilitando esto.
                     logging: false,
                     onclone: (documentClone) => {
                         // Sincroniza todos los valores del formulario al clonar
