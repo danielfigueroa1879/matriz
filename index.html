@@ -4,25 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Fiscalización en Terreno</title>
-    <!-- Carga de Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- Carga de jsPDF y html2canvas para generar el PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    
-    <!-- Fuente Inter -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!--
-      NUEVO CAMBIO AQUÍ: Se agregó crossorigin="anonymous" al link de la fuente.
-      Esto es necesario para permitir que html2canvas lea la fuente sin
-      causar un error de seguridad (CORS) al generar el PDF.
-    -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     
     <style>
-        /* Estilos personalizados con los colores solicitados */
+        /* ... (Tus estilos personalizados de 'index (72).html' van aquí sin cambios) ... */
         body {
             font-family: 'Inter', sans-serif;
             background-color: #0055C0; /* Fondo azul principal */
@@ -141,20 +130,13 @@
 </head>
 <body class="antialiased">
 
-    <!-- VISTA 1: CONTENEDOR DEL FORMULARIO -->
     <div id="form-page-container" class="max-w-4xl mx-auto p-4 sm:p-8">
         <div id="form-container" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg">
-            <!-- Este div es el que se clona para el PDF -->
             <div id="form-content">
-                <!-- Encabezado del Formulario -->
                 <header class="text-center mb-8">
                     <div class="flex justify-between items-center">
-                        <div></div> <!-- Espaciador izquierdo -->
-                        <div class="flex flex-col items-center">
+                        <div></div> <div class="flex flex-col items-center">
                         </div>
-                        
-                        <!-- IMAGEN DE PLACEHOLD.CO ELIMINADA -->
-                    
                     </div>
                     <h1 class="text-2xl font-bold text-gray-800 mt-4">Ley N°21.659, sobre Seguridad Privada</h1>
                     <h1 class="text-2xl font-bold text-gray-800 mt-4">Formulario de Registro de Fiscalización en Terreno</h1>
@@ -163,10 +145,7 @@
                     </p>
                 </header>
 
-                <!-- Formulario -->
                 <form id="fiscalizacionForm">
-                    
-                    <!-- Sección I -->
                     <fieldset>
                         <legend>I. Completar de manera previa y/o posterior a la visita</legend>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
@@ -236,7 +215,6 @@
                         </div>
                     </fieldset>
 
-                    <!-- Sección II -->
                     <fieldset>
                         <legend>II. Completar durante la visita</legend>
                         
@@ -705,11 +683,8 @@
                                 </div>
                             </div>
                         </fieldset>
-                    </form>
-                </div> <!-- Fin de #form-content -->
-                
-                <!-- Botón de Calcular -->
-                <div id="calculateButtonContainer" class="mt-8 text-center">
+                </form>
+            </div> <div id="calculateButtonContainer" class="mt-8 text-center">
                     <button id="calculateButton" class="btn-primary w-full max-w-xs mx-auto">
                         Terminar y Calcular Riesgo
                     </button>
@@ -717,7 +692,6 @@
             </div>
         </div>
 
-        <!-- VISTA 2: CONTENEDOR DE RESULTADOS (Oculto por defecto) -->
         <div id="results-container" class="hidden max-w-md mx-auto p-4 sm:p-8 text-center mt-8 sm:mt-16">
             <div id="results-box" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg w-full">
                 <h2 class="text-xl font-bold text-gray-800 text-center">Resultado de la Fiscalización</h2>
@@ -736,7 +710,6 @@
                     <strong>Nota:</strong> Este puntaje es una simulación. La lógica de cálculo debe ser ajustada según la Matriz de Riesgo oficial (Resolución Exenta N 1820).
                 </p>
 
-                <!-- Botón de Descarga y Loader -->
                 <div id="downloadButtonContainer" class="mt-8 text-center">
                     <button id="downloadPdfButton" class="btn-primary w-full max-w-xs mx-auto">
                         Descargar PDF
@@ -753,7 +726,6 @@
                     </div>
                 </div>
 
-                <!-- Botón para Volver -->
                 <div class="mt-6 text-center">
                      <button id="backButton" class="text-sm text-gray-700 hover:text-black hover:underline">
                         &larr; Volver y editar formulario
@@ -763,78 +735,45 @@
         </div>
     </div>
 
-    <!-- Script de Lógica -->
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            // <!-- Elementos de las Vistas -->
+        // document.addEventListener('DOMContentLoaded', () => {
             const formPage = document.getElementById('form-page-container');
             const resultsPage = document.getElementById('results-container');
-            
-            // <!-- Botones -->
             const calculateBtn = document.getElementById('calculateButton');
             const backBtn = document.getElementById('backButton');
-            const downloadBtn = document.getElementById('downloadPdfButton');
             
-            // <!-- Elementos de Resultados -->
             const scoreDisplay = document.getElementById('score-display-result');
             const riskLevelDisplay = document.getElementById('risk-level-result');
             const riskLevelContainer = document.getElementById('risk-level-container-result');
 
-            // <!-- Elementos del PDF -->
-            const formContent = document.getElementById('form-content');
-            const loader = document.getElementById('loader');
-
-            // <!-- Función para calcular el puntaje -->
             function calculateScore() {
+                // ... (lógica de cálculo de puntaje original) ...
                 let score = 0;
-
-                // --- INICIO DE LÓGICA DE PUNTAJE (SIMULACIÓN) ---
-                // **ADVERTENCIA:** Estos valores son ejemplos. Debes reemplazarlos
-                // con la lógica de la Matriz de Riesgo oficial.
-                
-                // 1. Criticidad de la función
                 if (document.querySelector('input[name="servicio_esencial"]:checked')?.value === 'si') score += 10;
                 if (document.querySelector('input[name="sector_estrategico"]:checked')?.value === 'si') score += 10;
                 if (document.querySelector('input[name="servicio_unico"]:checked')?.value === 'si') score += 5;
-
-                // 2. Reiteración de delitos
                 const delitos = document.querySelector('input[name="reiteracion_delitos"]:checked')?.value;
                 if (delitos === 'muy_frecuentes') score += 20;
                 else if (delitos === 'algo_frecuentes') score += 10;
                 else if (delitos === 'poco_frecuentes') score += 5;
-
-                // 3. Valoración de bienes
                 if (document.querySelector('input[name="bienes_peligrosos"]:checked')?.value === 'si') score += 15;
                 if (document.querySelector('input[name="bienes_transportables"]:checked')?.value === 'si') score += 5;
                 if (document.querySelector('input[name="bienes_valor"]:checked')?.value === 'si') score += 10;
-
                 const efectivo = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
-                if (efectivo === '1') score += 20; // >= $15M
-                else if (efectivo === '2') score += 15; // $10M - $14.9M
-                else if (efectivo === '3') score += 10; // $5M - $9.9M
-                else if (efectivo === '4') score += 5; // $2M - $4.9M
-
-                // 4. Funcionamiento (Aforo)
+                if (efectivo === '1') score += 20;
+                else if (efectivo === '2') score += 15;
+                else if (efectivo === '3') score += 10;
+                else if (efectivo === '4') score += 5;
                 const aforo = document.querySelector('input[name="frecuencia_aforo"]:checked')?.value;
                 if (aforo === 'permanentemente') score += 10;
                 else if (aforo === 'frecuentemente') score += 5;
-
-                // 5. Localización
                 if (document.querySelector('input[name="escape_autopista"]:checked')?.value === 'si') score += 5;
                 if (document.querySelector('input[name="escape_calles"]:checked')?.value === 'si') score += 5;
                 if (document.querySelector('input[name="escape_zonas"]:checked')?.value === 'si') score += 10;
-
-                // --- FIN DE LÓGICA DE PUNTAJE ---
-
-                // Actualizar el puntaje en la UI de Resultados
                 scoreDisplay.textContent = score;
-
-                // Actualizar el Nivel de Riesgo
                 let level = 'Bajo';
                 let levelColor = 'text-green-600';
                 let bgColor = 'bg-green-100';
-
-                // **ADVERTENCIA:** Estos rangos son solo ejemplos.
                 if (score > 80) {
                     level = 'Alto';
                     levelColor = 'text-red-600';
@@ -844,73 +783,90 @@
                     levelColor = 'text-yellow-600';
                     bgColor = 'bg-yellow-100';
                 }
-
                 riskLevelDisplay.textContent = level;
                 riskLevelDisplay.className = 'block text-2xl font-bold ' + levelColor;
                 riskLevelContainer.className = 'text-center p-3 rounded-md ' + bgColor;
             }
 
-            // <!-- Evento para el botón "Terminar y Calcular" -->
             calculateBtn.addEventListener('click', () => {
-                // 1. Calcula el puntaje y actualiza la vista de resultados
                 calculateScore();
-                
-                // 2. Oculta el formulario y muestra los resultados
                 formPage.classList.add('hidden');
                 resultsPage.classList.remove('hidden');
-
-                // 3. Sube el scroll al inicio de la página
                 window.scrollTo(0, 0);
             });
 
-            // <!-- Evento para el botón "Volver" -->
             backBtn.addEventListener('click', () => {
-                // Oculta los resultados y muestra el formulario
                 resultsPage.classList.add('hidden');
                 formPage.classList.remove('hidden');
-
-                // Sube el scroll al inicio de la página
                 window.scrollTo(0, 0);
             });
 
+            // // });
+    </script>
 
-            // <!-- Evento para el botón "Descargar PDF" -->
-           // <!-- Evento para el botón "Descargar PDF" -->
-            downloadBtn.addEventListener('click', function() {
-                loader.classList.remove('hidden');
-                downloadBtn.classList.add('hidden');
-                backBtn.classList.add('hidden');
+    <script>
+        /**
+         * Función para mostrar un indicador de carga simple.
+         * Reemplaza la lógica de 'mostrarIndicadorCarga' de pdf-optimizado.js
+         * para usar los elementos que ya existen en index (72).html.
+         */
+        function mostrarCargaPDF() {
+            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('downloadPdfButton').classList.add('hidden');
+            document.getElementById('backButton').classList.add('hidden');
+        }
 
-                // Mostrar temporalmente el formulario para capturarlo
-                // Guardamos las posiciones del scroll
-                const currentScrollPos = window.pageYOffset;
-                
-                // Ocultamos resultados y mostramos formulario temporalmente
-                resultsPage.classList.add('hidden');
-                formPage.classList.remove('hidden');
-                
-                // Ocultamos el botón de calcular para el PDF
-                const calculateBtnContainer = document.getElementById('calculateButtonContainer');
-                calculateBtnContainer.style.display = 'none';
+        /**
+         * Función para ocultar el indicador de carga.
+         */
+        function ocultarCargaPDF() {
+            document.getElementById('loader').classList.add('hidden');
+            document.getElementById('downloadPdfButton').classList.remove('hidden');
+            document.getElementById('backButton').classList.remove('hidden');
+        }
 
-                // Esperamos un momento para que el DOM se actualice
-                setTimeout(() => {
-                    const options = {
-                        scale: 2,
+        /**
+         * Función principal de generación de PDF, adaptada de 'pdf-optimizado.js'.
+         * Esta función usa html2pdf.js para una generación de PDF más robusta.
+         */
+        function generarPDFAdaptado() {
+            mostrarCargaPDF();
+            
+            // Elementos de la UI
+            const formPage = document.getElementById('form-page-container');
+            const resultsPage = document.getElementById('results-container');
+            const calculateBtnContainer = document.getElementById('calculateButtonContainer');
+            
+            // Guardar posición de scroll
+            const currentScrollPos = window.pageYOffset;
+
+            // Mostrar temporalmente el formulario para capturarlo
+            resultsPage.classList.add('hidden');
+            formPage.classList.remove('hidden');
+            calculateBtnContainer.style.display = 'none'; // Ocultar botón de calcular
+
+            // El elemento a capturar
+            const formContent = document.getElementById('form-content');
+            
+            // Pequeña pausa para que el DOM se actualice
+            setTimeout(() => {
+                const opciones = {
+                    filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
+                    margin: [15, 10, 15, 10], // top, right, bottom, left
+                    image: { type: 'jpeg', quality: 0.98 },
+                    html2canvas: {
+                        scale: 2, // Buena resolución
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
                         windowWidth: formContent.scrollWidth,
                         windowHeight: formContent.scrollHeight,
+                        // Lógica 'onclone' del index (72).html original para preservar datos
                         onclone: (documentClone) => {
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
-                            
-                            if (!form || !clonedForm) {
-                                console.error("No se pudo encontrar el formulario original o el clonado.");
-                                return;
-                            }
+                            if (!form || !clonedForm) return;
 
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
@@ -936,90 +892,73 @@
                                 if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
                             });
                         }
-                    };
-                    
-                    html2canvas(formContent, options).then(canvas => {
-                        try {
-                            // Verificar que el canvas no esté vacío
-                            if (canvas.width === 0 || canvas.height === 0) {
-                                throw new Error('Canvas vacío - no se pudo renderizar el contenido');
-                            }
+                    },
+                    jsPDF: {
+                        unit: 'mm',
+                        format: 'a4', // 'legal' es muy largo, 'a4' es estándar
+                        orientation: 'portrait',
+                        compress: true
+                    }
+                };
 
-                            // Obtener datos de imagen en formato PNG
-                            const imgData = canvas.toDataURL('image/png', 1.0);
-                            
-                            // Verificar que el data URL sea válido
-                            if (!imgData || imgData === 'data:,' || !imgData.startsWith('data:image/png')) {
-                                throw new Error('Data URL inválido o vacío');
-                            }
-
-                            const { jsPDF } = window.jspdf;
-                            const pdf = new jsPDF('p', 'mm', 'a4');
-                            
-                            const margin = 10;
-                            const pdfWidth = pdf.internal.pageSize.getWidth() - (margin * 2);
-                            const pdfHeight = pdf.internal.pageSize.getHeight() - (margin * 2);
-
-                            // Calcular dimensiones
-                            const imgWidth = canvas.width;
-                            const imgHeight = canvas.height;
-                            const ratio = pdfWidth / imgWidth;
-                            const scaledImgHeight = imgHeight * ratio;
-                            
-                            let heightLeft = scaledImgHeight;
-                            let position = margin;
-
-                            // Agregar primera página
-                            pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
-                            heightLeft -= pdfHeight;
-
-                            // Agregar páginas adicionales si es necesario
-                            while (heightLeft > 0) {
-                                position = -heightLeft + margin;
-                                pdf.addPage();
-                                pdf.addImage(imgData, 'PNG', margin, position, pdfWidth, scaledImgHeight, undefined, 'FAST');
-                                heightLeft -= pdfHeight;
-                            }
-
-                            pdf.save('Formulario_Fiscalizacion_Completado.pdf');
-                        } catch (e) {
-                            console.error("Error al generar el PDF:", e);
-                            console.error("Detalles del error:", {
-                                message: e.message,
-                                stack: e.stack
-                            });
-                        } finally {
-                            // Restaurar la vista de resultados
-                            calculateBtnContainer.style.display = 'block';
-                            formPage.classList.add('hidden');
-                            resultsPage.classList.remove('hidden');
-                            window.scrollTo(0, currentScrollPos);
-                            
-                            loader.classList.add('hidden');
-                            downloadBtn.classList.remove('hidden');
-                            backBtn.classList.remove('hidden');
-                        }
-                    }).catch(err => {
-                        console.error("Error con html2canvas:", err);
-                        console.error("Detalles del error:", {
-                            message: err.message,
-                            stack: err.stack
-                        });
-                        
-                        // Restaurar la vista de resultados
+                // Generar el PDF
+                html2pdf()
+                    .from(formContent)
+                    .set(opciones)
+                    .save()
+                    .then(() => {
+                        // Éxito
+                        console.log("PDF generado con html2pdf.js");
+                        // Restaurar la vista
                         calculateBtnContainer.style.display = 'block';
                         formPage.classList.add('hidden');
                         resultsPage.classList.remove('hidden');
                         window.scrollTo(0, currentScrollPos);
-                        
-                        loader.classList.add('hidden');
-                        downloadBtn.classList.remove('hidden');
-                        backBtn.classList.remove('hidden');
+                        ocultarCargaPDF();
+                    })
+                    .catch((err) => {
+                        // Error
+                        console.error("Error generando PDF con html2pdf.js:", err);
+                        // Restaurar la vista
+                        calculateBtnContainer.style.display = 'block';
+                        formPage.classList.add('hidden');
+                        resultsPage.classList.remove('hidden');
+                        window.scrollTo(0, currentScrollPos);
+                        ocultarCargaPDF();
                     });
-                }, 100); // Pequeña pausa para que el DOM se actualice
-            });
-        });
-    </script>
 
-</body>
+            }, 100); // Fin del setTimeout
+        }
+
+        /**
+         * Función para cargar 'html2pdf.js' dinámicamente.
+         * Tomada de 'pdf-optimizado.js'.
+         */
+        function cargarHtml2PdfYGenerar() {
+            if (typeof html2pdf === 'undefined') {
+                console.log("Cargando html2pdf.js...");
+                mostrarCargaPDF(); // Muestra el loader mientras se descarga el script
+                const script = document.createElement('script');
+                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
+                script.onload = generarPDFAdaptado;
+                script.onerror = function() {
+                    ocultarCargaPDF();
+                    alert('Error: No se pudo cargar la biblioteca PDF. Revise su conexión.');
+                };
+                document.head.appendChild(script);
+            } else {
+                generarPDFAdaptado();
+            }
+        }
+
+        // document.addEventListener('DOMContentLoaded', () => {
+            const downloadBtn = document.getElementById('downloadPdfButton');
+            if (downloadBtn) {
+                // Se reemplaza el listener original por este
+                downloadBtn.addEventListener('click', cargarHtml2PdfYGenerar);
+            }
+        });
+
+    </script>
+    </body>
 </html>
