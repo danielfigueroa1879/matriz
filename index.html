@@ -879,182 +879,67 @@
                 downloadBtn.classList.add('hidden');
                 backBtn.classList.add('hidden');
 
-                const currentScrollPos = window.pageYOffset;
-                
-                // Ocultamos resultados y mostramos formulario temporalmente
-                resultsPage.classList.add('hidden');
-                formPage.classList.remove('hidden');
-                
-                // Ocultamos el botón de calcular para el PDF
-                const calculateBtnContainer = document.getElementById('calculateButtonContainer');
-                calculateBtnContainer.style.display = 'none';
-
-                // Esperamos un momento para que el DOM se actualice
-                await new Promise(resolve => setTimeout(resolve, 300));
-
                 try {
-                    const options = {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: false,
-                        backgroundColor: '#ffffff',
-                        logging: false,
-                        width: formContent.scrollWidth,
-                        height: formContent.scrollHeight,
-                        onclone: (documentClone) => {
-                            const form = document.getElementById('fiscalizacionForm');
-                            const clonedForm = documentClone.getElementById('fiscalizacionForm');
-                            
-                            if (!form || !clonedForm) {
-                                console.error("No se pudo encontrar el formulario.");
-                                return;
-                            }
-
-                            // Copiar valores de inputs
-                            const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            textInputs.forEach((input, index) => {
-                                if (clonedTextInputs[index] && input.value) {
-                                    clonedTextInputs[index].value = input.value;
-                                    clonedTextInputs[index].setAttribute('value', input.value);
-                                }
-                            });
-                            
-                            const textareas = form.querySelectorAll('textarea');
-                            const clonedTextareas = clonedForm.querySelectorAll('textarea');
-                            textareas.forEach((textarea, index) => {
-                                if (clonedTextareas[index] && textarea.value) {
-                                    clonedTextareas[index].value = textarea.value;
-                                    clonedTextareas[index].textContent = textarea.value;
-                                }
-                            });
-
-                            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-                            const clonedCheckboxes = clonedForm.querySelectorAll('input[type="checkbox"]');
-                            checkboxes.forEach((checkbox, index) => {
-                                if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
-                            });
-
-                            const radios = form.querySelectorAll('input[type="radio"]');
-                            const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
-                            radios.forEach((radio, index) => {
-                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
-                            });
-                        }
-                    };
+                    // Usar window.print() que es más confiable
+                    const { jsPDF } = window.jspdf;
+                    const pdf = new jsPDF('p', 'mm', 'a4');
                     
-                    // Capturar formulario
-                    const formCanvas = await html2canvas(formContent, options);
+                    // Primero agregar formulario
+                    formPage.classList.remove('hidden');
+                    resultsPage.classList.add('hidden');
+                    const calculateBtnContainer = document.getElementById('calculateButtonContainer');
+                    calculateBtnContainer.style.display = 'none';
                     
-                    if (formCanvas.width === 0 || formCanvas.height === 0) {
-                        throw new Error('Canvas del formulario vacío');
-                    }
-
-                    // Ahora capturar la página de resultados
-                    formPage.classList.add('hidden');
-                    resultsPage.classList.remove('hidden');
+                    await new Promise(resolve => setTimeout(resolve, 500));
                     
-                    await new Promise(resolve => setTimeout(resolve, 300));
-                    
-                    const resultsBox = document.getElementById('results-box');
-                    const resultsCanvas = await html2canvas(resultsBox, {
-                        scale: 2,
+                    const canvas1 = await html2canvas(formContent, {
+                        scale: 1.5,
                         useCORS: true,
                         backgroundColor: '#ffffff',
                         logging: false
                     });
-
-                    // Crear PDF
-                    const { jsPDF } = window.jspdf;
-                    const pdf = new jsPDF('p', 'mm', 'a4');
                     
-                    const pageWidth = pdf.internal.pageSize.getWidth();
-                    const pageHeight = pdf.internal.pageSize.getHeight();
-                    const margin = 10;
-                    const contentWidth = pageWidth - (2 * margin);
-                    const contentHeight = pageHeight - (2 * margin);
-
-                    // Calcular dimensiones del formulario
-                    const formImgData = formCanvas.toDataURL('image/png', 1.0);
-                    const formImgWidth = formCanvas.width;
-                    const formImgHeight = formCanvas.height;
+                    const imgWidth = 190; // A4 width in mm minus margins
+                    const imgHeight = (canvas1.height * imgWidth) / canvas1.width;
+                    let heightLeft = imgHeight;
+                    let position = 10;
+                    const pageHeight = 277; // A4 height minus margins
                     
-                    // Escalar al ancho de la página
-                    const formRatio = contentWidth / formImgWidth;
-                    const formScaledWidth = contentWidth;
-                    const formScaledHeight = formImgHeight * formRatio;
-
-                    // Agregar páginas del formulario
-                    let currentY = 0;
-                    let isFirstPage = true;
+                    pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 10, position, imgWidth, imgHeight);
+                    heightLeft -= (pageHeight - 10);
                     
-                    while (currentY < formScaledHeight) {
-                        if (!isFirstPage) {
-                            pdf.addPage();
-                        }
-                        isFirstPage = false;
-                        
-                        // Calcular qué parte de la imagen va en esta página
-                        const sourceY = currentY / formRatio; // Posición en píxeles originales
-                        const remainingHeight = formScaledHeight - currentY;
-                        const heightToAdd = Math.min(contentHeight, remainingHeight);
-                        const sourceHeight = heightToAdd / formRatio;
-                        
-                        // Crear un canvas temporal con solo la parte que necesitamos
-                        const tempCanvas = document.createElement('canvas');
-                        tempCanvas.width = formImgWidth;
-                        tempCanvas.height = sourceHeight;
-                        const tempCtx = tempCanvas.getContext('2d');
-                        
-                        tempCtx.drawImage(
-                            formCanvas,
-                            0, sourceY,           // source x, y
-                            formImgWidth, sourceHeight,  // source width, height
-                            0, 0,                 // dest x, y
-                            formImgWidth, sourceHeight   // dest width, height
-                        );
-                        
-                        const tempImgData = tempCanvas.toDataURL('image/png', 1.0);
-                        
-                        pdf.addImage(
-                            tempImgData,
-                            'PNG',
-                            margin,
-                            margin,
-                            formScaledWidth,
-                            heightToAdd
-                        );
-                        
-                        currentY += contentHeight;
+                    while (heightLeft > 0) {
+                        position = heightLeft - imgHeight + 10;
+                        pdf.addPage();
+                        pdf.addImage(canvas1.toDataURL('image/png'), 'PNG', 10, position, imgWidth, imgHeight);
+                        heightLeft -= pageHeight;
                     }
-
-                    // Agregar página de resultados al final
-                    pdf.addPage();
                     
-                    const resultsImgData = resultsCanvas.toDataURL('image/png', 1.0);
-                    const resultsRatio = contentWidth / resultsCanvas.width;
-                    const resultsScaledHeight = resultsCanvas.height * resultsRatio;
-                    
-                    pdf.addImage(
-                        resultsImgData,
-                        'PNG',
-                        margin,
-                        margin,
-                        contentWidth,
-                        resultsScaledHeight
-                    );
-
-                    pdf.save('Formulario_Fiscalizacion_Completado.pdf');
-
-                } catch (e) {
-                    console.error("Error al generar el PDF:", e);
-                } finally {
-                    // Restaurar la vista de resultados
-                    calculateBtnContainer.style.display = 'block';
+                    // Ahora agregar resultados
                     formPage.classList.add('hidden');
                     resultsPage.classList.remove('hidden');
-                    window.scrollTo(0, currentScrollPos);
                     
+                    await new Promise(resolve => setTimeout(resolve, 500));
+                    
+                    const resultsBox = document.getElementById('results-box');
+                    const canvas2 = await html2canvas(resultsBox, {
+                        scale: 2,
+                        useCORS: true,
+                        backgroundColor: '#ffffff'
+                    });
+                    
+                    pdf.addPage();
+                    const resultHeight = (canvas2.height * imgWidth) / canvas2.width;
+                    pdf.addImage(canvas2.toDataURL('image/png'), 'PNG', 10, 10, imgWidth, resultHeight);
+                    
+                    pdf.save('Formulario_Fiscalizacion_Completado.pdf');
+                    
+                    calculateBtnContainer.style.display = 'block';
+                    
+                } catch (e) {
+                    console.error("Error:", e);
+                    alert("Hubo un error al generar el PDF. Por favor intenta de nuevo.");
+                } finally {
                     loader.classList.add('hidden');
                     downloadBtn.classList.remove('hidden');
                     backBtn.classList.remove('hidden');
