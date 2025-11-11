@@ -147,6 +147,14 @@
                         <div></div> <!-- Espaciador izquierdo -->
                         <div class="flex flex-col items-center">
                         </div>
+                        
+                        <!-- 
+                          IMAGEN DE PLACEHOLD.CO ELIMINADA 
+                          La imagen invisible (https://placehold.co/...) que estaba aquí se eliminó.
+                          Causaba un error de seguridad (CORS) que impedía a html2canvas
+                          generar el PDF. Como era invisible, borrarla no afecta el diseño.
+                        -->
+                    
                     </div>
                     <h1 class="text-2xl font-bold text-gray-800 mt-4">Ley N°21.659, sobre Seguridad Privada</h1>
                     <h1 class="text-2xl font-bold text-gray-800 mt-4">Formulario de Registro de Fiscalización en Terreno</h1>
@@ -873,7 +881,7 @@
 
                 const options = {
                     scale: 2,
-                    useCORS: true,
+                    useCORS: true, // Esta línea es CRUCIAL para que html2canvas pueda leer las fuentes de Google.
                     logging: false,
                     onclone: (documentClone) => {
                         // Sincroniza todos los valores del formulario al clonar
@@ -944,7 +952,7 @@
                         pdf.save('Formulario_Fiscalizacion_Completado.pdf');
                     } catch (e) {
                         console.error("Error al generar el PDF:", e);
-                        alert("Hubo un error al generar el PDF.");
+                        // No uses alert() en este entorno
                     } finally {
                         loader.classList.add('hidden');
                         downloadBtn.classList.remove('hidden');
@@ -952,7 +960,7 @@
                     }
                 }).catch(err => {
                     console.error("Error con html2canvas:", err);
-                    alert("Hubo un error al capturar el formulario.");
+                    // No uses alert() en este entorno
                     loader.classList.add('hidden');
                     downloadBtn.classList.remove('hidden');
                     backBtn.classList.remove('hidden'); // Muestra "volver" de nuevo
