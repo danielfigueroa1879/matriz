@@ -862,9 +862,8 @@ const opciones = {
                         logging: false,
                         onclone: (documentClone) => {
                             
-                            // --- ¡SOLUCIÓN DE ALINEACIÓN IZQUIERDA! ---
-                            // Eliminamos todos los paddings/margins externos que puedan "empujar" el canvas.
-                            
+                            // --- SOLUCIÓN DE ALINEACIÓN ---
+                            // Reseteamos el exterior
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
@@ -872,29 +871,34 @@ const opciones = {
                                 clonedPageContainer.style.boxSizing = 'border-box';
                             }
                             
+                            // --- ¡MODIFICADO! ---
+                            // Ya NO reseteamos el padding del contenedor blanco, solo el margen.
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
-                                clonedFormContainer.style.padding = '0';
+                                // clonedFormContainer.style.padding = '0'; // <-- Esta línea se eliminó
                                 clonedFormContainer.style.margin = '0';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                             }
                     
+                            // --- ¡MODIFICADO! ---
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
                                 clonedFormContent.style.boxSizing = 'border-box';
+                                // --- ¡NUEVO! Ajuste de tamaño de fuente ---
+                                clonedFormContent.style.fontSize = '14px'; 
                             }
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
-                            // --- FIN DE LA SOLUCIÓN DE ALINEACIÓN ---
+                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
 
 
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
 
-                            // --- 1. PROCESAR INPUTS (Mantenemos la solución de ancho exacto) ---
+                            // --- 1. PROCESAR INPUTS (Sin cambios en esta lógica) ---
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -907,10 +911,7 @@ const opciones = {
                                         const replacementDiv = documentClone.createElement('div');
                                         replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
-                                        
-                                        // Usamos el ancho exacto medido (sin el -1, ya no es necesario)
                                         replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
-                                        
                                         replacementDiv.style.height = 'auto'; 
                                         replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
@@ -925,7 +926,7 @@ const opciones = {
                                 }
                             });
                             
-                            // --- 2. PROCESAR TEXTAREAS (Mantenemos la solución de altura) ---
+                            // --- 2. PROCESAR TEXTAREAS (Sin cambios en esta lógica) ---
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = clonedForm.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
