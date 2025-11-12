@@ -11,9 +11,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     
     <style>
-        html {
-            font-size: 14px; /* MODIFICADO: Reduce el tamaño base de 15px a 14px */
-        }
         /* ... (Tus estilos personalizados de 'index (72).html' van aquí sin cambios) ... */
         body {
             font-family: 'Inter', sans-serif;
@@ -133,15 +130,25 @@
 </head>
 <body class="antialiased">
 
-    <div id="form-page-container" class="max-w-3xl mx-auto p-4 sm:p-8"> <!-- MODIFICADO: de max-w-4xl a max-w-3xl -->
+    <div id="form-page-container" class="max-w-4xl mx-auto p-4 sm:p-8">
         <div id="form-container" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg">
             <div id="form-content">
-                <!-- MODIFICADO: Se eliminó el bloque <header> -->
+                <header class="text-center mb-8">
+                    <div class="flex justify-between items-center">
+                        <div></div> <div class="flex flex-col items-center">
+                        </div>
+                    </div>
+                    <h1 class="text-2xl font-bold text-gray-800 mt-4">Ley N°21.659, sobre Seguridad Privada</h1>
+                    <h1 class="text-2xl font-bold text-gray-800 mt-4">Formulario de Registro de Fiscalización en Terreno</h1>
+                    <p class="text-sm text-gray-500 mt-1">
+                        (Resolución Exenta N 1820, del Ministerio de Seguridad Pública, que Aprueba la Matriz de Riesgo en Seguridad Privada)
+                    </p>
+                </header>
 
                 <form id="fiscalizacionForm">
                     <fieldset>
                         <legend>I. Completar de manera previa y/o posterior a la visita</legend>
-                        <div class="grid grid-cols-1 gap-6 mt-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                             <div>
                                 <label for="codigo_sii" class="block text-sm font-medium text-gray-700">Código SII/Tipo de entidad</label>
                                 <input type="text" id="codigo_sii" name="codigo_sii" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -150,11 +157,11 @@
                                 <label for="unidad_policial" class="block text-sm font-medium text-gray-700">Unidad Policial (Carabineros)</label>
                                 <input type="text" id="unidad_policial" name="unidad_policial" class="form-input-field mt-1 block w-full sm:text-sm">
                             </div>
-                            <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                            <div class="md:col-span-2">
                                 <label for="rubro_previo" class="block text-sm font-medium text-gray-700">Rubro</label>
                                 <input type="text" id="rubro_previo" name="rubro_previo" class="form-input-field mt-1 block w-full sm:text-sm">
                             </div>
-                            <div class="border border-gray-200 rounded-md p-4"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                            <div class="md:col-span-2 border border-gray-200 rounded-md p-4">
                                 <label class="block text-base font-semibold text-gray-800">Criticidad de la función observada</label>
                                 <p class="text-xs text-gray-500 mb-4">(actividad laboral, económica y productiva)</p>
                                 <div class="space-y-4">
@@ -201,7 +208,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                            <div class="md:col-span-2">
                                 <label for="comentarios_criticidad" class="block text-sm font-medium text-gray-700">Comentarios ((lustlflcar por qué el servicio es insustituible o sustitulble por otro de similares caracteristica)</label>
                                 <textarea id="comentarios_criticidad" name="comentarios_criticidad" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                             </div>
@@ -213,7 +220,7 @@
                         
                         <div class="border border-gray-200 rounded-md p-4 mb-6 mt-4">
                             <h3 class="font-semibold text-base text-gray-800 mb-4">1. Identificación</h3>
-                            <div class="grid grid-cols-1 gap-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 y se cambió gap -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
                                     <label for="codigo_visita" class="block text-sm font-medium text-gray-700">Código visita</label>
                                     <input type="text" id="codigo_visita" name="codigo_visita" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -222,7 +229,7 @@
                                     <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
                                     <input type="date" id="fecha" name="fecha" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div class="grid grid-cols-2 gap-6"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2 grid grid-cols-2 gap-6">
                                     <div>
                                         <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
                                         <input type="time" id="hora_inicio" name="hora_inicio" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -240,7 +247,7 @@
                                     <label for="rut_entidad" class="block text-sm font-medium text-gray-700">RUT</label>
                                     <input type="text" id="rut_entidad" name="rut_entidad" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
                                     <input type="text" id="direccion" name="direccion" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
@@ -252,7 +259,7 @@
                                     <label for="ciudad" class="block text-sm font-medium text-gray-700">Ciudad</label>
                                     <input type="text" id="ciudad" name="ciudad" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
                                     <input type="text" id="region" name="region" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
@@ -264,7 +271,7 @@
                                     <label for="cargo_representante" class="block text-sm font-medium text-gray-700">Cargo</label>
                                     <input type="text" id="cargo_representante" name="cargo_representante" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">Institución fiscalizadora</label>
                                     <div class="flex gap-6 mt-2">
                                         <div class="flex items-center">
@@ -289,7 +296,7 @@
                                     <label for="cargo_fiscalizador" class="block text-sm font-medium text-gray-700">Cargo Fiscalizador</label>
                                     <input type="text" id="cargo_fiscalizador" name="cargo_fiscalizador" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label for="rut_fiscalizador" class="block text-sm font-medium text-gray-700">RUT o Código Funcionario Fiscalizador</label>
                                     <input type="text" id="rut_fiscalizador" name="rut_fiscalizador" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
@@ -298,7 +305,7 @@
 
                         <div class="border border-gray-200 rounded-md p-4 mb-6">
                             <h3 class="font-semibold text-base text-gray-800 mb-4">2. Rubro</h3>
-                            <div class="grid grid-cols-1 gap-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 y se cambió gap -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                 <div>
                                     <label for="rubro_declarado" class="block text-sm font-medium text-gray-700">Rubro principal declarado</label>
                                     <input type="text" id="rubro_declarado" name="rubro_declarado" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -307,7 +314,7 @@
                                     <label for="rubro_observado" class="block text-sm font-medium text-gray-700">Rubro principal observado</label>
                                     <input type="text" id="rubro_observado" name="rubro_observado" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">¿Inconsistencia?</label>
                                     <div class="flex gap-6 mt-2">
                                         <div class="flex items-center">
@@ -320,11 +327,11 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label for="comentarios_rubro" class="block text-sm font-medium text-gray-700">Comentarios (en caso de más de un rubro, inconsistencias y otros pertinente en relación al rubro)</label>
                                     <textarea id="comentarios_rubro" name="comentarios_rubro" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">Reiteración de delitos (últimos 12 meses) sea que afecten a la entidad misma y su patrimonio, a sus trabajadores o usuarios/client</label>
                                     <p class="text-xs text-gray-500 mb-2">¿Con qué frecuencia ocurrieron delitos al interior de la entidad?</p>
                                     <div class="flex flex-wrap gap-x-6 gap-y-2">
@@ -346,7 +353,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="md:col-span-2">
                                     <label for="comentarios_delitos" class="block text-sm font-medium text-gray-700">Comentarios (Delitos)</label>
                                     <textarea id="comentarios_delitos" name="comentarios_delitos" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
@@ -354,7 +361,7 @@
 
                             <div class="border border-gray-200 rounded-md p-4 mb-6">
                                 <h3 class="font-semibold text-base text-gray-800 mb-4">3. Valoración de bienes</h3>
-                                <div class="grid grid-cols-1 gap-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 y se cambió gap -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Bienes o productos peligrosos</label>
                                         <p class="text-xs text-gray-500 mb-2">(armas, sustancias controladas, etc.)</p>
@@ -408,7 +415,7 @@
                                         <label for="detalle_bienes_valor" class="block text-sm font-medium text-gray-700">Detalle (Alto valor)</label>
                                         <input type="text" id="detalle_bienes_valor" name="detalle_bienes_valor" class="form-input-field mt-1 block w-full sm:text-sm">
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div>
                                             <label for="objeto_1" class="block text-sm font-medium text-gray-700">Objeto 1</label>
                                             <input type="text" id="objeto_1" name="objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -422,11 +429,11 @@
                                             <input type="number" id="cantidad_objeto_1" name="cantidad_objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
                                         </div>
                                     </div>
-                                    <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2">
                                         <label for="comentario_objeto_1" class="block text-sm font-medium text-gray-700">Comentario (Objeto 1)</label>
                                         <input type="text" id="comentario_objeto_1" name="comentario_objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
                                     </div>
-                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
                                         <div>
                                             <label for="objeto_2" class="block text-sm font-medium text-gray-700">Objeto 2</label>
                                             <input type="text" id="objeto_2" name="objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
@@ -440,11 +447,11 @@
                                             <input type="number" id="cantidad_objeto_2" name="cantidad_objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
                                         </div>
                                     </div>
-                                    <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2">
                                         <label for="comentario_objeto_2" class="block text-sm font-medium text-gray-700">Comentario (Objeto 2)</label>
                                         <input type="text" id="comentario_objeto_2" name="comentario_objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
                                     </div>
-                                    <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700">Mantención de efectivo (monto promedio diario)</label>
                                         <div class="mt-2 space-y-2">
                                             <div class="flex items-center">
@@ -474,8 +481,8 @@
 
                             <div class="border border-gray-200 rounded-md p-4 mb-6">
                                 <h3 class="font-semibold text-base text-gray-800 mb-4">4. Funcionamiento de la entidad</h3>
-                                <div class="grid grid-cols-1 gap-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 y se cambió gap -->
-                                    <div class="p-3 border rounded-md"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                    <div class="md:col-span-2 p-3 border rounded-md">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Horarios de atención al público <span class="text-xs font-normal">(Si no atiende, dejar en blanco)</span></label>
                                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                             <div>
@@ -504,7 +511,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="p-3 border rounded-md"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2 p-3 border rounded-md">
                                         <label class="block text-sm font-medium text-gray-700 mb-2">Horarios de operación <span class="text-xs font-normal">(Actividades propias del rubro)</span></label>
                                         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
                                             <div>
@@ -533,11 +540,11 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2">
                                         <label for="procesos_fuera_horario" class="block text-sm font-medium text-gray-700">Detallar procesos fuera de horario de atención</label>
                                         <textarea id="procesos_fuera_horario" name="procesos_fuera_horario" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
-                                    <div class="p-3 border rounded-md"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2 p-3 border rounded-md">
                                         <h4 class="text-sm font-medium text-gray-700 mb-2">Máximo de personas y ocupación (aforo)</h4>
                                         <div>
                                             <label for="capacidad_maxima" class="block text-sm font-medium text-gray-700">Capacidad máxima de personas permitidas</label>
@@ -569,7 +576,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="p-3 border rounded-md"> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2 p-3 border rounded-md">
                                         <h4 class="text-sm font-medium text-gray-700 mb-2">Dinámica del público</h4>
                                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                             <div>
@@ -592,8 +599,8 @@
 
                             <div class="border border-gray-200 rounded-md p-4 mb-6">
                                 <h3 class="font-semibold text-base text-gray-800 mb-4">5. Localización</h3>
-                                <div class="grid grid-cols-1 gap-4"> <!-- MODIFICADO: Se eliminó md:grid-cols-2 y se cambió gap -->
-                                    <div class=""> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                    <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700">Accesibilidad para escape del infractor</label>
                                         <p class="text-xs text-gray-500 mb-2">(conectividad/cercanía)</p>
                                         <div class="space-y-3">
@@ -638,7 +645,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div> <!-- MODIFICADO: Se eliminó md:col-span-2 -->
+                                    <div class="md:col-span-2">
                                         <label for="comentarios_localizacion" class="block text-sm font-medium text-gray-700">Comentarios (Localización)</label>
                                         <textarea id="comentarios_localizacion" name="comentarios_localizacion" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
@@ -648,7 +655,6 @@
                             <div class="border border-gray-200 rounded-md p-4 mb-6">
                                 <h3 class="font-semibold text-base text-gray-800 mb-4">6. Observaciones generales</h3>
                                 <textarea id="observaciones_generales" name="observaciones_generales" rows="5" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-
                             </div>
 
                             <div class="border border-gray-200 rounded-md p-4">
@@ -714,8 +720,7 @@
                     <div class="flex justify-center items-center gap-2">
                         <svg class="animate-spin h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8
- 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                         </svg>
                         <span class="text-blue-800 font-medium">Generando PDF, por favor espera...</span>
                     </div>
@@ -847,7 +852,7 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [10, 4, 10, 4], // Mantenemos margen izq/der en 4mm
+                    margin: [10, 6, 10, 6], // MODIFICADO: Reducido margen izq/der (antes [10, 8, 10, 8])
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
                         scale: 2, // Buena resolución
@@ -875,8 +880,8 @@ const opciones = {
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                // --- ¡CAMBIO AQUÍ! Letra más legible ---
-                                // MODIFICADO: ELIMINADO para heredar del HTML (antes '8px')
+                                // --- ¡CAMBIO AQUÍ! Letra más pequeña ---
+                                clonedFormContent.style.fontSize = '8.5px'; // MODIFICADO: Reducido de 9px a 8.5px
                             }
                             
                             documentClone.body.style.padding = '0';
@@ -947,7 +952,7 @@ const opciones = {
                     },
                     jsPDF: {
                         unit: 'mm',
-                        format: 'legal', // Mantenemos 'legal' (Oficio)
+                        format: 'a4',
                         orientation: 'portrait',
                         compress: true
                     }
