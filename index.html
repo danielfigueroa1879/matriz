@@ -852,7 +852,7 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [15, 10, 15, 8], // top, right, bottom, left
+                    margin: [10, 6, 10, 6], // MODIFICADO: Reducido margen izq/der (antes [10, 8, 10, 8])
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
                         scale: 2, // Buena resolución
@@ -881,7 +881,7 @@ const opciones = {
                                 clonedFormContent.style.margin = '0';
                                 clonedFormContent.style.boxSizing = 'border-box';
                                 // --- ¡CAMBIO AQUÍ! Letra más pequeña ---
-                                clonedFormContent.style.fontSize = '12px'; 
+                                clonedFormContent.style.fontSize = '8.5px'; // MODIFICADO: Reducido de 9px a 8.5px
                             }
                             
                             documentClone.body.style.padding = '0';
