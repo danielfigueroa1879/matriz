@@ -852,30 +852,31 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [15, 15, 15, 15], // Márgenes más amplios para evitar desbordamiento
+                    margin: [10, 10, 10, 10], // Márgenes moderados
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.6, // Reducido para que quepa mejor
+                        scale: 1.5, // Escala reducida para comprimir más
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
                         onclone: (documentClone) => {
                             
-                            // --- SOLUCIÓN DE ALINEACIÓN Y AJUSTE DE ANCHO ---
+                            // --- ALINEACIÓN A LA IZQUIERDA Y COMPRESIÓN ---
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
                                 clonedPageContainer.style.margin = '0';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '95%'; // Limitado a 95% del ancho
-                                clonedPageContainer.style.width = '95%';
+                                clonedPageContainer.style.maxWidth = '100%';
+                                clonedPageContainer.style.width = '100%';
+                                clonedPageContainer.style.textAlign = 'left'; // Forzar alineación izquierda
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '8px'; // Reducido aún más
+                                clonedFormContainer.style.padding = '6px';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                                 clonedFormContainer.style.width = '100%';
@@ -884,54 +885,79 @@ const opciones = {
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '8px'; // Reducido aún más
+                                clonedFormContent.style.padding = '6px';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '1px solid #d1d5db'; // Borde mínimo
+                                clonedFormContent.style.border = '1px solid #d1d5db';
                                 clonedFormContent.style.width = '100%';
                             }
                             
-                            // Ajustar fieldsets para mejor ajuste
+                            // Reducir todo el texto del documento
+                            documentClone.body.style.fontSize = '10px'; // Letra más pequeña
+                            
+                            // Ajustar fieldsets
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '10px'; // Padding mínimo
-                                fieldset.style.marginBottom = '10px';
+                                fieldset.style.padding = '6px';
+                                fieldset.style.marginBottom = '6px';
                                 fieldset.style.boxSizing = 'border-box';
+                            });
+                            
+                            // Ajustar legends (títulos de secciones)
+                            const legends = documentClone.querySelectorAll('legend');
+                            legends.forEach(legend => {
+                                legend.style.fontSize = '12px'; // Títulos un poco más grandes
+                                legend.style.fontWeight = '600';
                             });
                             
                             // Ajustar todos los divs con border
                             const borderedDivs = documentClone.querySelectorAll('.border');
                             borderedDivs.forEach(div => {
-                                div.style.padding = '8px';
+                                div.style.padding = '6px';
+                                div.style.marginBottom = '6px';
                                 div.style.boxSizing = 'border-box';
                             });
                             
-                            // Ajustar grids y contenedores
+                            // Ajustar grids
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '8px'; // Reducir espacios entre elementos
+                                grid.style.gap = '6px';
                             });
                             
                             // Ajustar inputs y elementos de formulario
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '12px'; // Reducir tamaño de fuente
+                                input.style.fontSize = '9px'; // Letra muy pequeña en inputs
+                                input.style.padding = '3px';
                             });
                             
                             // Ajustar labels
                             const labels = documentClone.querySelectorAll('label');
                             labels.forEach(label => {
-                                label.style.fontSize = '12px';
+                                label.style.fontSize = '9px'; // Letra pequeña en labels
+                                label.style.lineHeight = '1.2';
+                            });
+                            
+                            // Ajustar títulos h3
+                            const h3s = documentClone.querySelectorAll('h3');
+                            h3s.forEach(h3 => {
+                                h3.style.fontSize = '11px';
+                                h3.style.marginBottom = '6px';
+                            });
+                            
+                            // Ajustar párrafos pequeños
+                            const smallTexts = documentClone.querySelectorAll('.text-xs');
+                            smallTexts.forEach(text => {
+                                text.style.fontSize = '8px';
                             });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.width = '100%';
                             documentClone.body.style.boxSizing = 'border-box';
-                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
-                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
-                           
+                            documentClone.body.style.textAlign = 'left'; // Todo alineado a la izquierda
+                            // --- FIN DE LOS CAMBIOS ---
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
