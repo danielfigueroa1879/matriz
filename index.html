@@ -860,7 +860,7 @@ const opciones = {
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 600,
+                        windowWidth: 550, // Reducido de 600 a 550
                         onclone: (documentClone) => {
                             
                             // --- AJUSTE PARA QUE QUEPA EN LEGAL ---
@@ -870,10 +870,10 @@ const opciones = {
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0 auto'; // Centrado
+                                clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '590px';
-                                clonedPageContainer.style.width = '590px';
+                                clonedPageContainer.style.maxWidth = '540px'; // Reducido de 590px a 540px
+                                clonedPageContainer.style.width = '540px';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
