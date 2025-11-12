@@ -865,7 +865,7 @@ const opciones = {
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
 
-                            // --- 1. PROCESAR INPUTS (text, date, time, number) ---
+                            // --- 1. PROCESAR INPUTS (La corrección está aquí) ---
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -877,18 +877,23 @@ const opciones = {
                                     if (value) {
                                         const replacementDiv = documentClone.createElement('div');
                                         
-                                        // --- CAMBIO 1: Copiar TODAS las clases (incluyendo w-full) ---
+                                        // Copiamos todas las clases
                                         replacementDiv.className = clonedInput.className; 
-                                        
                                         replacementDiv.textContent = value;
+                                        
+                                        // --- ¡CAMBIO CLAVE! ---
+                                        // Medimos el ancho exacto del input (con decimales)
+                                        const inputWidth = clonedInput.getBoundingClientRect().width;
+                                        // Y se lo aplicamos directamente al div
+                                        replacementDiv.style.width = inputWidth + 'px';
+                                        // --- FIN DEL CAMBIO ---
+
                                         replacementDiv.style.height = 'auto'; 
                                         replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
                                         replacementDiv.style.wordBreak = 'break-word';
                                         replacementDiv.style.lineHeight = '1.4';
-                                        
-                                        // --- CAMBIO 2: ¡La corrección clave para el desborde! ---
-                                        replacementDiv.style.boxSizing = 'border-box'; 
+                                        replacementDiv.style.boxSizing = 'border-box'; // Sigue siendo importante
                                         
                                         clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
                                     } else {
@@ -897,7 +902,7 @@ const opciones = {
                                 }
                             });
                             
-                            // --- 2. PROCESAR TEXTAREAS (Sin cambios, esto estaba bien) ---
+                            // --- 2. PROCESAR TEXTAREAS (Sin cambios) ---
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = clonedForm.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
@@ -932,7 +937,6 @@ const opciones = {
                         compress: true
                     }
                 };
-
                 // Generar el PDF
                 html2pdf()
                     .from(formContent)
