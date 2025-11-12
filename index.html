@@ -860,21 +860,12 @@ const opciones = {
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        // --- LÍNEAS ELIMINADAS ---
-                        // Ya no usamos windowWidth ni windowHeight
-                        // --- FIN DE LÍNEAS ELIMINADAS ---
-                        
-                        /**
-                         * onclone se ejecuta en el DOM "clonado" justo antes 
-                         * de tomar la "foto" para el PDF.
-                         */
                         onclone: (documentClone) => {
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
 
                             // --- 1. PROCESAR INPUTS (text, date, time, number) ---
-                            // Los reemplazamos por <div> para que el texto se ajuste (wrap).
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -884,54 +875,49 @@ const opciones = {
                                     const value = input.value;
 
                                     if (value) {
-                                        // 1. Crear un div de reemplazo
                                         const replacementDiv = documentClone.createElement('div');
                                         
-                                        // 2. Copiar la clase CSS para que se vea igual (bordes, padding, etc.)
-                                        replacementDiv.className = 'form-input-field'; 
+                                        // --- CAMBIO 1: Copiar TODAS las clases (incluyendo w-full) ---
+                                        replacementDiv.className = clonedInput.className; 
+                                        
                                         replacementDiv.textContent = value;
+                                        replacementDiv.style.height = 'auto'; 
+                                        replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
+                                        replacementDiv.style.whiteSpace = 'pre-wrap'; 
+                                        replacementDiv.style.wordBreak = 'break-word';
+                                        replacementDiv.style.lineHeight = '1.4';
                                         
-                                        // 3. Añadir estilos para que el texto se ajuste (wrap)
-                                        replacementDiv.style.height = 'auto'; // Altura automática
-                                        replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px'; // Alto mínimo
-                                        replacementDiv.style.whiteSpace = 'pre-wrap'; // Conservar saltos y espacios
-                                        replacementDiv.style.wordBreak = 'break-word'; // Romper palabras largas
-                                        replacementDiv.style.lineHeight = '1.4'; // Espaciado de línea
+                                        // --- CAMBIO 2: ¡La corrección clave para el desborde! ---
+                                        replacementDiv.style.boxSizing = 'border-box'; 
                                         
-                                        // 4. Reemplazar el <input> por el <div>
                                         clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
                                     } else {
-                                        // Si no hay valor, solo dejar el valor vacío en el input
                                         clonedInput.value = '';
                                     }
                                 }
                             });
                             
-                            // --- 2. PROCESAR TEXTAREAS ---
-                            // Ajustamos su altura para que muestren todo el contenido.
+                            // --- 2. PROCESAR TEXTAREAS (Sin cambios, esto estaba bien) ---
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = clonedForm.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
                                 if (clonedTextareas[index]) {
                                     const clonedTextarea = clonedTextareas[index];
                                     clonedTextarea.value = textarea.value;
-                                    
-                                    // Ajustar altura para mostrar todo el contenido
                                     clonedTextarea.style.height = 'auto';
-                                    clonedTextarea.style.overflow = 'hidden'; // Ocultar scrollbar
-                                    // Asignar la altura real del contenido (con un búfer de 5px)
+                                    clonedTextarea.style.overflow = 'hidden'; 
                                     clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
                                 }
                             });
 
-                            // --- 3. PROCESAR CHECKBOXES (copia el estado) ---
+                            // --- 3. PROCESAR CHECKBOXES (Sin cambios) ---
                             const checkboxes = form.querySelectorAll('input[type="checkbox"]');
                             const clonedCheckboxes = clonedForm.querySelectorAll('input[type="checkbox"]');
                             checkboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
-                            // --- 4. PROCESAR RADIOS (copia el estado) ---
+                            // --- 4. PROCESAR RADIOS (Sin cambios) ---
                             const radios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
                             radios.forEach((radio, index) => {
