@@ -852,7 +852,7 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [10, 10, 10, 10],
+                    margin: [10, 8, 10, 8], // Márgenes izq/der reducidos
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
                         scale: 2,
@@ -860,7 +860,7 @@ const opciones = {
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 650, // Ancho controlado que cabe en Legal
+                        windowWidth: 600, // Reducido de 650 a 600
                         onclone: (documentClone) => {
                             
                             // --- AJUSTE PARA QUE QUEPA EN LEGAL ---
@@ -870,10 +870,10 @@ const opciones = {
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0 auto';
+                                clonedPageContainer.style.margin = '0';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '640px'; // Ancho fijo
-                                clonedPageContainer.style.width = '640px';
+                                clonedPageContainer.style.maxWidth = '590px'; // Reducido de 640px a 590px
+                                clonedPageContainer.style.width = '590px';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
