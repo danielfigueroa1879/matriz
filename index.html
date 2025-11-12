@@ -852,53 +852,62 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [8, 8, 8, 8], // Márgenes uniformes de 8mm
-                    image: { type: 'jpeg', quality: 0.98 },
+                    margin: [10, 10, 10, 10], // Márgenes uniformes de 10mm
+                    image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.5, // Reducido de 2 a 1.5 para mejor ajuste
+                        scale: 1.8, // Escala optimizada
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 794, // Ancho fijo que cabe bien en Legal
                         onclone: (documentClone) => {
                             
                             // --- SOLUCIÓN DE ALINEACIÓN Y AJUSTE DE ANCHO ---
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0 auto';
+                                clonedPageContainer.style.margin = '0';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '750px'; // Ancho máximo que cabe en Legal
+                                clonedPageContainer.style.maxWidth = '100%';
                                 clonedPageContainer.style.width = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '16px'; // Padding reducido
+                                clonedFormContainer.style.padding = '20px';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
+                                clonedFormContainer.style.width = '100%';
                             }
                     
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '12px'; // Padding interno reducido
+                                clonedFormContent.style.padding = '16px';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '2px solid #d1d5db'; // Borde más delgado
+                                clonedFormContent.style.border = '3px solid #d1d5db';
+                                clonedFormContent.style.width = '100%';
                             }
                             
                             // Ajustar fieldsets para mejor ajuste
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '12px';
-                                fieldset.style.marginBottom = '12px';
+                                fieldset.style.padding = '16px';
+                                fieldset.style.marginBottom = '16px';
+                                fieldset.style.boxSizing = 'border-box';
+                            });
+                            
+                            // Ajustar grids y contenedores
+                            const grids = documentClone.querySelectorAll('.grid');
+                            grids.forEach(grid => {
+                                grid.style.boxSizing = 'border-box';
                             });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.width = '100%';
+                            documentClone.body.style.boxSizing = 'border-box';
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
