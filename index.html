@@ -850,7 +850,7 @@
             
             // Pequeña pausa para que el DOM se actualice
             setTimeout(() => {
-              const opciones = {
+const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
                     margin: [15, 10, 15, 10], // top, right, bottom, left
                     image: { type: 'jpeg', quality: 0.98 },
@@ -946,13 +946,6 @@
                         compress: true
                     }
                 };
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'a4', // 'legal' es muy largo, 'a4' es estándar
-                        orientation: 'portrait',
-                        compress: true
-                    }
-                };
 
                 // Generar el PDF
                 html2pdf()
@@ -1009,7 +1002,7 @@
             if (downloadBtn) {
                 // Se reemplaza el listener original por este
                 downloadBtn.addEventListener('click', cargarHtml2PdfYGenerar);
-            }
+            };
     </script>
     </body>
 </html>
