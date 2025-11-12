@@ -862,8 +862,7 @@ const opciones = {
                         logging: false,
                         onclone: (documentClone) => {
                             
-                            // --- SOLUCIÓN DE ALINEACIÓN ---
-                            // Reseteamos el exterior
+                            // --- SOLUCIÓN DE ALINEACIÓN (Sin cambios) ---
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
@@ -871,22 +870,18 @@ const opciones = {
                                 clonedPageContainer.style.boxSizing = 'border-box';
                             }
                             
-                            // --- ¡MODIFICADO! ---
-                            // Ya NO reseteamos el padding del contenedor blanco, solo el margen.
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
-                                // clonedFormContainer.style.padding = '0'; // <-- Esta línea se eliminó
                                 clonedFormContainer.style.margin = '0';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                             }
                     
-                            // --- ¡MODIFICADO! ---
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                // --- ¡NUEVO! Ajuste de tamaño de fuente ---
-                                clonedFormContent.style.fontSize = '14px'; 
+                                // --- ¡CAMBIO AQUÍ! Letra un poco más pequeña ---
+                                clonedFormContent.style.fontSize = '13px'; 
                             }
                             
                             documentClone.body.style.padding = '0';
@@ -900,7 +895,7 @@ const opciones = {
 
                             // --- 1. PROCESAR INPUTS (Sin cambios en esta lógica) ---
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
                             textInputs.forEach((input, index) => {
                                 if (clonedTextInputs[index]) {
@@ -928,7 +923,7 @@ const opciones = {
                             
                             // --- 2. PROCESAR TEXTAREAS (Sin cambios en esta lógica) ---
                             const textareas = form.querySelectorAll('textarea');
-                            const clonedTextareas = clonedForm.querySelectorAll('textarea');
+                            const clonedTextareas = documentClone.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
                                 if (clonedTextareas[index]) {
                                     const clonedTextarea = clonedTextareas[index];
@@ -942,14 +937,14 @@ const opciones = {
 
                             // --- 3. PROCESAR CHECKBOXES (Sin cambios) ---
                             const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-                            const clonedCheckboxes = clonedForm.querySelectorAll('input[type="checkbox"]');
+                            const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
                             checkboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
                             // --- 4. PROCESAR RADIOS (Sin cambios) ---
                             const radios = form.querySelectorAll('input[type="radio"]');
-                            const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
+                            const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
                             radios.forEach((radio, index) => {
                                 if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
                             });
