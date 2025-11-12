@@ -1013,11 +1013,8 @@ const opciones = {
                             const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
                             radios.forEach((radio, index) => {
                                 if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
-                            });
-                           
-                            // --- FIN DE LOS CAMBIOS ---
-                            
-                            // --- 2. PROCESAR TEXTAREAS (Sin cambios en esta lógica) ---
+                            });              
+                            // --- FIN DE LOS CAMBIOS --
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = documentClone.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
