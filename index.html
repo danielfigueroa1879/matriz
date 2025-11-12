@@ -876,16 +876,13 @@ const opciones = {
 
                                     if (value) {
                                         const replacementDiv = documentClone.createElement('div');
-                                        
-                                        // Copiamos todas las clases
                                         replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
                                         
                                         // --- ¡CAMBIO CLAVE! ---
-                                        // Medimos el ancho exacto del input (con decimales)
-                                        const inputWidth = clonedInput.getBoundingClientRect().width;
-                                        // Y se lo aplicamos directamente al div
-                                        replacementDiv.style.width = inputWidth + 'px';
+                                        // Le restamos 1px al ancho medido para absorber 
+                                        // cualquier error de redondeo de sub-píxeles.
+                                        replacementDiv.style.width = (clonedInput.getBoundingClientRect().width - 1) + 'px';
                                         // --- FIN DEL CAMBIO ---
 
                                         replacementDiv.style.height = 'auto'; 
