@@ -861,11 +861,19 @@ const opciones = {
                         backgroundColor: '#ffffff',
                         logging: false,
                         onclone: (documentClone) => {
+                            
+                            // --- ¡NUEVO! APLICAR BOX-SIZING AL CONTENEDOR PRINCIPAL ---
+                            const clonedFormContent = documentClone.getElementById('form-content');
+                            if (clonedFormContent) {
+                                clonedFormContent.style.boxSizing = 'border-box';
+                            }
+                            // --- FIN DEL NUEVO CÓDIGO ---
+
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
 
-                            // --- 1. PROCESAR INPUTS (La corrección está aquí) ---
+                            // --- 1. PROCESAR INPUTS ---
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -879,18 +887,15 @@ const opciones = {
                                         replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
                                         
-                                        // --- ¡CAMBIO CLAVE! ---
-                                        // Le restamos 1px al ancho medido para absorber 
-                                        // cualquier error de redondeo de sub-píxeles.
-                                        replacementDiv.style.width = (clonedInput.getBoundingClientRect().width - 1) + 'px';
-                                        // --- FIN DEL CAMBIO ---
-
+                                        // --- ¡MODIFICADO! Volvemos al ancho exacto (sin -1) ---
+                                        replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
+                                        
                                         replacementDiv.style.height = 'auto'; 
                                         replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
                                         replacementDiv.style.wordBreak = 'break-word';
                                         replacementDiv.style.lineHeight = '1.4';
-                                        replacementDiv.style.boxSizing = 'border-box'; // Sigue siendo importante
+                                        replacementDiv.style.boxSizing = 'border-box'; // Esto se mantiene
                                         
                                         clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
                                     } else {
@@ -899,7 +904,7 @@ const opciones = {
                                 }
                             });
                             
-                            // --- 2. PROCESAR TEXTAREAS (Sin cambios) ---
+                            // --- 2. PROCESAR TEXTAREAS ---
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = clonedForm.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
@@ -909,6 +914,7 @@ const opciones = {
                                     clonedTextarea.style.height = 'auto';
                                     clonedTextarea.style.overflow = 'hidden'; 
                                     clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
+                                    clonedTextarea.style.boxSizing = 'border-box'; // --- ¡NUEVO! Consistencia
                                 }
                             });
 
@@ -923,7 +929,7 @@ const opciones = {
                             const radios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
                             radios.forEach((radio, index) => {
-                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
+                                if (clonedCheckboxes[index]) clonedRadios[index].checked = radio.checked;
                             });
                         }
                     },
