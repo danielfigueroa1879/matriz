@@ -852,34 +852,35 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [10, 10, 10, 10], // Márgenes uniformes
+                    margin: [8, 12, 8, 8], // Más margen derecho
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 2,
+                        scale: 1.8, // Reducido para comprimir
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 550, // Reducido de 600 a 550
+                        windowWidth: 700, // Aumentado para capturar más ancho
                         onclone: (documentClone) => {
                             
-                            // --- AJUSTE PARA QUE QUEPA EN LEGAL ---
+                            // --- OPTIMIZACIÓN Y AJUSTE ---
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0 auto';
+                                clonedPageContainer.style.margin = '0';
+                                clonedPageContainer.style.marginLeft = '20px'; // Empujar a la derecha
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '540px'; // Reducido de 590px a 540px
-                                clonedPageContainer.style.width = '540px';
+                                clonedPageContainer.style.maxWidth = '100%';
+                                clonedPageContainer.style.width = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '10px';
+                                clonedFormContainer.style.padding = '8px'; // Reducido
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                             }
@@ -887,34 +888,34 @@ const opciones = {
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '10px';
+                                clonedFormContent.style.padding = '8px'; // Reducido
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '2px solid #d1d5db';
+                                clonedFormContent.style.border = '1px solid #d1d5db';
                             }
                             
-                            // Ajustar tamaños de fuente
-                            documentClone.body.style.fontSize = '11px';
+                            // Reducir tamaños de fuente
+                            documentClone.body.style.fontSize = '10px';
                             
                             // Ajustar fieldsets
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '10px';
-                                fieldset.style.marginBottom = '10px';
+                                fieldset.style.padding = '8px'; // Reducido
+                                fieldset.style.marginBottom = '8px';
                                 fieldset.style.boxSizing = 'border-box';
                             });
                             
                             // Ajustar legends
                             const legends = documentClone.querySelectorAll('legend');
                             legends.forEach(legend => {
-                                legend.style.fontSize = '13px';
+                                legend.style.fontSize = '11px'; // Reducido
                                 legend.style.fontWeight = '600';
                             });
                             
                             // Ajustar divs con border
                             const borderedDivs = documentClone.querySelectorAll('.border');
                             borderedDivs.forEach(div => {
-                                div.style.padding = '8px';
-                                div.style.marginBottom = '8px';
+                                div.style.padding = '6px'; // Reducido
+                                div.style.marginBottom = '6px';
                                 div.style.boxSizing = 'border-box';
                             });
                             
@@ -922,34 +923,34 @@ const opciones = {
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '8px';
+                                grid.style.gap = '6px'; // Reducido
                             });
                             
                             // Ajustar inputs
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '10px';
-                                input.style.padding = '4px';
+                                input.style.fontSize = '9px'; // Reducido
+                                input.style.padding = '3px';
                             });
                             
                             // Ajustar labels
                             const labels = documentClone.querySelectorAll('label');
                             labels.forEach(label => {
-                                label.style.fontSize = '10px';
+                                label.style.fontSize = '9px'; // Reducido
                             });
                             
                             // Ajustar h3
                             const h3s = documentClone.querySelectorAll('h3');
                             h3s.forEach(h3 => {
-                                h3.style.fontSize = '12px';
-                                h3.style.marginBottom = '6px';
+                                h3.style.fontSize = '10px'; // Reducido
+                                h3.style.marginBottom = '4px';
                             });
                             
                             // Ajustar textos pequeños
                             const smallTexts = documentClone.querySelectorAll('.text-xs, .text-sm');
                             smallTexts.forEach(text => {
-                                text.style.fontSize = '9px';
+                                text.style.fontSize = '8px'; // Reducido
                             });
                             
                             documentClone.body.style.padding = '0';
