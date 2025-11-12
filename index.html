@@ -852,10 +852,10 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [12, 12, 12, 12], // Márgenes más amplios
+                    margin: [15, 15, 15, 15], // Márgenes más amplios para evitar desbordamiento
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.8, // Escala optimizada
+                        scale: 1.6, // Reducido para que quepa mejor
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
@@ -868,14 +868,14 @@ const opciones = {
                                 clonedPageContainer.style.padding = '0';
                                 clonedPageContainer.style.margin = '0';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '100%';
-                                clonedPageContainer.style.width = '100%';
+                                clonedPageContainer.style.maxWidth = '95%'; // Limitado a 95% del ancho
+                                clonedPageContainer.style.width = '95%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '12px'; // Reducido de 20px a 12px
+                                clonedFormContainer.style.padding = '8px'; // Reducido aún más
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                                 clonedFormContainer.style.width = '100%';
@@ -884,36 +884,52 @@ const opciones = {
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '12px'; // Reducido de 16px a 12px
+                                clonedFormContent.style.padding = '8px'; // Reducido aún más
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '2px solid #d1d5db'; // Reducido de 3px a 2px
+                                clonedFormContent.style.border = '1px solid #d1d5db'; // Borde mínimo
                                 clonedFormContent.style.width = '100%';
                             }
                             
                             // Ajustar fieldsets para mejor ajuste
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '12px'; // Reducido de 16px a 12px
-                                fieldset.style.marginBottom = '12px';
+                                fieldset.style.padding = '10px'; // Padding mínimo
+                                fieldset.style.marginBottom = '10px';
                                 fieldset.style.boxSizing = 'border-box';
+                            });
+                            
+                            // Ajustar todos los divs con border
+                            const borderedDivs = documentClone.querySelectorAll('.border');
+                            borderedDivs.forEach(div => {
+                                div.style.padding = '8px';
+                                div.style.boxSizing = 'border-box';
                             });
                             
                             // Ajustar grids y contenedores
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
+                                grid.style.gap = '8px'; // Reducir espacios entre elementos
                             });
                             
                             // Ajustar inputs y elementos de formulario
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
+                                input.style.fontSize = '12px'; // Reducir tamaño de fuente
+                            });
+                            
+                            // Ajustar labels
+                            const labels = documentClone.querySelectorAll('label');
+                            labels.forEach(label => {
+                                label.style.fontSize = '12px';
                             });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.width = '100%';
                             documentClone.body.style.boxSizing = 'border-box';
+                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                            
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
