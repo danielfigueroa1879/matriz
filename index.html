@@ -862,18 +862,39 @@ const opciones = {
                         logging: false,
                         onclone: (documentClone) => {
                             
-                            // --- ¡NUEVO! APLICAR BOX-SIZING AL CONTENEDOR PRINCIPAL ---
+                            // --- ¡SOLUCIÓN DE ALINEACIÓN IZQUIERDA! ---
+                            // Eliminamos todos los paddings/margins externos que puedan "empujar" el canvas.
+                            
+                            const clonedPageContainer = documentClone.getElementById('form-page-container');
+                            if (clonedPageContainer) {
+                                clonedPageContainer.style.padding = '0';
+                                clonedPageContainer.style.margin = '0';
+                                clonedPageContainer.style.boxSizing = 'border-box';
+                            }
+                            
+                            const clonedFormContainer = documentClone.getElementById('form-container');
+                            if (clonedFormContainer) {
+                                clonedFormContainer.style.padding = '0';
+                                clonedFormContainer.style.margin = '0';
+                                clonedFormContainer.style.boxSizing = 'border-box';
+                            }
+                    
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
+                                clonedFormContent.style.margin = '0';
                                 clonedFormContent.style.boxSizing = 'border-box';
                             }
-                            // --- FIN DEL NUEVO CÓDIGO ---
+                            
+                            documentClone.body.style.padding = '0';
+                            documentClone.body.style.margin = '0';
+                            // --- FIN DE LA SOLUCIÓN DE ALINEACIÓN ---
+
 
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
 
-                            // --- 1. PROCESAR INPUTS ---
+                            // --- 1. PROCESAR INPUTS (Mantenemos la solución de ancho exacto) ---
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = clonedForm.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -887,7 +908,7 @@ const opciones = {
                                         replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
                                         
-                                        // --- ¡MODIFICADO! Volvemos al ancho exacto (sin -1) ---
+                                        // Usamos el ancho exacto medido (sin el -1, ya no es necesario)
                                         replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
                                         
                                         replacementDiv.style.height = 'auto'; 
@@ -895,7 +916,7 @@ const opciones = {
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
                                         replacementDiv.style.wordBreak = 'break-word';
                                         replacementDiv.style.lineHeight = '1.4';
-                                        replacementDiv.style.boxSizing = 'border-box'; // Esto se mantiene
+                                        replacementDiv.style.boxSizing = 'border-box';
                                         
                                         clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
                                     } else {
@@ -904,7 +925,7 @@ const opciones = {
                                 }
                             });
                             
-                            // --- 2. PROCESAR TEXTAREAS ---
+                            // --- 2. PROCESAR TEXTAREAS (Mantenemos la solución de altura) ---
                             const textareas = form.querySelectorAll('textarea');
                             const clonedTextareas = clonedForm.querySelectorAll('textarea');
                             textareas.forEach((textarea, index) => {
@@ -914,7 +935,7 @@ const opciones = {
                                     clonedTextarea.style.height = 'auto';
                                     clonedTextarea.style.overflow = 'hidden'; 
                                     clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
-                                    clonedTextarea.style.boxSizing = 'border-box'; // --- ¡NUEVO! Consistencia
+                                    clonedTextarea.style.boxSizing = 'border-box';
                                 }
                             });
 
@@ -929,7 +950,7 @@ const opciones = {
                             const radios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = clonedForm.querySelectorAll('input[type="radio"]');
                             radios.forEach((radio, index) => {
-                                if (clonedCheckboxes[index]) clonedRadios[index].checked = radio.checked;
+                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
                             });
                         }
                     },
