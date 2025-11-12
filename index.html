@@ -864,6 +864,9 @@ const opciones = {
                         onclone: (documentClone) => {
                             
                             // --- AJUSTE PARA QUE QUEPA EN LEGAL ---
+                            const form = document.getElementById('fiscalizacionForm');
+                            const clonedForm = documentClone.getElementById('fiscalizacionForm');
+                            
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
@@ -952,6 +955,66 @@ const opciones = {
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.boxSizing = 'border-box';
+                            
+                            // --- PROCESAR VALORES DEL FORMULARIO ---
+                            if (!form || !clonedForm) return;
+
+                            // 1. PROCESAR INPUTS
+                            const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            
+                            textInputs.forEach((input, index) => {
+                                if (clonedTextInputs[index]) {
+                                    const clonedInput = clonedTextInputs[index];
+                                    const value = input.value;
+
+                                    if (value) {
+                                        const replacementDiv = documentClone.createElement('div');
+                                        replacementDiv.className = clonedInput.className; 
+                                        replacementDiv.textContent = value;
+                                        replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
+                                        replacementDiv.style.height = 'auto'; 
+                                        replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
+                                        replacementDiv.style.whiteSpace = 'pre-wrap'; 
+                                        replacementDiv.style.wordBreak = 'break-word';
+                                        replacementDiv.style.lineHeight = '1.4';
+                                        replacementDiv.style.boxSizing = 'border-box';
+                                        
+                                        clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
+                                    } else {
+                                        clonedInput.value = '';
+                                    }
+                                }
+                            });
+                            
+                            // 2. PROCESAR TEXTAREAS
+                            const textareas = form.querySelectorAll('textarea');
+                            const clonedTextareas = documentClone.querySelectorAll('textarea');
+                            textareas.forEach((textarea, index) => {
+                                if (clonedTextareas[index]) {
+                                    const clonedTextarea = clonedTextareas[index];
+                                    clonedTextarea.value = textarea.value;
+                                    clonedTextarea.style.height = 'auto';
+                                    clonedTextarea.style.overflow = 'hidden'; 
+                                    clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
+                                    clonedTextarea.style.boxSizing = 'border-box';
+                                }
+                            });
+
+                            // 3. PROCESAR CHECKBOXES
+                            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+                            const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
+                            checkboxes.forEach((checkbox, index) => {
+                                if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
+                            });
+
+                            // 4. PROCESAR RADIOS
+                            const radios = form.querySelectorAll('input[type="radio"]');
+                            const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
+                            radios.forEach((radio, index) => {
+                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
+                            });
+                           
                             // --- FIN DE LOS CAMBIOS ---
                             
                             // --- 2. PROCESAR TEXTAREAS (Sin cambios en esta lógica) ---
