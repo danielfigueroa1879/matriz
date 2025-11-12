@@ -852,43 +852,54 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [10, 6, 10, 6], // MODIFICADO: Reducido margen izq/der (antes [10, 8, 10, 8])
+                    margin: [8, 8, 8, 8], // Márgenes uniformes de 8mm
                     image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
-                        scale: 2, // Buena resolución
+                        scale: 1.5, // Reducido de 2 a 1.5 para mejor ajuste
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
+                        windowWidth: 794, // Ancho fijo que cabe bien en Legal
                         onclone: (documentClone) => {
                             
-                            // --- SOLUCIÓN DE ALINEACIÓN (Sin cambios) ---
+                            // --- SOLUCIÓN DE ALINEACIÓN Y AJUSTE DE ANCHO ---
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0';
+                                clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
+                                clonedPageContainer.style.maxWidth = '750px'; // Ancho máximo que cabe en Legal
+                                clonedPageContainer.style.width = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
+                                clonedFormContainer.style.padding = '16px'; // Padding reducido
                                 clonedFormContainer.style.boxSizing = 'border-box';
+                                clonedFormContainer.style.boxShadow = 'none';
                             }
                     
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
+                                clonedFormContent.style.padding = '12px'; // Padding interno reducido
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                // --- ¡CAMBIO AQUÍ! Letra más pequeña ---
-                                clonedFormContent.style.fontSize = '8.5px'; // MODIFICADO: Reducido de 9px a 8.5px
+                                clonedFormContent.style.border = '2px solid #d1d5db'; // Borde más delgado
                             }
+                            
+                            // Ajustar fieldsets para mejor ajuste
+                            const fieldsets = documentClone.querySelectorAll('fieldset');
+                            fieldsets.forEach(fieldset => {
+                                fieldset.style.padding = '12px';
+                                fieldset.style.marginBottom = '12px';
+                            });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
+                            documentClone.body.style.width = '100%';
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
-
-
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             if (!form || !clonedForm) return;
