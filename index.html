@@ -852,72 +852,66 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [8, 8, 8, 8], // Márgenes mínimos
+                    margin: [10, 10, 10, 10],
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.4, // Escala más reducida
+                        scale: 2,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
+                        windowWidth: 650, // Ancho controlado que cabe en Legal
                         onclone: (documentClone) => {
                             
-                            // --- MÁXIMA COMPRESIÓN Y ALINEACIÓN IZQUIERDA ---
+                            // --- AJUSTE PARA QUE QUEPA EN LEGAL ---
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0';
-                                clonedPageContainer.style.marginLeft = '0'; // Forzar izquierda
+                                clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '100%';
-                                clonedPageContainer.style.width = '100%';
-                                clonedPageContainer.style.textAlign = 'left';
+                                clonedPageContainer.style.maxWidth = '640px'; // Ancho fijo
+                                clonedPageContainer.style.width = '640px';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.marginLeft = '0'; // Forzar izquierda
-                                clonedFormContainer.style.padding = '4px';
+                                clonedFormContainer.style.padding = '10px';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
-                                clonedFormContainer.style.width = '100%';
                             }
                     
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.marginLeft = '0'; // Forzar izquierda
-                                clonedFormContent.style.padding = '4px';
+                                clonedFormContent.style.padding = '10px';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '1px solid #d1d5db';
-                                clonedFormContent.style.width = '100%';
+                                clonedFormContent.style.border = '2px solid #d1d5db';
                             }
                             
-                            // Reducir TODO el texto del documento
-                            documentClone.body.style.fontSize = '8px'; // Letra MÁS pequeña
-                            documentClone.body.style.lineHeight = '1.1';
+                            // Ajustar tamaños de fuente
+                            documentClone.body.style.fontSize = '11px';
                             
                             // Ajustar fieldsets
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '4px';
-                                fieldset.style.marginBottom = '4px';
+                                fieldset.style.padding = '10px';
+                                fieldset.style.marginBottom = '10px';
                                 fieldset.style.boxSizing = 'border-box';
                             });
                             
-                            // Ajustar legends (títulos de secciones)
+                            // Ajustar legends
                             const legends = documentClone.querySelectorAll('legend');
                             legends.forEach(legend => {
-                                legend.style.fontSize = '10px'; // Títulos reducidos
+                                legend.style.fontSize = '13px';
                                 legend.style.fontWeight = '600';
                             });
                             
-                            // Ajustar todos los divs con border
+                            // Ajustar divs con border
                             const borderedDivs = documentClone.querySelectorAll('.border');
                             borderedDivs.forEach(div => {
-                                div.style.padding = '4px';
-                                div.style.marginBottom = '4px';
+                                div.style.padding = '8px';
+                                div.style.marginBottom = '8px';
                                 div.style.boxSizing = 'border-box';
                             });
                             
@@ -925,93 +919,40 @@ const opciones = {
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '4px';
+                                grid.style.gap = '8px';
                             });
                             
-                            // Ajustar inputs y elementos de formulario
+                            // Ajustar inputs
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '7px'; // Letra MUY pequeña en inputs
-                                input.style.padding = '2px';
-                                input.style.height = 'auto';
-                                input.style.minHeight = '16px';
+                                input.style.fontSize = '10px';
+                                input.style.padding = '4px';
                             });
                             
                             // Ajustar labels
                             const labels = documentClone.querySelectorAll('label');
                             labels.forEach(label => {
-                                label.style.fontSize = '7px'; // Letra MUY pequeña en labels
-                                label.style.lineHeight = '1.1';
-                                label.style.marginBottom = '2px';
+                                label.style.fontSize = '10px';
                             });
                             
-                            // Ajustar títulos h3
+                            // Ajustar h3
                             const h3s = documentClone.querySelectorAll('h3');
                             h3s.forEach(h3 => {
-                                h3.style.fontSize = '9px';
-                                h3.style.marginBottom = '4px';
+                                h3.style.fontSize = '12px';
+                                h3.style.marginBottom = '6px';
                             });
                             
-                            // Ajustar párrafos pequeños
+                            // Ajustar textos pequeños
                             const smallTexts = documentClone.querySelectorAll('.text-xs, .text-sm');
                             smallTexts.forEach(text => {
-                                text.style.fontSize = '6px';
-                                text.style.lineHeight = '1.1';
-                            });
-                            
-                            // Ajustar divs de flex
-                            const flexDivs = documentClone.querySelectorAll('.flex');
-                            flexDivs.forEach(div => {
-                                div.style.gap = '4px';
+                                text.style.fontSize = '9px';
                             });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
-                            documentClone.body.style.marginLeft = '0'; // Forzar izquierda
-                            documentClone.body.style.width = '100%';
                             documentClone.body.style.boxSizing = 'border-box';
-                                                     
-                            // Forzar todos los elementos al margen izquierdo
-                            const allElements = documentClone.querySelectorAll('*');
-                            allElements.forEach(el => {
-                                if (el.style) {
-                                    el.style.marginLeft = el.style.marginLeft === 'auto' ? '0' : el.style.marginLeft;
-                                }
-                            });
-                            
-                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
-                            const form = document.getElementById('fiscalizacionForm');
-                            const clonedForm = documentClone.getElementById('fiscalizacionForm');
-                            if (!form || !clonedForm) return;
-
-                            // --- 1. PROCESAR INPUTS (Sin cambios en esta lógica) ---
-                            const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            
-                            textInputs.forEach((input, index) => {
-                                if (clonedTextInputs[index]) {
-                                    const clonedInput = clonedTextInputs[index];
-                                    const value = input.value;
-
-                                    if (value) {
-                                        const replacementDiv = documentClone.createElement('div');
-                                        replacementDiv.className = clonedInput.className; 
-                                        replacementDiv.textContent = value;
-                                        replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
-                                        replacementDiv.style.height = 'auto'; 
-                                        replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
-                                        replacementDiv.style.whiteSpace = 'pre-wrap'; 
-                                        replacementDiv.style.wordBreak = 'break-word';
-                                        replacementDiv.style.lineHeight = '1.4';
-                                        replacementDiv.style.boxSizing = 'border-box';
-                                        
-                                        clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
-                                    } else {
-                                        clonedInput.value = '';
-                                    }
-                                }
-                            });
+                            // --- FIN DE LOS CAMBIOS ---
                             
                             // --- 2. PROCESAR TEXTAREAS (Sin cambios en esta lógica) ---
                             const textareas = form.querySelectorAll('textarea');
