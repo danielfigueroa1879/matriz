@@ -959,7 +959,7 @@ const opciones = {
                             // --- PROCESAR VALORES DEL FORMULARIO ---
                             if (!form || !clonedForm) return;
 
-                            // 1. PROCESAR INPUTS
+                            // 1. PROCESAR INPUTS DE TEXTO
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -988,9 +988,9 @@ const opciones = {
                             });
                             
                             // 2. PROCESAR TEXTAREAS
-                            const textareas = form.querySelectorAll('textarea');
+                            const formTextareas = form.querySelectorAll('textarea');
                             const clonedTextareas = documentClone.querySelectorAll('textarea');
-                            textareas.forEach((textarea, index) => {
+                            formTextareas.forEach((textarea, index) => {
                                 if (clonedTextareas[index]) {
                                     const clonedTextarea = clonedTextareas[index];
                                     clonedTextarea.value = textarea.value;
@@ -1002,50 +1002,24 @@ const opciones = {
                             });
 
                             // 3. PROCESAR CHECKBOXES
-                            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
+                            const formCheckboxes = form.querySelectorAll('input[type="checkbox"]');
                             const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
-                            checkboxes.forEach((checkbox, index) => {
+                            formCheckboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
                             // 4. PROCESAR RADIOS
-                            const radios = form.querySelectorAll('input[type="radio"]');
+                            const formRadios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
-                            radios.forEach((radio, index) => {
-                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
-                            });              
-                            // --- FIN DE LOS CAMBIOS --
-                            const textareas = form.querySelectorAll('textarea');
-                            const clonedTextareas = documentClone.querySelectorAll('textarea');
-                            textareas.forEach((textarea, index) => {
-                                if (clonedTextareas[index]) {
-                                    const clonedTextarea = clonedTextareas[index];
-                                    clonedTextarea.value = textarea.value;
-                                    clonedTextarea.style.height = 'auto';
-                                    clonedTextarea.style.overflow = 'hidden'; 
-                                    clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
-                                    clonedTextarea.style.boxSizing = 'border-box';
-                                }
-                            });
-
-                            // --- 3. PROCESAR CHECKBOXES (Sin cambios) ---
-                            const checkboxes = form.querySelectorAll('input[type="checkbox"]');
-                            const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
-                            checkboxes.forEach((checkbox, index) => {
-                                if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
-                            });
-
-                            // --- 4. PROCESAR RADIOS (Sin cambios) ---
-                            const radios = form.querySelectorAll('input[type="radio"]');
-                            const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
-                            radios.forEach((radio, index) => {
+                            formRadios.forEach((radio, index) => {
                                 if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
                             });
+                            // --- FIN DE LOS CAMBIOS ---
                         }
                     },
                     jsPDF: {
                         unit: 'mm',
-                        format: 'a4',
+                        format: 'legal', // Mantenemos 'legal' (Oficio)
                         orientation: 'portrait',
                         compress: true
                     }
