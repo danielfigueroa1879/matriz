@@ -852,7 +852,7 @@
             setTimeout(() => {
 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [10, 10, 10, 10], // Márgenes uniformes de 10mm
+                    margin: [12, 12, 12, 12], // Márgenes más amplios
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
                         scale: 1.8, // Escala optimizada
@@ -875,7 +875,7 @@ const opciones = {
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '20px';
+                                clonedFormContainer.style.padding = '12px'; // Reducido de 20px a 12px
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                                 clonedFormContainer.style.width = '100%';
@@ -884,17 +884,17 @@ const opciones = {
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '16px';
+                                clonedFormContent.style.padding = '12px'; // Reducido de 16px a 12px
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '3px solid #d1d5db';
+                                clonedFormContent.style.border = '2px solid #d1d5db'; // Reducido de 3px a 2px
                                 clonedFormContent.style.width = '100%';
                             }
                             
                             // Ajustar fieldsets para mejor ajuste
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '16px';
-                                fieldset.style.marginBottom = '16px';
+                                fieldset.style.padding = '12px'; // Reducido de 16px a 12px
+                                fieldset.style.marginBottom = '12px';
                                 fieldset.style.boxSizing = 'border-box';
                             });
                             
@@ -904,10 +904,17 @@ const opciones = {
                                 grid.style.boxSizing = 'border-box';
                             });
                             
+                            // Ajustar inputs y elementos de formulario
+                            const inputs = documentClone.querySelectorAll('input, textarea, select');
+                            inputs.forEach(input => {
+                                input.style.boxSizing = 'border-box';
+                            });
+                            
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.width = '100%';
                             documentClone.body.style.boxSizing = 'border-box';
+                            // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                            
                             // --- FIN DE LOS CAMBIOS DE ALINEACIÓN Y FUENTE ---
                             const form = document.getElementById('fiscalizacionForm');
