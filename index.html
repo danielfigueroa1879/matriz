@@ -822,28 +822,44 @@
             setTimeout(() => {
                 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [2, 8, 8, 8],
+                    margin: [8, 8, 8, 8],
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.5,
+                        scale: 1.9,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 900,
-                        width: 900,
+                        windowWidth: 1100,
+                        width: 1100,
+                        x: 0,
+                        y: 0,
+                        scrollX: 0,
+                        scrollY: 0,
                         onclone: (documentClone) => {
                             
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
+                            // Forzar ancho fijo y centrado
+                            documentClone.documentElement.style.width = '1100px';
+                            documentClone.documentElement.style.margin = '0';
+                            documentClone.documentElement.style.padding = '0';
+                            
+                            documentClone.body.style.width = '1100px';
+                            documentClone.body.style.minWidth = '1100px';
+                            documentClone.body.style.maxWidth = '1100px';
+                            documentClone.body.style.margin = '0';
+                            documentClone.body.style.padding = '0';
+                            documentClone.body.style.overflow = 'visible';
+                            
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
-                                clonedPageContainer.style.padding = '0';
+                                clonedPageContainer.style.padding = '10px';
                                 clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '850px';
-                                clonedPageContainer.style.width = '100%';
+                                clonedPageContainer.style.width = '95%';
+                                clonedPageContainer.style.maxWidth = '95%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
