@@ -11,21 +11,19 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
     
     <style>
-        /* ... (Tus estilos personalizados de 'index (72).html' van aquí sin cambios) ... */
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0055C0; /* Fondo azul principal */
+            background-color: #0055C0;
         }
         
         #form-content {
-            border: 4px solid #d1d5db; /* Borde gris fijo para la caja del formulario */
+            border: 4px solid #d1d5db;
         }
         
         #results-box {
-             border: 4px solid #d1d5db; /* Borde gris fijo para la caja de resultados */
+             border: 4px solid #d1d5db;
         }
 
-        /* Oculta los spinners en inputs de tipo number */
         input[type=number]::-webkit-inner-spin-button,
         input[type=number]::-webkit-outer-spin-button {
             -webkit-appearance: none;
@@ -35,40 +33,35 @@
             -moz-appearance: textfield;
         }
 
-        /* Estilo para la leyenda del fieldset */
         legend {
             padding: 0 0.5rem;
             font-weight: 600;
-            font-size: 1.125rem; /* text-lg */
-            color: #003373; /* Azul oscuro para la leyenda */
+            font-size: 1.125rem;
+            color: #003373;
         }
         
-        /* Estilo para los bordes del fieldset */
         fieldset {
-            border: 1px solid #b3d1ff; /* Borde azul claro para secciones */
-            padding: 1.5rem; /* p-6 */
-            border-radius: 0.5rem; /* rounded-lg */
-            margin-bottom: 1.5rem; /* mb-6 */
+            border: 1px solid #b3d1ff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
         }
 
-        /* Estilos para inputs y textareas */
         .form-input-field {
             background-color: #ffffff;
-            border: 2px solid #9ca3af; /* Borde gris (más oscuro) */
-            border-radius: 0.375rem; /* rounded-md */
+            border: 2px solid #9ca3af;
+            border-radius: 0.375rem;
             padding: 0.5rem 0.75rem;
-            box-shadow: none; /* Remueve sombra por defecto */
+            box-shadow: none;
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        /* Estilos de foco para inputs */
         .form-input-field:focus {
-            border-color: #0055C0; /* Borde azul principal al enfocar */
-            box-shadow: 0 0 0 3px rgba(0, 85, 192, 0.3); /* Anillo de foco */
+            border-color: #0055C0;
+            box-shadow: 0 0 0 3px rgba(0, 85, 192, 0.3);
             outline: none;
         }
         
-        /* Estilos de foco para radios y checkboxes */
         .form-check-input {
             color: #0055C0;
         }
@@ -80,25 +73,23 @@
             box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
         }
         
-        /* Botón primario */
         .btn-primary {
-             background-color: #004aab; /* Azul un poco más oscuro */
+             background-color: #004aab;
              color: white;
              padding-top: 0.75rem;
              padding-bottom: 0.75rem;
              padding-left: 1.5rem;
              padding-right: 1.5rem;
-             border-radius: 0.375rem; /* rounded-md */
-             font-weight: 600; /* semibold */
-             font-size: 1.125rem; /* text-lg */
+             border-radius: 0.375rem;
+             font-weight: 600;
+             font-size: 1.125rem;
              transition: background-color 0.3s;
              box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
         }
         .btn-primary:hover {
-            background-color: #003373; /* Azul oscuro */
+            background-color: #003373;
         }
 
-        /* Estilos para impresión */
         @media print {
             body {
                 background-color: #ffffff;
@@ -209,7 +200,7 @@
                                 </div>
                             </div>
                             <div class="md:col-span-2">
-                                <label for="comentarios_criticidad" class="block text-sm font-medium text-gray-700">Comentarios ((lustlflcar por qué el servicio es insustituible o sustitulble por otro de similares caracteristica)</label>
+                                <label for="comentarios_criticidad" class="block text-sm font-medium text-gray-700">Comentarios (Justificar por qué el servicio es insustituible o sustituible por otro de similares características)</label>
                                 <textarea id="comentarios_criticidad" name="comentarios_criticidad" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                             </div>
                         </div>
@@ -332,7 +323,7 @@
                                     <textarea id="comentarios_rubro" name="comentarios_rubro" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700">Reiteración de delitos (últimos 12 meses) sea que afecten a la entidad misma y su patrimonio, a sus trabajadores o usuarios/client</label>
+                                    <label class="block text-sm font-medium text-gray-700">Reiteración de delitos (últimos 12 meses) sea que afecten a la entidad misma y su patrimonio, a sus trabajadores o usuarios/clientes</label>
                                     <p class="text-xs text-gray-500 mb-2">¿Con qué frecuencia ocurrieron delitos al interior de la entidad?</p>
                                     <div class="flex flex-wrap gap-x-6 gap-y-2">
                                         <div class="flex items-center">
@@ -555,7 +546,7 @@
                                             <div class="flex flex-wrap gap-x-6 gap-y-2 mt-2">
                                                 <div class="flex items-center">
                                                     <input id="frecuencia_nunca" name="frecuencia_aforo" type="radio" value="nunca" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_nunca" class="ml-2 block text-sm text-gray-900">Nunca</L>
+                                                    <label for="frecuencia_nunca" class="ml-2 block text-sm text-gray-900">Nunca</label>
                                                 </div>
                                                 <div class="flex items-center">
                                                     <input id="frecuencia_pocas" name="frecuencia_aforo" type="radio" value="pocas" class="form-check-input h-4 w-4">
@@ -684,203 +675,181 @@
                             </div>
                         </fieldset>
                 </form>
-            </div> <div id="calculateButtonContainer" class="mt-8 text-center">
-                    <button id="calculateButton" class="btn-primary w-full max-w-xs mx-auto">
-                        Terminar y Calcular Riesgo
-                    </button>
-                </div>
+            </div>
+            <div id="calculateButtonContainer" class="mt-8 text-center">
+                <button id="calculateButton" class="btn-primary w-full max-w-xs mx-auto">
+                    Terminar y Calcular Riesgo
+                </button>
             </div>
         </div>
+    </div>
 
-        <div id="results-container" class="hidden max-w-md mx-auto p-4 sm:p-8 text-center mt-8 sm:mt-16">
-            <div id="results-box" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg w-full">
-                <h2 class="text-xl font-bold text-gray-800 text-center">Resultado de la Fiscalización</h2>
-                
-                <div class="my-6 text-center">
-                    <span id="score-display-result" class="text-6xl font-bold text-blue-800">0</span>
-                    <span class="text-lg text-gray-600">puntos</span>
-                </div>
-                
-                <div id="risk-level-container-result" class="text-center p-3 rounded-md bg-gray-100">
-                    <span class="text-sm text-gray-600">Nivel de Riesgo Determinado</span>
-                    <span id="risk-level-result" class="block text-2xl font-bold text-green-600">Bajo</span>
-                </div>
-                
-                <p class="text-xs text-gray-500 mt-4 text-center">
-                    <strong>Nota:</strong> Este puntaje es una simulación. La lógica de cálculo debe ser ajustada según la Matriz de Riesgo oficial (Resolución Exenta N 1820).
-                </p>
+    <div id="results-container" class="hidden max-w-md mx-auto p-4 sm:p-8 text-center mt-8 sm:mt-16">
+        <div id="results-box" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg w-full">
+            <h2 class="text-xl font-bold text-gray-800 text-center">Resultado de la Fiscalización</h2>
+            
+            <div class="my-6 text-center">
+                <span id="score-display-result" class="text-6xl font-bold text-blue-800">0</span>
+                <span class="text-lg text-gray-600">puntos</span>
+            </div>
+            
+            <div id="risk-level-container-result" class="text-center p-3 rounded-md bg-gray-100">
+                <span class="text-sm text-gray-600">Nivel de Riesgo Determinado</span>
+                <span id="risk-level-result" class="block text-2xl font-bold text-green-600">Bajo</span>
+            </div>
+            
+            <p class="text-xs text-gray-500 mt-4 text-center">
+                <strong>Nota:</strong> Este puntaje es una simulación. La lógica de cálculo debe ser ajustada según la Matriz de Riesgo oficial (Resolución Exenta N 1820).
+            </p>
 
-                <div id="downloadButtonContainer" class="mt-8 text-center">
-                    <button id="downloadPdfButton" class="btn-primary w-full max-w-xs mx-auto">
-                        Descargar PDF
-                    </button>
+            <div id="downloadButtonContainer" class="mt-8 text-center">
+                <button id="downloadPdfButton" class="btn-primary w-full max-w-xs mx-auto">
+                    Descargar PDF
+                </button>
+            </div>
+            
+            <div id="loader" class="hidden mt-8 text-center">
+                <div class="flex justify-center items-center gap-2">
+                    <svg class="animate-spin h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <span class="text-blue-800 font-medium">Generando PDF, por favor espera...</span>
                 </div>
-                
-                <div id="loader" class="hidden mt-8 text-center">
-                    <div class="flex justify-center items-center gap-2">
-                        <svg class="animate-spin h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                        </svg>
-                        <span class="text-blue-800 font-medium">Generando PDF, por favor espera...</span>
-                    </div>
-                </div>
+            </div>
 
-                <div class="mt-6 text-center">
-                     <button id="backButton" class="text-sm text-gray-700 hover:text-black hover:underline">
-                        &larr; Volver y editar formulario
-                    </button>
-                </div>
+            <div class="mt-6 text-center">
+                <button id="backButton" class="text-sm text-gray-700 hover:text-black hover:underline">
+                    &larr; Volver y editar formulario
+                </button>
             </div>
         </div>
     </div>
 
     <script>
-        // document.addEventListener('DOMContentLoaded', () => {
-            const formPage = document.getElementById('form-page-container');
-            const resultsPage = document.getElementById('results-container');
-            const calculateBtn = document.getElementById('calculateButton');
-            const backBtn = document.getElementById('backButton');
-            
-            const scoreDisplay = document.getElementById('score-display-result');
-            const riskLevelDisplay = document.getElementById('risk-level-result');
-            const riskLevelContainer = document.getElementById('risk-level-container-result');
+        const formPage = document.getElementById('form-page-container');
+        const resultsPage = document.getElementById('results-container');
+        const calculateBtn = document.getElementById('calculateButton');
+        const backBtn = document.getElementById('backButton');
+        
+        const scoreDisplay = document.getElementById('score-display-result');
+        const riskLevelDisplay = document.getElementById('risk-level-result');
+        const riskLevelContainer = document.getElementById('risk-level-container-result');
 
-            function calculateScore() {
-                // ... (lógica de cálculo de puntaje original) ...
-                let score = 0;
-                if (document.querySelector('input[name="servicio_esencial"]:checked')?.value === 'si') score += 10;
-                if (document.querySelector('input[name="sector_estrategico"]:checked')?.value === 'si') score += 10;
-                if (document.querySelector('input[name="servicio_unico"]:checked')?.value === 'si') score += 5;
-                const delitos = document.querySelector('input[name="reiteracion_delitos"]:checked')?.value;
-                if (delitos === 'muy_frecuentes') score += 20;
-                else if (delitos === 'algo_frecuentes') score += 10;
-                else if (delitos === 'poco_frecuentes') score += 5;
-                if (document.querySelector('input[name="bienes_peligrosos"]:checked')?.value === 'si') score += 15;
-                if (document.querySelector('input[name="bienes_transportables"]:checked')?.value === 'si') score += 5;
-                if (document.querySelector('input[name="bienes_valor"]:checked')?.value === 'si') score += 10;
-                const efectivo = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
-                if (efectivo === '1') score += 20;
-                else if (efectivo === '2') score += 15;
-                else if (efectivo === '3') score += 10;
-                else if (efectivo === '4') score += 5;
-                const aforo = document.querySelector('input[name="frecuencia_aforo"]:checked')?.value;
-                if (aforo === 'permanentemente') score += 10;
-                else if (aforo === 'frecuentemente') score += 5;
-                if (document.querySelector('input[name="escape_autopista"]:checked')?.value === 'si') score += 5;
-                if (document.querySelector('input[name="escape_calles"]:checked')?.value === 'si') score += 5;
-                if (document.querySelector('input[name="escape_zonas"]:checked')?.value === 'si') score += 10;
-                scoreDisplay.textContent = score;
-                let level = 'Bajo';
-                let levelColor = 'text-green-600';
-                let bgColor = 'bg-green-100';
-                if (score > 80) {
-                    level = 'Alto';
-                    levelColor = 'text-red-600';
-                    bgColor = 'bg-red-100';
-                } else if (score > 40) {
-                    level = 'Medio';
-                    levelColor = 'text-yellow-600';
-                    bgColor = 'bg-yellow-100';
-                }
-                riskLevelDisplay.textContent = level;
-                riskLevelDisplay.className = 'block text-2xl font-bold ' + levelColor;
-                riskLevelContainer.className = 'text-center p-3 rounded-md ' + bgColor;
+        function calculateScore() {
+            let score = 0;
+            if (document.querySelector('input[name="servicio_esencial"]:checked')?.value === 'si') score += 10;
+            if (document.querySelector('input[name="sector_estrategico"]:checked')?.value === 'si') score += 10;
+            if (document.querySelector('input[name="servicio_unico"]:checked')?.value === 'si') score += 5;
+            const delitos = document.querySelector('input[name="reiteracion_delitos"]:checked')?.value;
+            if (delitos === 'muy_frecuentes') score += 20;
+            else if (delitos === 'algo_frecuentes') score += 10;
+            else if (delitos === 'poco_frecuentes') score += 5;
+            if (document.querySelector('input[name="bienes_peligrosos"]:checked')?.value === 'si') score += 15;
+            if (document.querySelector('input[name="bienes_transportables"]:checked')?.value === 'si') score += 5;
+            if (document.querySelector('input[name="bienes_valor"]:checked')?.value === 'si') score += 10;
+            const efectivo = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
+            if (efectivo === '1') score += 20;
+            else if (efectivo === '2') score += 15;
+            else if (efectivo === '3') score += 10;
+            else if (efectivo === '4') score += 5;
+            const aforo = document.querySelector('input[name="frecuencia_aforo"]:checked')?.value;
+            if (aforo === 'permanentemente') score += 10;
+            else if (aforo === 'frecuentemente') score += 5;
+            if (document.querySelector('input[name="escape_autopista"]:checked')?.value === 'si') score += 5;
+            if (document.querySelector('input[name="escape_calles"]:checked')?.value === 'si') score += 5;
+            if (document.querySelector('input[name="escape_zonas"]:checked')?.value === 'si') score += 10;
+            scoreDisplay.textContent = score;
+            let level = 'Bajo';
+            let levelColor = 'text-green-600';
+            let bgColor = 'bg-green-100';
+            if (score > 80) {
+                level = 'Alto';
+                levelColor = 'text-red-600';
+                bgColor = 'bg-red-100';
+            } else if (score > 40) {
+                level = 'Medio';
+                levelColor = 'text-yellow-600';
+                bgColor = 'bg-yellow-100';
             }
+            riskLevelDisplay.textContent = level;
+            riskLevelDisplay.className = 'block text-2xl font-bold ' + levelColor;
+            riskLevelContainer.className = 'text-center p-3 rounded-md ' + bgColor;
+        }
 
-            calculateBtn.addEventListener('click', () => {
-                calculateScore();
-                formPage.classList.add('hidden');
-                resultsPage.classList.remove('hidden');
-                window.scrollTo(0, 0);
-            });
+        calculateBtn.addEventListener('click', () => {
+            calculateScore();
+            formPage.classList.add('hidden');
+            resultsPage.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        });
 
-            backBtn.addEventListener('click', () => {
-                resultsPage.classList.add('hidden');
-                formPage.classList.remove('hidden');
-                window.scrollTo(0, 0);
-            });
-
-            // // });
+        backBtn.addEventListener('click', () => {
+            resultsPage.classList.add('hidden');
+            formPage.classList.remove('hidden');
+            window.scrollTo(0, 0);
+        });
     </script>
 
     <script>
-        /**
-         * Función para mostrar un indicador de carga simple.
-         * Reemplaza la lógica de 'mostrarIndicadorCarga' de pdf-optimizado.js
-         * para usar los elementos que ya existen en index (72).html.
-         */
         function mostrarCargaPDF() {
             document.getElementById('loader').classList.remove('hidden');
             document.getElementById('downloadPdfButton').classList.add('hidden');
             document.getElementById('backButton').classList.add('hidden');
         }
 
-        /**
-         * Función para ocultar el indicador de carga.
-         */
         function ocultarCargaPDF() {
             document.getElementById('loader').classList.add('hidden');
             document.getElementById('downloadPdfButton').classList.remove('hidden');
             document.getElementById('backButton').classList.remove('hidden');
         }
 
-        /**
-         * Función principal de generación de PDF, adaptada de 'pdf-optimizado.js'.
-         * Esta función usa html2pdf.js para una generación de PDF más robusta.
-         */
         function generarPDFAdaptado() {
             mostrarCargaPDF();
             
-            // Elementos de la UI
             const formPage = document.getElementById('form-page-container');
             const resultsPage = document.getElementById('results-container');
             const calculateBtnContainer = document.getElementById('calculateButtonContainer');
             
-            // Guardar posición de scroll
             const currentScrollPos = window.pageYOffset;
 
-            // Mostrar temporalmente el formulario para capturarlo
             resultsPage.classList.add('hidden');
             formPage.classList.remove('hidden');
-            calculateBtnContainer.style.display = 'none'; // Ocultar botón de calcular
+            calculateBtnContainer.style.display = 'none';
 
-            // El elemento a capturar
             const formContent = document.getElementById('form-content');
             
-            // Pequeña pausa para que el DOM se actualice
             setTimeout(() => {
-const opciones = {
+                const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [8, 12, 8, 8], // Más margen derecho
+                    margin: [8, 8, 8, 8],
                     image: { type: 'jpeg', quality: 0.95 },
                     html2canvas: {
-                        scale: 1.8, // Reducido para comprimir
+                        scale: 2,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 700, // Aumentado para capturar más ancho
+                        windowWidth: 900,
+                        width: 900,
                         onclone: (documentClone) => {
                             
-                            // --- OPTIMIZACIÓN Y AJUSTE ---
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '0';
-                                clonedPageContainer.style.margin = '0';
-                                clonedPageContainer.style.marginLeft = '20px'; // Empujar a la derecha
+                                clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.maxWidth = '100%';
+                                clonedPageContainer.style.maxWidth = '850px';
                                 clonedPageContainer.style.width = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '8px'; // Reducido
+                                clonedFormContainer.style.padding = '12px';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                             }
@@ -888,79 +857,68 @@ const opciones = {
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '8px'; // Reducido
+                                clonedFormContent.style.padding = '12px';
                                 clonedFormContent.style.boxSizing = 'border-box';
                                 clonedFormContent.style.border = '1px solid #d1d5db';
                             }
                             
-                            // Reducir tamaños de fuente
-                            documentClone.body.style.fontSize = '10px';
+                            documentClone.body.style.fontSize = '11px';
                             
-                            // Ajustar fieldsets
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '8px'; // Reducido
-                                fieldset.style.marginBottom = '8px';
+                                fieldset.style.padding = '10px';
+                                fieldset.style.marginBottom = '10px';
                                 fieldset.style.boxSizing = 'border-box';
                             });
                             
-                            // Ajustar legends
                             const legends = documentClone.querySelectorAll('legend');
                             legends.forEach(legend => {
-                                legend.style.fontSize = '11px'; // Reducido
+                                legend.style.fontSize = '12px';
                                 legend.style.fontWeight = '600';
                             });
                             
-                            // Ajustar divs con border
                             const borderedDivs = documentClone.querySelectorAll('.border');
                             borderedDivs.forEach(div => {
-                                div.style.padding = '6px'; // Reducido
-                                div.style.marginBottom = '6px';
+                                div.style.padding = '8px';
+                                div.style.marginBottom = '8px';
                                 div.style.boxSizing = 'border-box';
                             });
                             
-                            // Ajustar grids
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '6px'; // Reducido
+                                grid.style.gap = '8px';
                             });
                             
-                            // Ajustar inputs
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '9px'; // Reducido
-                                input.style.padding = '3px';
+                                input.style.fontSize = '10px';
+                                input.style.padding = '4px';
                             });
                             
-                            // Ajustar labels
                             const labels = documentClone.querySelectorAll('label');
                             labels.forEach(label => {
-                                label.style.fontSize = '9px'; // Reducido
+                                label.style.fontSize = '10px';
                             });
                             
-                            // Ajustar h3
                             const h3s = documentClone.querySelectorAll('h3');
                             h3s.forEach(h3 => {
-                                h3.style.fontSize = '10px'; // Reducido
-                                h3.style.marginBottom = '4px';
+                                h3.style.fontSize = '11px';
+                                h3.style.marginBottom = '6px';
                             });
                             
-                            // Ajustar textos pequeños
                             const smallTexts = documentClone.querySelectorAll('.text-xs, .text-sm');
                             smallTexts.forEach(text => {
-                                text.style.fontSize = '8px'; // Reducido
+                                text.style.fontSize = '9px';
                             });
                             
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.boxSizing = 'border-box';
                             
-                            // --- PROCESAR VALORES DEL FORMULARIO ---
                             if (!form || !clonedForm) return;
 
-                            // 1. PROCESAR INPUTS DE TEXTO
                             const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
                             
@@ -973,7 +931,7 @@ const opciones = {
                                         const replacementDiv = documentClone.createElement('div');
                                         replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
-                                        replacementDiv.style.width = clonedInput.getBoundingClientRect().width + 'px';
+                                        replacementDiv.style.width = '100%';
                                         replacementDiv.style.height = 'auto'; 
                                         replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
@@ -988,7 +946,6 @@ const opciones = {
                                 }
                             });
                             
-                            // 2. PROCESAR TEXTAREAS
                             const formTextareas = form.querySelectorAll('textarea');
                             const clonedTextareas = documentClone.querySelectorAll('textarea');
                             formTextareas.forEach((textarea, index) => {
@@ -1002,38 +959,33 @@ const opciones = {
                                 }
                             });
 
-                            // 3. PROCESAR CHECKBOXES
                             const formCheckboxes = form.querySelectorAll('input[type="checkbox"]');
                             const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
                             formCheckboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
-                            // 4. PROCESAR RADIOS
                             const formRadios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
                             formRadios.forEach((radio, index) => {
                                 if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
                             });
-                            // --- FIN DE LOS CAMBIOS ---
                         }
                     },
                     jsPDF: {
                         unit: 'mm',
-                        format: 'legal', // Mantenemos 'legal' (Oficio)
+                        format: 'legal',
                         orientation: 'portrait',
                         compress: true
                     }
                 };
-                // Generar el PDF
+                
                 html2pdf()
                     .from(formContent)
                     .set(opciones)
                     .save()
                     .then(() => {
-                        // Éxito
-                        console.log("PDF generado con html2pdf.js");
-                        // Restaurar la vista
+                        console.log("PDF generado correctamente");
                         calculateBtnContainer.style.display = 'block';
                         formPage.classList.add('hidden');
                         resultsPage.classList.remove('hidden');
@@ -1041,9 +993,7 @@ const opciones = {
                         ocultarCargaPDF();
                     })
                     .catch((err) => {
-                        // Error
-                        console.error("Error generando PDF con html2pdf.js:", err);
-                        // Restaurar la vista
+                        console.error("Error generando PDF:", err);
                         calculateBtnContainer.style.display = 'block';
                         formPage.classList.add('hidden');
                         resultsPage.classList.remove('hidden');
@@ -1051,17 +1001,13 @@ const opciones = {
                         ocultarCargaPDF();
                     });
 
-            }, 100); // Fin del setTimeout
+            }, 100);
         }
 
-        /**
-         * Función para cargar 'html2pdf.js' dinámicamente.
-         * Tomada de 'pdf-optimizado.js'.
-         */
         function cargarHtml2PdfYGenerar() {
             if (typeof html2pdf === 'undefined') {
                 console.log("Cargando html2pdf.js...");
-                mostrarCargaPDF(); // Muestra el loader mientras se descarga el script
+                mostrarCargaPDF();
                 const script = document.createElement('script');
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
                 script.onload = generarPDFAdaptado;
@@ -1075,12 +1021,10 @@ const opciones = {
             }
         }
 
-        // document.addEventListener('DOMContentLoaded', () => {
-            const downloadBtn = document.getElementById('downloadPdfButton');
-            if (downloadBtn) {
-                // Se reemplaza el listener original por este
-                downloadBtn.addEventListener('click', cargarHtml2PdfYGenerar);
-            };
+        const downloadBtn = document.getElementById('downloadPdfButton');
+        if (downloadBtn) {
+            downloadBtn.addEventListener('click', cargarHtml2PdfYGenerar);
+        }
     </script>
-    </body>
+</body>
 </html>
