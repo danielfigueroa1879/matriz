@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Fiscalización en Terreno</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Librería HTML2PDF para generar el PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -67,6 +69,16 @@
             padding: 0.5rem 0.75rem;
             box-shadow: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+            /* Ajustes para evitar desborde */
+            resize: vertical;
+            min-height: 42px; /* Altura mínima para consistencia */
+            line-height: 1.5;
+            overflow-wrap: break-word;
+        }
+
+        /* Ajuste específico para textareas para que se vean ordenados */
+        textarea.form-input-field {
+            height: auto;
         }
 
         .form-input-field:focus {
@@ -86,7 +98,6 @@
             box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
         }
         
-        /* Contenedor principal con ancho controlado */
         .form-main-container {
             max-width: 64rem; /* 1024px */
             margin-left: auto;
@@ -174,9 +185,10 @@
                                 <label for="unidad_policial" class="block text-sm font-medium text-gray-700">Unidad Policial (Carabineros)</label>
                                 <input type="text" id="unidad_policial" name="unidad_policial" class="form-input-field mt-1 block w-full sm:text-sm">
                             </div>
+                            <!-- CAMBIO: Textarea para Rubro -->
                             <div class="md:col-span-2">
                                 <label for="rubro_previo" class="block text-sm font-medium text-gray-700">Rubro</label>
-                                <input type="text" id="rubro_previo" name="rubro_previo" class="form-input-field mt-1 block w-full sm:text-sm">
+                                <textarea id="rubro_previo" name="rubro_previo" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                             </div>
                             <div class="md:col-span-2 border border-gray-200 rounded-md p-4">
                                 <label class="block text-base font-semibold text-gray-800">Criticidad de la función observada</label>
@@ -256,17 +268,19 @@
                                         <input type="time" id="hora_termino" name="hora_termino" class="form-input-field mt-1 block w-full sm:text-sm">
                                     </div>
                                 </div>
+                                <!-- CAMBIO: Textarea para Nombre Entidad -->
                                 <div>
                                     <label for="nombre_entidad" class="block text-sm font-medium text-gray-700">Nombre de la entidad</label>
-                                    <input type="text" id="nombre_entidad" name="nombre_entidad" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="nombre_entidad" name="nombre_entidad" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div>
                                     <label for="rut_entidad" class="block text-sm font-medium text-gray-700">RUT</label>
                                     <input type="text" id="rut_entidad" name="rut_entidad" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
+                                <!-- CAMBIO: Textarea para Dirección -->
                                 <div class="md:col-span-2">
                                     <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
-                                    <input type="text" id="direccion" name="direccion" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="direccion" name="direccion" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div>
                                     <label for="comuna" class="block text-sm font-medium text-gray-700">Comuna</label>
@@ -280,9 +294,10 @@
                                     <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
                                     <input type="text" id="region" name="region" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
+                                <!-- CAMBIO: Textarea para Nombre Representante -->
                                 <div>
                                     <label for="nombre_representante" class="block text-sm font-medium text-gray-700">Nombre del representante</label>
-                                    <input type="text" id="nombre_representante" name="nombre_representante" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="nombre_representante" name="nombre_representante" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div>
                                     <label for="cargo_representante" class="block text-sm font-medium text-gray-700">Cargo</label>
@@ -305,9 +320,10 @@
                                         </div>
                                     </div>
                                 </div>
+                                <!-- CAMBIO: Textarea para Nombre Fiscalizador -->
                                 <div>
                                     <label for="nombre_fiscalizador" class="block text-sm font-medium text-gray-700">Nombre Fiscalizador</label>
-                                    <input type="text" id="nombre_fiscalizador" name="nombre_fiscalizador" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="nombre_fiscalizador" name="nombre_fiscalizador" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div>
                                     <label for="cargo_fiscalizador" class="block text-sm font-medium text-gray-700">Cargo Fiscalizador</label>
@@ -323,13 +339,15 @@
                         <div class="border border-gray-200 rounded-md p-4 mb-6">
                             <h3 class="font-semibold text-base text-gray-800 mb-4">2. Rubro</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                                <!-- CAMBIO: Textarea para Rubro Declarado -->
                                 <div>
                                     <label for="rubro_declarado" class="block text-sm font-medium text-gray-700">Rubro principal declarado</label>
-                                    <input type="text" id="rubro_declarado" name="rubro_declarado" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="rubro_declarado" name="rubro_declarado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
+                                <!-- CAMBIO: Textarea para Rubro Observado -->
                                 <div>
                                     <label for="rubro_observado" class="block text-sm font-medium text-gray-700">Rubro principal observado</label>
-                                    <input type="text" id="rubro_observado" name="rubro_observado" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <textarea id="rubro_observado" name="rubro_observado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
                                 <div class="md:col-span-2">
                                     <label class="block text-sm font-medium text-gray-700">¿Inconsistencia?</label>
@@ -393,9 +411,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- CAMBIO: Textarea para Detalle -->
                                     <div>
                                         <label for="detalle_bienes_peligrosos" class="block text-sm font-medium text-gray-700">Detalle (Peligrosos)</label>
-                                        <input type="text" id="detalle_bienes_peligrosos" name="detalle_bienes_peligrosos" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <textarea id="detalle_bienes_peligrosos" name="detalle_bienes_peligrosos" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Bienes fácilmente transportables</label>
@@ -411,9 +430,10 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- CAMBIO: Textarea para Detalle -->
                                     <div>
                                         <label for="detalle_bienes_transportables" class="block text-sm font-medium text-gray-700">Detalle (Transportables)</label>
-                                        <input type="text" id="detalle_bienes_transportables" name="detalle_bienes_transportables" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <textarea id="detalle_bienes_transportables" name="detalle_bienes_transportables" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div>
                                         <label class="block text-sm font-medium text-gray-700">Bienes de alto valor comercial</label>
@@ -428,14 +448,16 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <!-- CAMBIO: Textarea para Detalle -->
                                     <div>
                                         <label for="detalle_bienes_valor" class="block text-sm font-medium text-gray-700">Detalle (Alto valor)</label>
-                                        <input type="text" id="detalle_bienes_valor" name="detalle_bienes_valor" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <textarea id="detalle_bienes_valor" name="detalle_bienes_valor" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <!-- CAMBIO: Textarea para Nombre Objeto 1 -->
                                         <div>
                                             <label for="objeto_1" class="block text-sm font-medium text-gray-700">Objeto 1</label>
-                                            <input type="text" id="objeto_1" name="objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
+                                            <textarea id="objeto_1" name="objeto_1" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                         </div>
                                         <div>
                                             <label for="valor_objeto_1" class="block text-sm font-medium text-gray-700">Valor estimado ($)</label>
@@ -448,12 +470,13 @@
                                     </div>
                                     <div class="md:col-span-2">
                                         <label for="comentario_objeto_1" class="block text-sm font-medium text-gray-700">Comentario (Objeto 1)</label>
-                                        <input type="text" id="comentario_objeto_1" name="comentario_objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <textarea id="comentario_objeto_1" name="comentario_objeto_1" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <!-- CAMBIO: Textarea para Nombre Objeto 2 -->
                                         <div>
                                             <label for="objeto_2" class="block text-sm font-medium text-gray-700">Objeto 2</label>
-                                            <input type="text" id="objeto_2" name="objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
+                                            <textarea id="objeto_2" name="objeto_2" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                         </div>
                                         <div>
                                             <label for="valor_objeto_2" class="block text-sm font-medium text-gray-700">Valor estimado ($)</label>
@@ -466,7 +489,7 @@
                                     </div>
                                     <div class="md:col-span-2">
                                         <label for="comentario_objeto_2" class="block text-sm font-medium text-gray-700">Comentario (Objeto 2)</label>
-                                        <input type="text" id="comentario_objeto_2" name="comentario_objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <textarea id="comentario_objeto_2" name="comentario_objeto_2" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div class="md:col-span-2">
                                         <label class="block text-sm font-medium text-gray-700">Mantención de efectivo (monto promedio diario)</label>
@@ -1053,7 +1076,7 @@
                                         
                                         // Estilos para manejar texto largo
                                         replacementDiv.style.width = '100%';
-                                        replacementDiv.style.minHeight = '60px';
+                                        replacementDiv.style.minHeight = '42px'; // Ajuste ligero
                                         replacementDiv.style.height = 'auto';
                                         replacementDiv.style.maxWidth = '100%';
                                         replacementDiv.style.overflow = 'visible';
@@ -1074,7 +1097,7 @@
                                         // Mantener textarea vacío con estilos apropiados
                                         clonedTextarea.value = '';
                                         clonedTextarea.style.fontSize = '12px';
-                                        clonedTextarea.style.minHeight = '60px';
+                                        clonedTextarea.style.minHeight = '42px';
                                         clonedTextarea.style.padding = '8px';
                                     }
                                 }
