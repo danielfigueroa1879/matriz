@@ -69,16 +69,17 @@
             padding: 0.5rem 0.75rem;
             box-shadow: none;
             transition: border-color 0.2s, box-shadow 0.2s;
-            /* Ajustes para evitar desborde */
+            /* Ajustes para evitar desborde visual en pantalla */
             resize: vertical;
-            min-height: 42px; /* Altura mínima para consistencia */
+            min-height: 42px; 
             line-height: 1.5;
-            overflow-wrap: break-word;
+            width: 100%; /* Asegura que ocupe el 100% de su contenedor */
         }
 
-        /* Ajuste específico para textareas para que se vean ordenados */
         textarea.form-input-field {
             height: auto;
+            white-space: pre-wrap; /* Respeta saltos de línea y espacios */
+            overflow-wrap: break-word; /* Rompe palabras largas */
         }
 
         .form-input-field:focus {
@@ -185,7 +186,7 @@
                                 <label for="unidad_policial" class="block text-sm font-medium text-gray-700">Unidad Policial (Carabineros)</label>
                                 <input type="text" id="unidad_policial" name="unidad_policial" class="form-input-field mt-1 block w-full sm:text-sm">
                             </div>
-                            <!-- CAMBIO: Textarea para Rubro -->
+                            <!-- TEXTAREA -->
                             <div class="md:col-span-2">
                                 <label for="rubro_previo" class="block text-sm font-medium text-gray-700">Rubro</label>
                                 <textarea id="rubro_previo" name="rubro_previo" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -268,7 +269,7 @@
                                         <input type="time" id="hora_termino" name="hora_termino" class="form-input-field mt-1 block w-full sm:text-sm">
                                     </div>
                                 </div>
-                                <!-- CAMBIO: Textarea para Nombre Entidad -->
+                                <!-- TEXTAREA -->
                                 <div>
                                     <label for="nombre_entidad" class="block text-sm font-medium text-gray-700">Nombre de la entidad</label>
                                     <textarea id="nombre_entidad" name="nombre_entidad" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -277,7 +278,7 @@
                                     <label for="rut_entidad" class="block text-sm font-medium text-gray-700">RUT</label>
                                     <input type="text" id="rut_entidad" name="rut_entidad" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <!-- CAMBIO: Textarea para Dirección -->
+                                <!-- TEXTAREA -->
                                 <div class="md:col-span-2">
                                     <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
                                     <textarea id="direccion" name="direccion" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -294,7 +295,7 @@
                                     <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
                                     <input type="text" id="region" name="region" class="form-input-field mt-1 block w-full sm:text-sm">
                                 </div>
-                                <!-- CAMBIO: Textarea para Nombre Representante -->
+                                <!-- TEXTAREA -->
                                 <div>
                                     <label for="nombre_representante" class="block text-sm font-medium text-gray-700">Nombre del representante</label>
                                     <textarea id="nombre_representante" name="nombre_representante" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -320,7 +321,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- CAMBIO: Textarea para Nombre Fiscalizador -->
+                                <!-- TEXTAREA -->
                                 <div>
                                     <label for="nombre_fiscalizador" class="block text-sm font-medium text-gray-700">Nombre Fiscalizador</label>
                                     <textarea id="nombre_fiscalizador" name="nombre_fiscalizador" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -339,12 +340,12 @@
                         <div class="border border-gray-200 rounded-md p-4 mb-6">
                             <h3 class="font-semibold text-base text-gray-800 mb-4">2. Rubro</h3>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                                <!-- CAMBIO: Textarea para Rubro Declarado -->
+                                <!-- TEXTAREA -->
                                 <div>
                                     <label for="rubro_declarado" class="block text-sm font-medium text-gray-700">Rubro principal declarado</label>
                                     <textarea id="rubro_declarado" name="rubro_declarado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                 </div>
-                                <!-- CAMBIO: Textarea para Rubro Observado -->
+                                <!-- TEXTAREA -->
                                 <div>
                                     <label for="rubro_observado" class="block text-sm font-medium text-gray-700">Rubro principal observado</label>
                                     <textarea id="rubro_observado" name="rubro_observado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -411,7 +412,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- CAMBIO: Textarea para Detalle -->
+                                    <!-- TEXTAREA -->
                                     <div>
                                         <label for="detalle_bienes_peligrosos" class="block text-sm font-medium text-gray-700">Detalle (Peligrosos)</label>
                                         <textarea id="detalle_bienes_peligrosos" name="detalle_bienes_peligrosos" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -430,7 +431,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- CAMBIO: Textarea para Detalle -->
+                                    <!-- TEXTAREA -->
                                     <div>
                                         <label for="detalle_bienes_transportables" class="block text-sm font-medium text-gray-700">Detalle (Transportables)</label>
                                         <textarea id="detalle_bienes_transportables" name="detalle_bienes_transportables" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -448,13 +449,13 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <!-- CAMBIO: Textarea para Detalle -->
+                                    <!-- TEXTAREA -->
                                     <div>
                                         <label for="detalle_bienes_valor" class="block text-sm font-medium text-gray-700">Detalle (Alto valor)</label>
                                         <textarea id="detalle_bienes_valor" name="detalle_bienes_valor" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <!-- CAMBIO: Textarea para Nombre Objeto 1 -->
+                                        <!-- TEXTAREA -->
                                         <div>
                                             <label for="objeto_1" class="block text-sm font-medium text-gray-700">Objeto 1</label>
                                             <textarea id="objeto_1" name="objeto_1" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -473,7 +474,7 @@
                                         <textarea id="comentario_objeto_1" name="comentario_objeto_1" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
                                     </div>
                                     <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <!-- CAMBIO: Textarea para Nombre Objeto 2 -->
+                                        <!-- TEXTAREA -->
                                         <div>
                                             <label for="objeto_2" class="block text-sm font-medium text-gray-700">Objeto 2</label>
                                             <textarea id="objeto_2" name="objeto_2" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
@@ -890,215 +891,71 @@
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
-                            // Forzar ancho fijo y centrado optimizado para papel legal
                             documentClone.documentElement.style.width = '850px';
-                            documentClone.documentElement.style.margin = '0';
-                            documentClone.documentElement.style.padding = '0';
-                            
                             documentClone.body.style.width = '850px';
                             documentClone.body.style.minWidth = '850px';
                             documentClone.body.style.maxWidth = '850px';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.padding = '0';
-                            documentClone.body.style.overflow = 'visible';
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
                                 clonedPageContainer.style.padding = '10px';
-                                clonedPageContainer.style.margin = '0 auto';
-                                clonedPageContainer.style.boxSizing = 'border-box';
                                 clonedPageContainer.style.width = '100%';
                                 clonedPageContainer.style.maxWidth = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
-                                clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '15px';
-                                clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
+                                clonedFormContainer.style.padding = '15px';
                             }
                     
-                            const clonedFormContent = documentClone.getElementById('form-content');
-                            if (clonedFormContent) {
-                                clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '15px';
-                                clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '1px solid #4b5563';
-                            }
-                            
-                            // Tamaño base más grande para mejor legibilidad
-                            documentClone.body.style.fontSize = '13px';
-                            documentClone.body.style.lineHeight = '1.5';
-                            
-                            // Títulos principales
-                            const h1s = documentClone.querySelectorAll('h1');
-                            h1s.forEach(h1 => {
-                                h1.style.fontSize = '18px';
-                                h1.style.fontWeight = 'bold';
-                                h1.style.marginBottom = '8px';
-                                h1.style.lineHeight = '1.3';
-                            });
-                            
-                            const fieldsets = documentClone.querySelectorAll('fieldset');
-                            fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '12px';
-                                fieldset.style.marginBottom = '12px';
-                                fieldset.style.boxSizing = 'border-box';
-                                fieldset.style.border = '1px solid #6b7280';
-                                fieldset.style.pageBreakInside = 'auto';
-                            });
-                            
-                            const legends = documentClone.querySelectorAll('legend');
-                            legends.forEach(legend => {
-                                legend.style.fontSize = '15px';
-                                legend.style.fontWeight = '700';
-                                legend.style.color = '#1f2937';
-                                legend.style.padding = '0 8px';
-                            });
-                            
-                            const borderedDivs = documentClone.querySelectorAll('.border');
-                            borderedDivs.forEach(div => {
-                                div.style.padding = '10px';
-                                div.style.marginBottom = '10px';
-                                div.style.boxSizing = 'border-box';
-                            });
-                            
-                            const grids = documentClone.querySelectorAll('.grid');
-                            grids.forEach(grid => {
-                                grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '10px';
-                            });
-                            
-                            const inputs = documentClone.querySelectorAll('input, textarea, select');
-                            inputs.forEach(input => {
-                                input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '12px';
-                                input.style.padding = '5px';
-                                input.style.border = '1px solid #6b7280';
-                            });
-                            
-                            const labels = documentClone.querySelectorAll('label');
-                            labels.forEach(label => {
-                                label.style.fontSize = '12px';
-                                label.style.fontWeight = '500';
-                                label.style.color = '#374151';
-                                label.style.display = 'block';
-                                label.style.marginBottom = '2px';
-                            });
-                            
-                            const h3s = documentClone.querySelectorAll('h3');
-                            h3s.forEach(h3 => {
-                                h3.style.fontSize = '14px';
-                                h3.style.fontWeight = '600';
-                                h3.style.marginBottom = '6px';
-                                h3.style.color = '#1f2937';
-                            });
-                            
-                            const h4s = documentClone.querySelectorAll('h4');
-                            h4s.forEach(h4 => {
-                                h4.style.fontSize = '13px';
-                                h4.style.fontWeight = '600';
-                                h4.style.marginBottom = '4px';
-                            });
-                            
-                            // Textos pequeños con tamaño más legible
-                            const smallTexts = documentClone.querySelectorAll('.text-xs');
-                            smallTexts.forEach(text => {
-                                text.style.fontSize = '10px';
-                                text.style.color = '#6b7280';
-                            });
-                            
-                            const normalSmallTexts = documentClone.querySelectorAll('.text-sm');
-                            normalSmallTexts.forEach(text => {
-                                text.style.fontSize = '11px';
-                            });
-                            
-                            documentClone.body.style.padding = '0';
-                            documentClone.body.style.margin = '0';
-                            documentClone.body.style.boxSizing = 'border-box';
-                            
                             if (!form || !clonedForm) return;
 
-                            const textInputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-                            const clonedTextInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            const inputsAndTextareas = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
+                            const clonedInputsAndTextareas = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
                             
-                            textInputs.forEach((input, index) => {
-                                if (clonedTextInputs[index]) {
-                                    const clonedInput = clonedTextInputs[index];
-                                    const value = input.value;
+                            inputsAndTextareas.forEach((element, index) => {
+                                if (clonedInputsAndTextareas[index]) {
+                                    const clonedElement = clonedInputsAndTextareas[index];
+                                    const value = element.value;
 
                                     if (value) {
                                         const replacementDiv = documentClone.createElement('div');
-                                        replacementDiv.className = clonedInput.className; 
                                         replacementDiv.textContent = value;
                                         
-                                        // Estilos mejorados para evitar desbordamiento
-                                        replacementDiv.style.width = '100%';
-                                        replacementDiv.style.minHeight = '28px';
-                                        replacementDiv.style.height = 'auto';
-                                        replacementDiv.style.maxWidth = '100%';
-                                        replacementDiv.style.overflow = 'visible';
-                                        replacementDiv.style.whiteSpace = 'normal'; 
-                                        replacementDiv.style.wordWrap = 'break-word';
-                                        replacementDiv.style.wordBreak = 'break-word';
-                                        replacementDiv.style.lineHeight = '1.4';
-                                        replacementDiv.style.boxSizing = 'border-box';
-                                        replacementDiv.style.fontSize = '12px';
-                                        replacementDiv.style.padding = '6px 8px';
-                                        replacementDiv.style.border = '1px solid #6b7280';
-                                        replacementDiv.style.borderRadius = '0.25rem';
-                                        replacementDiv.style.backgroundColor = '#f9fafb';
-                                        replacementDiv.style.display = 'block';
+                                        // ESTILO CRÍTICO PARA QUE NO SE PIERDA TEXTO
+                                        replacementDiv.style.cssText = `
+                                            width: 100%;
+                                            min-height: 24px;
+                                            height: auto;
+                                            max-width: 100%;
+                                            overflow: visible; 
+                                            overflow-wrap: break-word !important;
+                                            word-wrap: break-word !important;
+                                            word-break: break-word !important;
+                                            white-space: pre-wrap !important;
+                                            font-size: 11px;
+                                            line-height: 1.4;
+                                            padding: 6px;
+                                            border: 1px solid #6b7280;
+                                            border-radius: 4px;
+                                            background-color: #f9fafb;
+                                            display: block;
+                                            box-sizing: border-box;
+                                            font-family: 'Inter', sans-serif;
+                                            color: #000;
+                                            text-align: left;
+                                        `;
                                         
-                                        clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
+                                        clonedElement.parentNode.replaceChild(replacementDiv, clonedElement);
                                     } else {
-                                        // Para campos vacíos, mantener el input pero con estilos apropiados
-                                        clonedInput.value = '';
-                                        clonedInput.style.fontSize = '12px';
-                                        clonedInput.style.padding = '6px 8px';
-                                    }
-                                }
-                            });
-                            
-                            const formTextareas = form.querySelectorAll('textarea');
-                            const clonedTextareas = documentClone.querySelectorAll('textarea');
-                            formTextareas.forEach((textarea, index) => {
-                                if (clonedTextareas[index]) {
-                                    const clonedTextarea = clonedTextareas[index];
-                                    const value = textarea.value;
-                                    
-                                    if (value) {
-                                        // Crear un div en lugar del textarea para mejor control
-                                        const replacementDiv = documentClone.createElement('div');
-                                        replacementDiv.className = clonedTextarea.className;
-                                        replacementDiv.textContent = value;
-                                        
-                                        // Estilos para manejar texto largo
-                                        replacementDiv.style.width = '100%';
-                                        replacementDiv.style.minHeight = '42px'; // Ajuste ligero
-                                        replacementDiv.style.height = 'auto';
-                                        replacementDiv.style.maxWidth = '100%';
-                                        replacementDiv.style.overflow = 'visible';
-                                        replacementDiv.style.whiteSpace = 'pre-wrap';
-                                        replacementDiv.style.wordWrap = 'break-word';
-                                        replacementDiv.style.wordBreak = 'break-word';
-                                        replacementDiv.style.lineHeight = '1.5';
-                                        replacementDiv.style.fontSize = '12px';
-                                        replacementDiv.style.padding = '8px';
-                                        replacementDiv.style.border = '1px solid #6b7280';
-                                        replacementDiv.style.borderRadius = '0.25rem';
-                                        replacementDiv.style.backgroundColor = '#f9fafb';
-                                        replacementDiv.style.boxSizing = 'border-box';
-                                        replacementDiv.style.display = 'block';
-                                        
-                                        clonedTextarea.parentNode.replaceChild(replacementDiv, clonedTextarea);
-                                    } else {
-                                        // Mantener textarea vacío con estilos apropiados
-                                        clonedTextarea.value = '';
-                                        clonedTextarea.style.fontSize = '12px';
-                                        clonedTextarea.style.minHeight = '42px';
-                                        clonedTextarea.style.padding = '8px';
+                                        // Mantener vacío
+                                        clonedElement.value = '';
+                                        clonedElement.style.border = '1px solid #6b7280';
+                                        clonedElement.style.padding = '6px';
+                                        clonedElement.style.fontSize = '11px';
                                     }
                                 }
                             });
@@ -1129,7 +986,6 @@
                     .set(opciones)
                     .save()
                     .then(() => {
-                        console.log("PDF generado correctamente");
                         calculateBtnContainer.style.display = 'block';
                         formPage.classList.add('hidden');
                         resultsPage.classList.remove('hidden');
@@ -1150,14 +1006,13 @@
 
         function cargarHtml2PdfYGenerar() {
             if (typeof html2pdf === 'undefined') {
-                console.log("Cargando html2pdf.js...");
                 mostrarCargaPDF();
                 const script = document.createElement('script');
                 script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
                 script.onload = generarPDFAdaptado;
                 script.onerror = function() {
                     ocultarCargaPDF();
-                    alert('Error: No se pudo cargar la biblioteca PDF. Revise su conexión.');
+                    alert('Error: No se pudo cargar la biblioteca PDF.');
                 };
                 document.head.appendChild(script);
             } else {
@@ -1171,4 +1026,3 @@
         }
     </script>
 </body>
-</html>
