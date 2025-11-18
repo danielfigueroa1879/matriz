@@ -822,16 +822,16 @@
             setTimeout(() => {
                 const opciones = {
                     filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [8, 8, 8, 8],
-                    image: { type: 'jpeg', quality: 0.95 },
+                    margin: [10, 10, 10, 10],
+                    image: { type: 'jpeg', quality: 0.98 },
                     html2canvas: {
-                        scale: 2.8,
+                        scale: 2,
                         useCORS: true,
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 1100,
-                        width: 1100,
+                        windowWidth: 850,
+                        width: 850,
                         x: 0,
                         y: 0,
                         scrollX: 0,
@@ -841,31 +841,31 @@
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
-                            // Forzar ancho fijo y centrado
-                            documentClone.documentElement.style.width = '1100px';
+                            // Forzar ancho fijo y centrado optimizado para papel legal
+                            documentClone.documentElement.style.width = '850px';
                             documentClone.documentElement.style.margin = '0';
                             documentClone.documentElement.style.padding = '0';
                             
-                            documentClone.body.style.width = '1100px';
-                            documentClone.body.style.minWidth = '1100px';
-                            documentClone.body.style.maxWidth = '1100px';
+                            documentClone.body.style.width = '850px';
+                            documentClone.body.style.minWidth = '850px';
+                            documentClone.body.style.maxWidth = '850px';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.padding = '0';
                             documentClone.body.style.overflow = 'visible';
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
-                                clonedPageContainer.style.padding = '10px';
+                                clonedPageContainer.style.padding = '15px';
                                 clonedPageContainer.style.margin = '0 auto';
                                 clonedPageContainer.style.boxSizing = 'border-box';
-                                clonedPageContainer.style.width = '95%';
-                                clonedPageContainer.style.maxWidth = '95%';
+                                clonedPageContainer.style.width = '100%';
+                                clonedPageContainer.style.maxWidth = '100%';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.margin = '0';
-                                clonedFormContainer.style.padding = '12px';
+                                clonedFormContainer.style.padding = '20px';
                                 clonedFormContainer.style.boxSizing = 'border-box';
                                 clonedFormContainer.style.boxShadow = 'none';
                             }
@@ -873,60 +873,91 @@
                             const clonedFormContent = documentClone.getElementById('form-content');
                             if (clonedFormContent) {
                                 clonedFormContent.style.margin = '0';
-                                clonedFormContent.style.padding = '12px';
+                                clonedFormContent.style.padding = '20px';
                                 clonedFormContent.style.boxSizing = 'border-box';
-                                clonedFormContent.style.border = '1px solid #d1d5db';
+                                clonedFormContent.style.border = '2px solid #4b5563';
                             }
                             
-                            documentClone.body.style.fontSize = '11px';
+                            // Tamaño base más grande para mejor legibilidad
+                            documentClone.body.style.fontSize = '14px';
+                            documentClone.body.style.lineHeight = '1.6';
+                            
+                            // Títulos principales
+                            const h1s = documentClone.querySelectorAll('h1');
+                            h1s.forEach(h1 => {
+                                h1.style.fontSize = '20px';
+                                h1.style.fontWeight = 'bold';
+                                h1.style.marginBottom = '10px';
+                            });
                             
                             const fieldsets = documentClone.querySelectorAll('fieldset');
                             fieldsets.forEach(fieldset => {
-                                fieldset.style.padding = '10px';
-                                fieldset.style.marginBottom = '10px';
+                                fieldset.style.padding = '15px';
+                                fieldset.style.marginBottom = '15px';
                                 fieldset.style.boxSizing = 'border-box';
+                                fieldset.style.border = '2px solid #6b7280';
                             });
                             
                             const legends = documentClone.querySelectorAll('legend');
                             legends.forEach(legend => {
-                                legend.style.fontSize = '12px';
-                                legend.style.fontWeight = '600';
+                                legend.style.fontSize = '16px';
+                                legend.style.fontWeight = '700';
+                                legend.style.color = '#1f2937';
                             });
                             
                             const borderedDivs = documentClone.querySelectorAll('.border');
                             borderedDivs.forEach(div => {
-                                div.style.padding = '8px';
-                                div.style.marginBottom = '8px';
+                                div.style.padding = '12px';
+                                div.style.marginBottom = '12px';
                                 div.style.boxSizing = 'border-box';
                             });
                             
                             const grids = documentClone.querySelectorAll('.grid');
                             grids.forEach(grid => {
                                 grid.style.boxSizing = 'border-box';
-                                grid.style.gap = '8px';
+                                grid.style.gap = '12px';
                             });
                             
                             const inputs = documentClone.querySelectorAll('input, textarea, select');
                             inputs.forEach(input => {
                                 input.style.boxSizing = 'border-box';
-                                input.style.fontSize = '10px';
-                                input.style.padding = '4px';
+                                input.style.fontSize = '13px';
+                                input.style.padding = '6px';
+                                input.style.border = '1px solid #6b7280';
                             });
                             
                             const labels = documentClone.querySelectorAll('label');
                             labels.forEach(label => {
-                                label.style.fontSize = '10px';
+                                label.style.fontSize = '13px';
+                                label.style.fontWeight = '500';
+                                label.style.color = '#374151';
                             });
                             
                             const h3s = documentClone.querySelectorAll('h3');
                             h3s.forEach(h3 => {
-                                h3.style.fontSize = '11px';
-                                h3.style.marginBottom = '6px';
+                                h3.style.fontSize = '15px';
+                                h3.style.fontWeight = '600';
+                                h3.style.marginBottom = '8px';
+                                h3.style.color = '#1f2937';
                             });
                             
-                            const smallTexts = documentClone.querySelectorAll('.text-xs, .text-sm');
+                            const h4s = documentClone.querySelectorAll('h4');
+                            h4s.forEach(h4 => {
+                                h4.style.fontSize = '14px';
+                                h4.style.fontWeight = '600';
+                                h4.style.marginBottom = '6px';
+                            });
+                            
+                            // Textos pequeños con tamaño más legible
+                            const smallTexts = documentClone.querySelectorAll('.text-xs');
                             smallTexts.forEach(text => {
-                                text.style.fontSize = '9px';
+                                text.style.fontSize = '11px';
+                                text.style.color = '#6b7280';
+                            });
+                            
+                            const normalSmallTexts = documentClone.querySelectorAll('.text-sm');
+                            normalSmallTexts.forEach(text => {
+                                text.style.fontSize = '12px';
                             });
                             
                             documentClone.body.style.padding = '0';
@@ -952,8 +983,12 @@
                                         replacementDiv.style.minHeight = clonedInput.offsetHeight + 'px';
                                         replacementDiv.style.whiteSpace = 'pre-wrap'; 
                                         replacementDiv.style.wordBreak = 'break-word';
-                                        replacementDiv.style.lineHeight = '1.4';
+                                        replacementDiv.style.lineHeight = '1.5';
                                         replacementDiv.style.boxSizing = 'border-box';
+                                        replacementDiv.style.fontSize = '13px';
+                                        replacementDiv.style.padding = '6px';
+                                        replacementDiv.style.border = '1px solid #6b7280';
+                                        replacementDiv.style.borderRadius = '0.375rem';
                                         
                                         clonedInput.parentNode.replaceChild(replacementDiv, clonedInput);
                                     } else {
@@ -970,6 +1005,7 @@
                                     clonedTextarea.value = textarea.value;
                                     clonedTextarea.style.height = 'auto';
                                     clonedTextarea.style.overflow = 'hidden'; 
+                                    clonedTextarea.style.fontSize = '13px';
                                     clonedTextarea.style.height = (clonedTextarea.scrollHeight + 5) + 'px'; 
                                     clonedTextarea.style.boxSizing = 'border-box';
                                 }
