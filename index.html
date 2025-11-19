@@ -913,60 +913,111 @@
                     
                             if (!form || !clonedForm) return;
 
-                            const inputsAndTextareas = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
-                            const clonedInputsAndTextareas = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
+                            // ============ SOLUCIÓN DEFINITIVA: TÉCNICA DE REEMPLAZO CON DIVs ============
+                            // Esta técnica reemplaza textareas e inputs con DIVs que se expanden automáticamente
                             
-                            inputsAndTextareas.forEach((element, index) => {
-                                if (clonedInputsAndTextareas[index]) {
-                                    const clonedElement = clonedInputsAndTextareas[index];
-                                    const value = element.value;
-
+                            // 1. PROCESAR TEXTAREAS PRIMERO (campos de comentarios largos)
+                            const textareas = form.querySelectorAll('textarea');
+                            const clonedTextareas = documentClone.querySelectorAll('textarea');
+                            
+                            textareas.forEach((textarea, index) => {
+                                if (clonedTextareas[index]) {
+                                    const clonedTextarea = clonedTextareas[index];
+                                    const value = textarea.value;
+                                    
                                     if (value) {
-                                        const replacementDiv = documentClone.createElement('div');
-                                        replacementDiv.textContent = value;
+                                        // Crear DIV con el contenido de la textarea
+                                        const contenidoDiv = documentClone.createElement('div');
+                                        contenidoDiv.textContent = value;
+                                        contenidoDiv.className = 'textarea-contenido-pdf';
                                         
-                                        // ESTILO CRÍTICO PARA QUE NO SE PIERDA TEXTO
-                                        replacementDiv.style.cssText = `
-                                            width: 100%;
-                                            min-height: 24px;
-                                            height: auto;
-                                            max-width: 100%;
-                                            overflow: visible; 
-                                            overflow-wrap: break-word !important;
-                                            word-wrap: break-word !important;
-                                            word-break: break-word !important;
-                                            white-space: pre-wrap !important;
-                                            font-size: 12px;
-                                            line-height: 1.5;
-                                            padding: 8px;
-                                            border: 1px solid #6b7280;
-                                            border-radius: 4px;
-                                            background-color: #f9fafb;
-                                            display: block;
-                                            box-sizing: border-box;
-                                            font-family: 'Inter', sans-serif;
-                                            color: #000;
-                                            text-align: justify;
-                                            hyphens: auto;
-                                        `;
+                                        // ESTILOS CRÍTICOS - IGUAL QUE EL EJEMPLO
+                                        Object.assign(contenidoDiv.style, {
+                                            minHeight: '40px',
+                                            width: '100%',
+                                            maxWidth: '100%',
+                                            fontFamily: 'Inter, sans-serif',
+                                            fontSize: '10pt',
+                                            lineHeight: '1.3',
+                                            padding: '8px',
+                                            margin: '0',
+                                            border: '1px solid #6b7280',
+                                            borderRadius: '4px',
+                                            backgroundColor: '#f9fafb',
+                                            whiteSpace: 'pre-wrap',     // CLAVE: mantiene saltos de línea
+                                            wordBreak: 'break-word',    // CLAVE: rompe palabras largas
+                                            overflowWrap: 'break-word',
+                                            overflow: 'visible',
+                                            display: 'block',
+                                            boxSizing: 'border-box',
+                                            color: '#000',
+                                            textAlign: 'justify'
+                                        });
                                         
-                                        clonedElement.parentNode.replaceChild(replacementDiv, clonedElement);
+                                        // Insertar el DIV ANTES de la textarea y ocultar la original
+                                        clonedTextarea.parentNode.insertBefore(contenidoDiv, clonedTextarea);
+                                        clonedTextarea.style.display = 'none';
                                     } else {
-                                        // Mantener vacío
-                                        clonedElement.value = '';
-                                        clonedElement.style.border = '1px solid #6b7280';
-                                        clonedElement.style.padding = '6px';
-                                        clonedElement.style.fontSize = '11px';
+                                        clonedTextarea.style.display = 'none';
                                     }
                                 }
                             });
 
+                            // 2. PROCESAR INPUTS DE TEXTO
+                            const inputs = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            const clonedInputs = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
+                            
+                            inputs.forEach((input, index) => {
+                                if (clonedInputs[index]) {
+                                    const clonedInput = clonedInputs[index];
+                                    const value = input.value;
+                                    
+                                    if (value) {
+                                        // Crear DIV con el contenido del input
+                                        const contenidoDiv = documentClone.createElement('div');
+                                        contenidoDiv.textContent = value;
+                                        contenidoDiv.className = 'input-contenido-pdf';
+                                        
+                                        // ESTILOS para inputs (similar pero con menos altura mínima)
+                                        Object.assign(contenidoDiv.style, {
+                                            minHeight: '30px',
+                                            width: '100%',
+                                            maxWidth: '100%',
+                                            fontFamily: 'Inter, sans-serif',
+                                            fontSize: '10pt',
+                                            lineHeight: '1.3',
+                                            padding: '6px 8px',
+                                            margin: '0',
+                                            border: '1px solid #6b7280',
+                                            borderRadius: '4px',
+                                            backgroundColor: '#f9fafb',
+                                            whiteSpace: 'pre-wrap',
+                                            wordBreak: 'break-word',
+                                            overflowWrap: 'break-word',
+                                            overflow: 'visible',
+                                            display: 'block',
+                                            boxSizing: 'border-box',
+                                            color: '#000',
+                                            textAlign: 'left'
+                                        });
+                                        
+                                        // Insertar el DIV ANTES del input y ocultar el original
+                                        clonedInput.parentNode.insertBefore(contenidoDiv, clonedInput);
+                                        clonedInput.style.display = 'none';
+                                    } else {
+                                        clonedInput.style.display = 'none';
+                                    }
+                                }
+                            });
+
+                            // 3. PROCESAR CHECKBOXES
                             const formCheckboxes = form.querySelectorAll('input[type="checkbox"]');
                             const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
                             formCheckboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
+                            // 4. PROCESAR RADIOS
                             const formRadios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
                             formRadios.forEach((radio, index) => {
