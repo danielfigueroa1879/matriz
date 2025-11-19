@@ -5,12 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Fiscalización en Terreno</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Librería HTML2PDF para generar el PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     
     <style>
         body {
@@ -18,48 +16,11 @@
             background-color: #0055C0;
         }
         
-        /* Limitar ancho en pantallas grandes */
-        @media screen and (min-width: 1280px) {
-            #form-page-container {
-                max-width: 1024px !important;
-            }
-        }
-        
-        @media screen and (min-width: 768px) and (max-width: 1279px) {
-            #form-page-container {
-                max-width: 896px !important;
-            }
-        }
-        
-        #form-content {
-            border: 4px solid #d1d5db;
-        }
-        
-        #results-box {
-             border: 4px solid #d1d5db;
-        }
-
-        input[type=number]::-webkit-inner-spin-button,
-        input[type=number]::-webkit-outer-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
-        }
-        input[type=number] {
-            -moz-appearance: textfield;
-        }
-
-        legend {
-            padding: 0 0.5rem;
-            font-weight: 600;
-            font-size: 1.125rem;
-            color: #003373;
-        }
-        
-        fieldset {
-            border: 1px solid #b3d1ff;
-            padding: 1.5rem;
-            border-radius: 0.5rem;
-            margin-bottom: 1.5rem;
+        /* Contenedor principal limitado para lectura, pero el PDF lo forzará a ancho completo */
+        #form-page-container {
+            width: 100%;
+            max-width: 1024px;
+            margin: 0 auto;
         }
 
         .form-input-field {
@@ -67,715 +28,481 @@
             border: 2px solid #9ca3af;
             border-radius: 0.375rem;
             padding: 0.5rem 0.75rem;
-            box-shadow: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            /* Ajustes para evitar desborde visual en pantalla */
-            resize: vertical;
-            min-height: 42px; 
-            line-height: 1.5;
-            width: 100%; /* Asegura que ocupe el 100% de su contenedor */
+            width: 100%;
+            font-size: 0.95rem;
         }
 
         textarea.form-input-field {
-            height: auto;
-            white-space: pre-wrap; /* Respeta saltos de línea y espacios */
-            overflow-wrap: break-word; /* Rompe palabras largas */
+            min-height: 60px;
+            white-space: pre-wrap;
         }
 
         .form-input-field:focus {
             border-color: #0055C0;
-            box-shadow: 0 0 0 3px rgba(0, 85, 192, 0.3);
-            outline: none;
-        }
-        
-        .form-check-input {
-            color: #0055C0;
-        }
-        
-        .form-check-input:focus {
-            --tw-ring-color: rgba(0, 85, 192, 0.3);
-            --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0 var(--tw-ring-offset-width) var(--tw-ring-offset-color);
-            --tw-ring-shadow: var(--tw-ring-inset) 0 0 0 calc(3px + var(--tw-ring-offset-width)) var(--tw-ring-color);
-            box-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow), var(--tw-shadow, 0 0 #0000);
-        }
-        
-        .form-main-container {
-            max-width: 64rem; /* 1024px */
-            margin-left: auto;
-            margin-right: auto;
-        }
-        
-        @media screen and (max-width: 1024px) {
-            .form-main-container {
-                max-width: 100%;
-            }
+            outline: 2px solid #0055C0;
         }
         
         .btn-primary {
              background-color: #004aab;
              color: white;
-             padding-top: 0.75rem;
-             padding-bottom: 0.75rem;
-             padding-left: 1.5rem;
-             padding-right: 1.5rem;
+             padding: 0.75rem 1.5rem;
              border-radius: 0.375rem;
              font-weight: 600;
-             font-size: 1.125rem;
              transition: background-color 0.3s;
-             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+             width: 100%;
+             max-width: 300px;
+             display: block;
+             margin: 0 auto;
+             text-align: center;
         }
         .btn-primary:hover {
             background-color: #003373;
         }
+        
+        fieldset {
+            border: 1px solid #bfdbfe;
+            background-color: #fff;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        legend {
+            color: #003373;
+            font-weight: 700;
+            font-size: 1.1rem;
+            padding: 0 0.5rem;
+        }
 
+        /* Ocultar elementos en la impresión nativa del navegador */
         @media print {
-            body {
-                background-color: #ffffff;
-            }
-            #calculateButtonContainer, #loader, #results-container {
-                display: none;
-            }
-            #form-page-container {
-                 padding: 0;
-            }
-            #form-container {
-                box-shadow: none;
-                border: none;
-                padding: 0;
-            }
-            #form-content {
-                 border: 1px solid #9ca3af;
-                 padding: 1rem;
-            }
-            fieldset {
-                border: 1px solid #9ca3af;
-                page-break-inside: avoid;
-            }
-            input, textarea, select {
-                border: 1px solid #d1d5db !important;
-            }
+            body { background-color: #fff; }
+            .no-print, #calculateButtonContainer, #downloadButtonContainer, #results-container { display: none !important; }
         }
     </style>
 </head>
-<body class="antialiased">
+<body class="antialiased p-2 sm:p-6">
 
-    <div id="form-page-container" class="form-main-container p-4 sm:p-8">
-        <div id="form-container" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg">
+    <!-- Contenedor Principal -->
+    <div id="form-page-container">
+        <div class="bg-white p-4 sm:p-10 rounded-xl shadow-lg">
+            
             <div id="form-content">
                 <header class="text-center mb-8">
-                    <div class="flex justify-between items-center">
-                        <div></div> <div class="flex flex-col items-center">
-                        </div>
-                    </div>
-                    <h1 class="text-2xl font-bold text-gray-800 mt-4">Ley N°21.659, sobre Seguridad Privada</h1>
-                    <h1 class="text-2xl font-bold text-gray-800 mt-4">Formulario de Registro de Fiscalización en Terreno</h1>
-                    <p class="text-sm text-gray-500 mt-1">
-                        (Resolución Exenta N 1820, del Ministerio de Seguridad Pública, que Aprueba la Matriz de Riesgo en Seguridad Privada)
-                    </p>
+                    <h1 class="text-2xl font-bold text-gray-800">Ley N°21.659, sobre Seguridad Privada</h1>
+                    <h2 class="text-lg font-semibold text-gray-700 mt-2">Formulario de Registro de Fiscalización en Terreno</h2>
+                    <p class="text-sm text-gray-500 mt-1">(Resolución Exenta N 1820, del Ministerio de Seguridad Pública)</p>
                 </header>
 
                 <form id="fiscalizacionForm">
+                    <!-- Sección I -->
                     <fieldset>
                         <legend>I. Completar de manera previa y/o posterior a la visita</legend>
                         <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
                             <div>
-                                <label for="codigo_sii" class="block text-sm font-medium text-gray-700">Código SII/Tipo de entidad</label>
-                                <input type="text" id="codigo_sii" name="codigo_sii" class="form-input-field mt-1 block w-full sm:text-sm">
+                                <label class="block text-sm font-medium text-gray-700">Código SII/Tipo de entidad</label>
+                                <input type="text" id="codigo_sii" class="form-input-field mt-1">
                             </div>
                             <div>
-                                <label for="unidad_policial" class="block text-sm font-medium text-gray-700">Unidad Policial (Carabineros)</label>
-                                <input type="text" id="unidad_policial" name="unidad_policial" class="form-input-field mt-1 block w-full sm:text-sm">
+                                <label class="block text-sm font-medium text-gray-700">Unidad Policial</label>
+                                <input type="text" id="unidad_policial" class="form-input-field mt-1">
                             </div>
-                            <!-- TEXTAREA -->
                             <div class="md:col-span-2">
-                                <label for="rubro_previo" class="block text-sm font-medium text-gray-700">Rubro</label>
-                                <textarea id="rubro_previo" name="rubro_previo" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                <label class="block text-sm font-medium text-gray-700">Rubro</label>
+                                <textarea id="rubro_previo" rows="2" class="form-input-field mt-1"></textarea>
                             </div>
-                            <div class="md:col-span-2 border border-gray-200 rounded-md p-4">
-                                <label class="block text-base font-semibold text-gray-800">Criticidad de la función observada</label>
-                                <p class="text-xs text-gray-500 mb-4">(actividad laboral, económica y productiva)</p>
-                                <div class="space-y-4">
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">¿Corresponde a un servicio esencial?</label>
-                                        <p class="text-xs text-gray-500 mb-2">(funciones sociales básicas como salud, seguridad, etc.)</p>
-                                        <div class="flex gap-6">
-                                            <div class="flex items-center">
-                                                <input id="servicio_esencial_si" name="servicio_esencial" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="servicio_esencial_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="servicio_esencial_no" name="servicio_esencial" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="servicio_esencial_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
+                            
+                            <!-- Criticidad -->
+                            <div class="md:col-span-2 bg-gray-50 p-4 rounded border border-gray-200">
+                                <label class="block font-semibold text-gray-800 mb-3">Criticidad de la función observada</label>
+                                <div class="space-y-3">
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-700">¿Servicio esencial?</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="servicio_esencial" value="si"> Sí</label>
+                                            <label><input type="radio" name="servicio_esencial" value="no"> No</label>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">¿Corresponde a un sector estratégico?</label>
-                                        <div class="flex gap-6 mt-2">
-                                            <div class="flex items-center">
-                                                <input id="sector_estrategico_si" name="sector_estrategico" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="sector_estrategico_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="sector_estrategico_no" name="sector_estrategico" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="sector_estrategico_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-700">¿Sector estratégico?</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="sector_estrategico" value="si"> Sí</label>
+                                            <label><input type="radio" name="sector_estrategico" value="no"> No</label>
                                         </div>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">¿Presta servicios únicos en el territorio?</label>
-                                        <p class="text-xs text-gray-500 mb-2">(insustituibles por lejanía o accesibilidad)</p>
-                                        <div class="flex gap-6">
-                                            <div class="flex items-center">
-                                                <input id="servicio_unico_si" name="servicio_unico" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="servicio_unico_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="servicio_unico_no" name="servicio_unico" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="servicio_unico_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
+                                    <div class="flex items-center justify-between">
+                                        <span class="text-sm text-gray-700">¿Servicio único territorial?</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="servicio_unico" value="si"> Sí</label>
+                                            <label><input type="radio" name="servicio_unico" value="no"> No</label>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+
                             <div class="md:col-span-2">
-                                <label for="comentarios_criticidad" class="block text-sm font-medium text-gray-700">Comentarios (Justificar por qué el servicio es insustituible o sustituible por otro de similares características)</label>
-                                <textarea id="comentarios_criticidad" name="comentarios_criticidad" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                <label class="block text-sm font-medium text-gray-700">Comentarios (Criticidad)</label>
+                                <textarea id="comentarios_criticidad" rows="3" class="form-input-field mt-1"></textarea>
                             </div>
                         </div>
                     </fieldset>
 
+                    <!-- Sección II -->
                     <fieldset>
                         <legend>II. Completar durante la visita</legend>
                         
-                        <div class="border border-gray-200 rounded-md p-4 mb-6 mt-4">
-                            <h3 class="font-semibold text-base text-gray-800 mb-4">1. Identificación</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <!-- 1. Identificación -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">1. Identificación</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label for="codigo_visita" class="block text-sm font-medium text-gray-700">Código visita</label>
-                                    <input type="text" id="codigo_visita" name="codigo_visita" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">Código visita</label>
+                                    <input type="text" id="codigo_visita" class="form-input-field mt-1">
                                 </div>
                                 <div>
-                                    <label for="fecha" class="block text-sm font-medium text-gray-700">Fecha</label>
-                                    <input type="date" id="fecha" name="fecha" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">Fecha</label>
+                                    <input type="date" id="fecha" class="form-input-field mt-1">
                                 </div>
-                                <div class="md:col-span-2 grid grid-cols-2 gap-6">
+                                <div class="grid grid-cols-2 gap-4 md:col-span-2">
                                     <div>
-                                        <label for="hora_inicio" class="block text-sm font-medium text-gray-700">Hora Inicio</label>
-                                        <input type="time" id="hora_inicio" name="hora_inicio" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <label class="block text-sm font-medium text-gray-700">Hora Inicio</label>
+                                        <input type="time" id="hora_inicio" class="form-input-field mt-1">
                                     </div>
                                     <div>
-                                        <label for="hora_termino" class="block text-sm font-medium text-gray-700">Hora Término</label>
-                                        <input type="time" id="hora_termino" name="hora_termino" class="form-input-field mt-1 block w-full sm:text-sm">
+                                        <label class="block text-sm font-medium text-gray-700">Hora Término</label>
+                                        <input type="time" id="hora_termino" class="form-input-field mt-1">
                                     </div>
                                 </div>
-                                <!-- TEXTAREA -->
-                                <div>
-                                    <label for="nombre_entidad" class="block text-sm font-medium text-gray-700">Nombre de la entidad</label>
-                                    <textarea id="nombre_entidad" name="nombre_entidad" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                </div>
-                                <div>
-                                    <label for="rut_entidad" class="block text-sm font-medium text-gray-700">RUT</label>
-                                    <input type="text" id="rut_entidad" name="rut_entidad" class="form-input-field mt-1 block w-full sm:text-sm">
-                                </div>
-                                <!-- TEXTAREA -->
                                 <div class="md:col-span-2">
-                                    <label for="direccion" class="block text-sm font-medium text-gray-700">Dirección</label>
-                                    <textarea id="direccion" name="direccion" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Nombre Entidad</label>
+                                    <textarea id="nombre_entidad" rows="1" class="form-input-field mt-1"></textarea>
                                 </div>
                                 <div>
-                                    <label for="comuna" class="block text-sm font-medium text-gray-700">Comuna</label>
-                                    <input type="text" id="comuna" name="comuna" class="form-input-field mt-1 block w-full sm:text-sm">
-                                </div>
-                                <div>
-                                    <label for="ciudad" class="block text-sm font-medium text-gray-700">Ciudad</label>
-                                    <input type="text" id="ciudad" name="ciudad" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">RUT</label>
+                                    <input type="text" id="rut_entidad" class="form-input-field mt-1">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label for="region" class="block text-sm font-medium text-gray-700">Región</label>
-                                    <input type="text" id="region" name="region" class="form-input-field mt-1 block w-full sm:text-sm">
-                                </div>
-                                <!-- TEXTAREA -->
-                                <div>
-                                    <label for="nombre_representante" class="block text-sm font-medium text-gray-700">Nombre del representante</label>
-                                    <textarea id="nombre_representante" name="nombre_representante" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Dirección</label>
+                                    <textarea id="direccion" rows="1" class="form-input-field mt-1"></textarea>
                                 </div>
                                 <div>
-                                    <label for="cargo_representante" class="block text-sm font-medium text-gray-700">Cargo</label>
-                                    <input type="text" id="cargo_representante" name="cargo_representante" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">Comuna</label>
+                                    <input type="text" id="comuna" class="form-input-field mt-1">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Ciudad</label>
+                                    <input type="text" id="ciudad" class="form-input-field mt-1">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700">Institución fiscalizadora</label>
-                                    <div class="flex gap-6 mt-2">
-                                        <div class="flex items-center">
-                                            <input id="inst_carabineros" name="institucion" type="checkbox" value="carabineros" class="form-check-input h-4 w-4 rounded">
-                                            <label for="inst_carabineros" class="ml-2 block text-sm text-gray-900">Carabineros</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="inst_dgac" name="institucion" type="checkbox" value="dgac" class="form-check-input h-4 w-4 rounded">
-                                            <label for="inst_dgac" class="ml-2 block text-sm text-gray-900">DGAC</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="inst_directemar" name="institucion" type="checkbox" value="directemar" class="form-check-input h-4 w-4 rounded">
-                                            <label for="inst_directemar" class="ml-2 block text-sm text-gray-900">DIRECTEMAR</label>
-                                        </div>
+                                    <label class="block text-sm font-medium text-gray-700">Región</label>
+                                    <input type="text" id="region" class="form-input-field mt-1">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Representante</label>
+                                    <textarea id="nombre_representante" rows="1" class="form-input-field mt-1"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Cargo</label>
+                                    <input type="text" id="cargo_representante" class="form-input-field mt-1">
+                                </div>
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Institución Fiscalizadora</label>
+                                    <div class="flex gap-4">
+                                        <label><input type="checkbox" id="inst_carabineros" value="carabineros"> Carabineros</label>
+                                        <label><input type="checkbox" id="inst_dgac" value="dgac"> DGAC</label>
+                                        <label><input type="checkbox" id="inst_directemar" value="directemar"> DIRECTEMAR</label>
                                     </div>
                                 </div>
-                                <!-- TEXTAREA -->
                                 <div>
-                                    <label for="nombre_fiscalizador" class="block text-sm font-medium text-gray-700">Nombre Fiscalizador</label>
-                                    <textarea id="nombre_fiscalizador" name="nombre_fiscalizador" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Fiscalizador</label>
+                                    <textarea id="nombre_fiscalizador" rows="1" class="form-input-field mt-1"></textarea>
                                 </div>
                                 <div>
-                                    <label for="cargo_fiscalizador" class="block text-sm font-medium text-gray-700">Cargo Fiscalizador</label>
-                                    <input type="text" id="cargo_fiscalizador" name="cargo_fiscalizador" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">Cargo Fiscalizador</label>
+                                    <input type="text" id="cargo_fiscalizador" class="form-input-field mt-1">
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label for="rut_fiscalizador" class="block text-sm font-medium text-gray-700">RUT o Código Funcionario Fiscalizador</label>
-                                    <input type="text" id="rut_fiscalizador" name="rut_fiscalizador" class="form-input-field mt-1 block w-full sm:text-sm">
+                                    <label class="block text-sm font-medium text-gray-700">RUT/Código Fiscalizador</label>
+                                    <input type="text" id="rut_fiscalizador" class="form-input-field mt-1">
                                 </div>
                             </div>
                         </div>
 
-                        <div class="border border-gray-200 rounded-md p-4 mb-6">
-                            <h3 class="font-semibold text-base text-gray-800 mb-4">2. Rubro</h3>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                                <!-- TEXTAREA -->
+                        <!-- 2. Rubro -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">2. Rubro</h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label for="rubro_declarado" class="block text-sm font-medium text-gray-700">Rubro principal declarado</label>
-                                    <textarea id="rubro_declarado" name="rubro_declarado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Rubro Declarado</label>
+                                    <textarea id="rubro_declarado" rows="2" class="form-input-field mt-1"></textarea>
                                 </div>
-                                <!-- TEXTAREA -->
                                 <div>
-                                    <label for="rubro_observado" class="block text-sm font-medium text-gray-700">Rubro principal observado</label>
-                                    <textarea id="rubro_observado" name="rubro_observado" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Rubro Observado</label>
+                                    <textarea id="rubro_observado" rows="2" class="form-input-field mt-1"></textarea>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700">¿Inconsistencia?</label>
-                                    <div class="flex gap-6 mt-2">
-                                        <div class="flex items-center">
-                                            <input id="inconsistencia_si" name="inconsistencia" type="radio" value="si" class="form-check-input h-4 w-4">
-                                            <label for="inconsistencia_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="inconsistencia_no" name="inconsistencia" type="radio" value="no" class="form-check-input h-4 w-4">
-                                            <label for="inconsistencia_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                        </div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">¿Inconsistencia?</label>
+                                    <div class="space-x-4">
+                                        <label><input type="radio" name="inconsistencia" value="si"> Sí</label>
+                                        <label><input type="radio" name="inconsistencia" value="no"> No</label>
                                     </div>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label for="comentarios_rubro" class="block text-sm font-medium text-gray-700">Comentarios (en caso de más de un rubro, inconsistencias y otros pertinente en relación al rubro)</label>
-                                    <textarea id="comentarios_rubro" name="comentarios_rubro" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Comentarios Rubro</label>
+                                    <textarea id="comentarios_rubro" rows="3" class="form-input-field mt-1"></textarea>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label class="block text-sm font-medium text-gray-700">Reiteración de delitos (últimos 12 meses) sea que afecten a la entidad misma y su patrimonio, a sus trabajadores o usuarios/clientes</label>
-                                    <p class="text-xs text-gray-500 mb-2">¿Con qué frecuencia ocurrieron delitos al interior de la entidad?</p>
-                                    <div class="flex flex-wrap gap-x-6 gap-y-2">
-                                        <div class="flex items-center">
-                                            <input id="delitos_muy_frecuentes" name="reiteracion_delitos" type="radio" value="muy_frecuentes" class="form-check-input h-4 w-4">
-                                            <label for="delitos_muy_frecuentes" class="ml-2 block text-sm text-gray-900">Muy frecuentes</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="delitos_algo_frecuentes" name="reiteracion_delitos" type="radio" value="algo_frecuentes" class="form-check-input h-4 w-4">
-                                            <label for="delitos_algo_frecuentes" class="ml-2 block text-sm text-gray-900">Algo frecuentes</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="delitos_poco_frecuentes" name="reiteracion_delitos" type="radio" value="poco_frecuentes" class="form-check-input h-4 w-4">
-                                            <label for="delitos_poco_frecuentes" class="ml-2 block text-sm text-gray-900">Poco frecuentes</label>
-                                        </div>
-                                        <div class="flex items-center">
-                                            <input id="delitos_nada_frecuentes" name="reiteracion_delitos" type="radio" value="nada_frecuentes" class="form-check-input h-4 w-4">
-                                            <label for="delitos_nada_frecuentes" class="ml-2 block text-sm text-gray-900">Nada frecuentes</label>
-                                        </div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Reiteración de delitos (12 meses)</label>
+                                    <div class="flex flex-wrap gap-4">
+                                        <label><input type="radio" name="reiteracion_delitos" value="muy_frecuentes"> Muy frecuentes</label>
+                                        <label><input type="radio" name="reiteracion_delitos" value="algo_frecuentes"> Algo frecuentes</label>
+                                        <label><input type="radio" name="reiteracion_delitos" value="poco_frecuentes"> Poco frecuentes</label>
+                                        <label><input type="radio" name="reiteracion_delitos" value="nada_frecuentes"> Nada frecuentes</label>
                                     </div>
                                 </div>
                                 <div class="md:col-span-2">
-                                    <label for="comentarios_delitos" class="block text-sm font-medium text-gray-700">Comentarios (Delitos)</label>
-                                    <textarea id="comentarios_delitos" name="comentarios_delitos" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <label class="block text-sm font-medium text-gray-700">Comentarios Delitos</label>
+                                    <textarea id="comentarios_delitos" rows="3" class="form-input-field mt-1"></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="border border-gray-200 rounded-md p-4 mb-6">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4">3. Valoración de bienes</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                        <!-- 3. Valoración de Bienes -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">3. Valoración de Bienes</h3>
+                            <div class="space-y-6">
+                                <!-- Peligrosos -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Bienes o productos peligrosos</label>
-                                        <p class="text-xs text-gray-500 mb-2">(armas, sustancias controladas, etc.)</p>
-                                        <div class="flex gap-6">
-                                            <div class="flex items-center">
-                                                <input id="bienes_peligrosos_si" name="bienes_peligrosos" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="bienes_peligrosos_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="bienes_peligrosos_no" name="bienes_peligrosos" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="bienes_peligrosos_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
+                                        <span class="block text-sm font-medium text-gray-700 mb-1">Bienes Peligrosos</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="bienes_peligrosos" value="si"> Sí</label>
+                                            <label><input type="radio" name="bienes_peligrosos" value="no"> No</label>
                                         </div>
                                     </div>
-                                    <!-- TEXTAREA -->
+                                    <textarea id="detalle_bienes_peligrosos" rows="2" placeholder="Detalle..." class="form-input-field"></textarea>
+                                </div>
+                                <!-- Transportables -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                                     <div>
-                                        <label for="detalle_bienes_peligrosos" class="block text-sm font-medium text-gray-700">Detalle (Peligrosos)</label>
-                                        <textarea id="detalle_bienes_peligrosos" name="detalle_bienes_peligrosos" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                        <span class="block text-sm font-medium text-gray-700 mb-1">Bienes Transportables</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="bienes_transportables" value="si"> Sí</label>
+                                            <label><input type="radio" name="bienes_transportables" value="no"> No</label>
+                                        </div>
                                     </div>
+                                    <textarea id="detalle_bienes_transportables" rows="2" placeholder="Detalle..." class="form-input-field"></textarea>
+                                </div>
+                                <!-- Valor -->
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
                                     <div>
-                                        <label class="block text-sm font-medium text-gray-700">Bienes fácilmente transportables</label>
-                                        <p class="text-xs text-gray-500 mb-2">(por sus características físicas)</p>
-                                        <div class="flex gap-6">
-                                            <div class="flex items-center">
-                                                <input id="bienes_transportables_si" name="bienes_transportables" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="bienes_transportables_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="bienes_transportables_no" name="bienes_transportables" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="bienes_transportables_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
+                                        <span class="block text-sm font-medium text-gray-700 mb-1">Alto Valor Comercial</span>
+                                        <div class="space-x-4">
+                                            <label><input type="radio" name="bienes_valor" value="si"> Sí</label>
+                                            <label><input type="radio" name="bienes_valor" value="no"> No</label>
                                         </div>
                                     </div>
-                                    <!-- TEXTAREA -->
-                                    <div>
-                                        <label for="detalle_bienes_transportables" class="block text-sm font-medium text-gray-700">Detalle (Transportables)</label>
-                                        <textarea id="detalle_bienes_transportables" name="detalle_bienes_transportables" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                    <textarea id="detalle_bienes_valor" rows="2" placeholder="Detalle..." class="form-input-field"></textarea>
+                                </div>
+
+                                <!-- Objetos -->
+                                <div class="border-t border-dashed pt-4">
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                        <div class="md:col-span-3"><label class="block text-sm font-medium text-gray-700">Objeto 1</label><textarea id="objeto_1" rows="1" class="form-input-field"></textarea></div>
+                                        <div><label class="block text-sm font-medium text-gray-700">Valor ($)</label><input type="number" id="valor_objeto_1" class="form-input-field"></div>
+                                        <div><label class="block text-sm font-medium text-gray-700">Cantidad</label><input type="number" id="cantidad_objeto_1" class="form-input-field"></div>
+                                        <div class="md:col-span-3"><textarea id="comentario_objeto_1" rows="2" placeholder="Comentarios Objeto 1" class="form-input-field"></textarea></div>
                                     </div>
-                                    <div>
-                                        <label class="block text-sm font-medium text-gray-700">Bienes de alto valor comercial</label>
-                                        <div class="flex gap-6 mt-2">
-                                            <div class="flex items-center">
-                                                <input id="bienes_valor_si" name="bienes_valor" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                <label for="bienes_valor_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="bienes_valor_no" name="bienes_valor" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                <label for="bienes_valor_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                            </div>
-                                        </div>
+                                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                                        <div class="md:col-span-3"><label class="block text-sm font-medium text-gray-700">Objeto 2</label><textarea id="objeto_2" rows="1" class="form-input-field"></textarea></div>
+                                        <div><label class="block text-sm font-medium text-gray-700">Valor ($)</label><input type="number" id="valor_objeto_2" class="form-input-field"></div>
+                                        <div><label class="block text-sm font-medium text-gray-700">Cantidad</label><input type="number" id="cantidad_objeto_2" class="form-input-field"></div>
+                                        <div class="md:col-span-3"><textarea id="comentario_objeto_2" rows="2" placeholder="Comentarios Objeto 2" class="form-input-field"></textarea></div>
                                     </div>
-                                    <!-- TEXTAREA -->
-                                    <div>
-                                        <label for="detalle_bienes_valor" class="block text-sm font-medium text-gray-700">Detalle (Alto valor)</label>
-                                        <textarea id="detalle_bienes_valor" name="detalle_bienes_valor" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                </div>
+
+                                <!-- Efectivo -->
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Mantención de efectivo (promedio diario)</label>
+                                    <div class="flex flex-col gap-2">
+                                        <label><input type="radio" name="mantencion_efectivo" value="1"> Mayor o igual a $15.000.000</label>
+                                        <label><input type="radio" name="mantencion_efectivo" value="2"> Entre $10.000.000 y $14.999.999</label>
+                                        <label><input type="radio" name="mantencion_efectivo" value="3"> Entre $5.000.000 y $9.999.999</label>
+                                        <label><input type="radio" name="mantencion_efectivo" value="4"> Entre $2.000.000 y $4.999.999</label>
+                                        <label><input type="radio" name="mantencion_efectivo" value="5"> Menor a $2.000.000</label>
                                     </div>
-                                    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <!-- TEXTAREA -->
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 4. Funcionamiento -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">4. Funcionamiento</h3>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Horarios Atención -->
+                                <div class="bg-gray-50 p-3 rounded border">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Atención Público</h4>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">L-V:</span><input type="time" id="atencion_lv_inicio" class="border rounded px-1 w-24"> a <input type="time" id="atencion_lv_fin" class="border rounded px-1 w-24"></div>
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">Sáb:</span><input type="time" id="atencion_sab_inicio" class="border rounded px-1 w-24"> a <input type="time" id="atencion_sab_fin" class="border rounded px-1 w-24"></div>
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">Dom:</span><input type="time" id="atencion_dom_inicio" class="border rounded px-1 w-24"> a <input type="time" id="atencion_dom_fin" class="border rounded px-1 w-24"></div>
+                                    </div>
+                                </div>
+                                <!-- Horarios Operación -->
+                                <div class="bg-gray-50 p-3 rounded border">
+                                    <h4 class="text-sm font-bold text-gray-700 mb-2">Operación (Interna)</h4>
+                                    <div class="space-y-2 text-sm">
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">L-V:</span><input type="time" id="operacion_lv_inicio" class="border rounded px-1 w-24"> a <input type="time" id="operacion_lv_fin" class="border rounded px-1 w-24"></div>
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">Sáb:</span><input type="time" id="operacion_sab_inicio" class="border rounded px-1 w-24"> a <input type="time" id="operacion_sab_fin" class="border rounded px-1 w-24"></div>
+                                        <div class="flex items-center gap-2"><span class="w-10 font-medium">Dom:</span><input type="time" id="operacion_dom_inicio" class="border rounded px-1 w-24"> a <input type="time" id="operacion_dom_fin" class="border rounded px-1 w-24"></div>
+                                    </div>
+                                </div>
+
+                                <div class="md:col-span-2">
+                                    <label class="block text-sm font-medium text-gray-700">Procesos fuera de horario</label>
+                                    <textarea id="procesos_fuera_horario" rows="2" class="form-input-field mt-1"></textarea>
+                                </div>
+
+                                <div class="md:col-span-2">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">Aforo y Ocupación</h4>
+                                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                                         <div>
-                                            <label for="objeto_1" class="block text-sm font-medium text-gray-700">Objeto 1</label>
-                                            <textarea id="objeto_1" name="objeto_1" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
+                                            <label class="text-xs text-gray-600">Capacidad Máxima</label>
+                                            <input type="number" id="capacidad_maxima" class="form-input-field mt-1">
                                         </div>
                                         <div>
-                                            <label for="valor_objeto_1" class="block text-sm font-medium text-gray-700">Valor estimado ($)</label>
-                                            <input type="number" id="valor_objeto_1" name="valor_objeto_1" class="form-input-field mt-1 block w-full sm:text-sm" placeholder="1500000">
-                                        </div>
-                                        <div>
-                                            <label for="cantidad_objeto_1" class="block text-sm font-medium text-gray-700">Cantidad (Unidades)</label>
-                                            <input type="number" id="cantidad_objeto_1" name="cantidad_objeto_1" class="form-input-field mt-1 block w-full sm:text-sm">
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="comentario_objeto_1" class="block text-sm font-medium text-gray-700">Comentario (Objeto 1)</label>
-                                        <textarea id="comentario_objeto_1" name="comentario_objeto_1" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                    </div>
-                                    <div class="md:col-span-2 grid grid-cols-1 md:grid-cols-3 gap-4">
-                                        <!-- TEXTAREA -->
-                                        <div>
-                                            <label for="objeto_2" class="block text-sm font-medium text-gray-700">Objeto 2</label>
-                                            <textarea id="objeto_2" name="objeto_2" rows="1" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                        </div>
-                                        <div>
-                                            <label for="valor_objeto_2" class="block text-sm font-medium text-gray-700">Valor estimado ($)</label>
-                                            <input type="number" id="valor_objeto_2" name="valor_objeto_2" class="form-input-field mt-1 block w-full sm:text-sm" placeholder="1000000">
-                                        </div>
-                                        <div>
-                                            <label for="cantidad_objeto_2" class="block text-sm font-medium text-gray-700">Cantidad (Unidades)</label>
-                                            <input type="number" id="cantidad_objeto_2" name="cantidad_objeto_2" class="form-input-field mt-1 block w-full sm:text-sm">
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="comentario_objeto_2" class="block text-sm font-medium text-gray-700">Comentario (Objeto 2)</label>
-                                        <textarea id="comentario_objeto_2" name="comentario_objeto_2" rows="2" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">Mantención de efectivo (monto promedio diario)</label>
-                                        <div class="mt-2 space-y-2">
-                                            <div class="flex items-center">
-                                                <input id="efectivo_1" name="mantencion_efectivo" type="radio" value="1" class="form-check-input h-4 w-4">
-                                                <label for="efectivo_1" class="ml-2 block text-sm text-gray-900">Mayor o igual a $15.000.000</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="efectivo_2" name="mantencion_efectivo" type="radio" value="2" class="form-check-input h-4 w-4">
-                                                <label for="efectivo_2" class="ml-2 block text-sm text-gray-900">Entre $10.000.000 y $14.999.999</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="efectivo_3" name="mantencion_efectivo" type="radio" value="3" class="form-check-input h-4 w-4">
-                                                <label for="efectivo_3" class="ml-2 block text-sm text-gray-900">Entre $5.000.000 y $9.999.999</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="efectivo_4" name="mantencion_efectivo" type="radio" value="4" class="form-check-input h-4 w-4">
-                                                <label for="efectivo_4" class="ml-2 block text-sm text-gray-900">Entre $2.000.000 y $4.999.999</label>
-                                            </div>
-                                            <div class="flex items-center">
-                                                <input id="efectivo_5" name="mantencion_efectivo" type="radio" value="5" class="form-check-input h-4 w-4">
-                                                <label for="efectivo_5" class="ml-2 block text-sm text-gray-900">Menor a $2.000.000</label>
+                                            <label class="text-xs text-gray-600">Frecuencia Máxima</label>
+                                            <div class="flex flex-wrap gap-3 mt-2 text-sm">
+                                                <label><input type="radio" name="frecuencia_aforo" value="nunca"> Nunca</label>
+                                                <label><input type="radio" name="frecuencia_aforo" value="pocas"> Pocas</label>
+                                                <label><input type="radio" name="frecuencia_aforo" value="frecuentemente"> Frecuente</label>
+                                                <label><input type="radio" name="frecuencia_aforo" value="permanentemente"> Permanente</label>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <div class="border border-gray-200 rounded-md p-4 mb-6">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4">4. Funcionamiento de la entidad</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                                    <div class="md:col-span-2 p-3 border rounded-md">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Horarios de atención al público <span class="text-xs font-normal">(Si no atiende, dejar en blanco)</span></label>
-                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Lunes a Viernes</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="atencion_lv_inicio" name="atencion_lv_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="atencion_lv_fin" name="atencion_lv_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Sábado</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="atencion_sab_inicio" name="atencion_sab_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="atencion_sab_fin" name="atencion_sab_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Domingo</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="atencion_dom_inicio" name="atencion_dom_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="atencion_dom_fin" name="atencion_dom_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="md:col-span-2">
+                                    <h4 class="text-sm font-medium text-gray-700 mb-2">Dinámica de Público</h4>
+                                    <div class="flex gap-4 mb-2 text-sm items-center">
+                                        <span>Mayor concentración:</span>
+                                        <input type="time" id="concentracion_inicio" class="border rounded px-2 py-1">
+                                        <span>a</span>
+                                        <input type="time" id="concentracion_fin" class="border rounded px-2 py-1">
                                     </div>
-                                    <div class="md:col-span-2 p-3 border rounded-md">
-                                        <label class="block text-sm font-medium text-gray-700 mb-2">Horarios de operación <span class="text-xs font-normal">(Actividades propias del rubro)</span></label>
-                                        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Lunes a Viernes</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="operacion_lv_inicio" name="operacion_lv_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="operacion_lv_fin" name="operacion_lv_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Sábado</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="operacion_sab_inicio" name="operacion_sab_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="operacion_sab_fin" name="operacion_sab_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <label class="block text-xs font-medium text-gray-600">Domingo</label>
-                                                <div class="flex items-center gap-2 mt-1">
-                                                    <input type="time" id="operacion_dom_inicio" name="operacion_dom_inicio" class="form-input-field block w-full sm:text-sm">
-                                                    <span>a</span>
-                                                    <input type="time" id="operacion_dom_fin" name="operacion_dom_fin" class="form-input-field block w-full sm:text-sm">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="procesos_fuera_horario" class="block text-sm font-medium text-gray-700">Detallar procesos fuera de horario de atención</label>
-                                        <textarea id="procesos_fuera_horario" name="procesos_fuera_horario" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                    </div>
-                                    <div class="md:col-span-2 p-3 border rounded-md">
-                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Máximo de personas y ocupación (aforo)</h4>
-                                        <div>
-                                            <label for="capacidad_maxima" class="block text-sm font-medium text-gray-700">Capacidad máxima de personas permitidas</label>
-                                            <input type="number" id="capacidad_maxima" name="capacidad_maxima" class="form-input-field mt-1 block w-full sm:text-sm" placeholder="150">
-                                        </div>
-                                        <div class="mt-4">
-                                            <label class="block text-sm font-medium text-gray-700">Frecuencia con que la entidad alcanza el máximo</label>
-                                            <div class="flex flex-wrap gap-x-6 gap-y-2 mt-2">
-                                                <div class="flex items-center">
-                                                    <input id="frecuencia_nunca" name="frecuencia_aforo" type="radio" value="nunca" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_nunca" class="ml-2 block text-sm text-gray-900">Nunca</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="frecuencia_pocas" name="frecuencia_aforo" type="radio" value="pocas" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_pocas" class="ml-2 block text-sm text-gray-900">Pocas veces</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="frecuencia_algunas" name="frecuencia_aforo" type="radio" value="algunas" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_algunas" class="ml-2 block text-sm text-gray-900">Algunas veces</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="frecuencia_frecuentemente" name="frecuencia_aforo" type="radio" value="frecuentemente" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_frecuentemente" class="ml-2 block text-sm text-gray-900">Frecuentemente</label>
-                                                </div>
-                                                <div class="flex items-center">
-                                                    <input id="frecuencia_permanentemente" name="frecuencia_aforo" type="radio" value="permanentemente" class="form-check-input h-4 w-4">
-                                                    <label for="frecuencia_permanentemente" class="ml-2 block text-sm text-gray-900">Permanentemente</label>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2 p-3 border rounded-md">
-                                        <h4 class="text-sm font-medium text-gray-700 mb-2">Dinámica del público</h4>
-                                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                            <div>
-                                                <label for="concentracion_inicio" class="block text-sm font-medium text-gray-700">Horario mayor concentración (Desde)</label>
-                                                <input type="time" id="concentracion_inicio" name="concentracion_inicio" class="form-input-field mt-1 block w-full sm:text-sm">
-                                            </div>
-                                            <div>
-                                                <label for="concentracion_fin" class="block text-sm font-medium text-gray-700">Horario mayor concentración (Hasta)</label>
-                                                <input type="time" id="concentracion_fin" name="concentracion_fin" class="form-input-field mt-1 block w-full sm:text-sm">
-                                            </div>
-                                        </div>
-                                        <div class="mt-4">
-                                            <label for="descripcion_flujo" class="block text-sm font-medium text-gray-700">Descripción y características del flujo</label>
-                                            <p class="text-xs text-gray-500 mb-1">(volumen, regularidad, dinamismo)</p>
-                                            <textarea id="descripcion_flujo" name="descripcion_flujo" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                        </div>
-                                    </div>
+                                    <label class="block text-sm font-medium text-gray-700 mt-2">Descripción del flujo</label>
+                                    <textarea id="descripcion_flujo" rows="3" class="form-input-field mt-1"></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="border border-gray-200 rounded-md p-4 mb-6">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4">5. Localización</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
-                                    <div class="md:col-span-2">
-                                        <label class="block text-sm font-medium text-gray-700">Accesibilidad para escape del infractor</label>
-                                        <p class="text-xs text-gray-500 mb-2">(conectividad/cercanía)</p>
-                                        <div class="space-y-3">
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-sm text-gray-800">Autopistas</span>
-                                                <div class="flex gap-6">
-                                                    <div class="flex items-center">
-                                                        <input id="escape_autopista_si" name="escape_autopista" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                        <label for="escape_autopista_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                                    </div>
-                                                    <div class="flex items-center">
-                                                        <input id="escape_autopista_no" name="escape_autopista" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                        <label for="escape_autopista_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-sm text-gray-800">Calles o avenidas principales</span>
-                                                <div class="flex gap-6">
-                                                    <div class="flex items-center">
-                                                        <input id="escape_calles_si" name="escape_calles" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                        <label for="escape_calles_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                                    </div>
-                                                    <div class="flex items-center">
-                                                        <input id="escape_calles_no" name="escape_calles" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                        <label for="escape_calles_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="flex justify-between items-center">
-                                                <span class="text-sm text-gray-800">Zonas de alta complejidad <span class="text-xs text-gray-500">(vulnerabilidad)</span></span>
-                                                <div class="flex gap-6">
-                                                    <div class="flex items-center">
-                                                        <input id="escape_zonas_si" name="escape_zonas" type="radio" value="si" class="form-check-input h-4 w-4">
-                                                        <label for="escape_zonas_si" class="ml-2 block text-sm text-gray-900">Sí</label>
-                                                    </div>
-                                                    <div class="flex items-center">
-                                                        <input id="escape_zonas_no" name="escape_zonas" type="radio" value="no" class="form-check-input h-4 w-4">
-                                                        <label for="escape_zonas_no" class="ml-2 block text-sm text-gray-900">No</label>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="md:col-span-2">
-                                        <label for="comentarios_localizacion" class="block text-sm font-medium text-gray-700">Comentarios (Localización)</label>
-                                        <textarea id="comentarios_localizacion" name="comentarios_localizacion" rows="3" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                                    </div>
+                        <!-- 5. Localización -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-4 border-b pb-2">5. Localización</h3>
+                            <div class="grid grid-cols-1 gap-4">
+                                <div class="flex justify-between items-center border-b pb-2">
+                                    <span class="text-sm text-gray-700">Autopistas cercanas (escape)</span>
+                                    <div class="space-x-4"><label><input type="radio" name="escape_autopista" value="si"> Sí</label><label><input type="radio" name="escape_autopista" value="no"> No</label></div>
+                                </div>
+                                <div class="flex justify-between items-center border-b pb-2">
+                                    <span class="text-sm text-gray-700">Calles principales</span>
+                                    <div class="space-x-4"><label><input type="radio" name="escape_calles" value="si"> Sí</label><label><input type="radio" name="escape_calles" value="no"> No</label></div>
+                                </div>
+                                <div class="flex justify-between items-center border-b pb-2">
+                                    <span class="text-sm text-gray-700">Zona vulnerable (delincuencia)</span>
+                                    <div class="space-x-4"><label><input type="radio" name="escape_zonas" value="si"> Sí</label><label><input type="radio" name="escape_zonas" value="no"> No</label></div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700">Comentarios Localización</label>
+                                    <textarea id="comentarios_localizacion" rows="3" class="form-input-field mt-1"></textarea>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="border border-gray-200 rounded-md p-4 mb-6">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4">6. Observaciones generales</h3>
-                                <textarea id="observaciones_generales" name="observaciones_generales" rows="5" class="form-input-field mt-1 block w-full sm:text-sm"></textarea>
-                            </div>
+                        <!-- 6. Observaciones Generales -->
+                        <div class="mb-6">
+                            <h3 class="font-semibold text-gray-800 mb-2">6. Observaciones Generales</h3>
+                            <textarea id="observaciones_generales" rows="4" class="form-input-field"></textarea>
+                        </div>
 
-                            <div class="border border-gray-200 rounded-md p-4">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4">7. Anexos o complementos</h3>
-                                <p class="text-xs text-gray-600">
-                                    Si adjunta anexos (fotos, planos, informes), descríbalos aquí.
-                                </p>
-                                <textarea id="anexos_comentarios" name="anexos_comentarios" rows="3" class="form-input-field mt-4 block w-full sm:text-sm" placeholder="Ej: Se adjuntan 3 fotografías de acceso principal..."></textarea>
-                            </div>
+                        <!-- 7. Anexos -->
+                        <div>
+                            <h3 class="font-semibold text-gray-800 mb-2">7. Anexos o Complementos</h3>
+                            <textarea id="anexos_comentarios" rows="3" class="form-input-field" placeholder="Describa fotos, planos o documentos adjuntos..."></textarea>
+                        </div>
 
-                            <div class="mt-12 pt-12 border-t border-dashed border-gray-400">
-                                <h3 class="font-semibold text-base text-gray-800 mb-4 text-center">Responsables de la información</h3>
-                                <div class="grid grid-cols-1 md:grid-cols-2 gap-16 mt-16">
-                                    <div class="text-center">
-                                        <div class="border-t border-gray-400 w-3/4 mx-auto pt-2">
-                                            <p class="text-sm font-medium text-gray-700">Funcionario autoridad fiscalizadora</p>
-                                            <p class="text-xs text-gray-500">(Firma y timbre)</p>
-                                        </div>
-                                    </div>
-                                    <div class="text-center">
-                                        <div class="border-t border-gray-400 w-3/4 mx-auto pt-2">
-                                            <p class="text-sm font-medium text-gray-700">Representante entidad fiscalizada</p>
-                                            <p class="text-xs text-gray-500">(Firma y timbre)</p>
-                                        </div>
-                                    </div>
-                                </div>
+                        <!-- Firmas -->
+                        <div class="mt-12 pt-8 border-t border-dashed border-gray-300 grid grid-cols-1 md:grid-cols-2 gap-12 text-center">
+                            <div>
+                                <div class="border-t border-gray-400 w-3/4 mx-auto pt-2"></div>
+                                <p class="font-medium text-gray-800">Funcionario Fiscalizador</p>
+                                <p class="text-xs text-gray-500">(Firma y Timbre)</p>
                             </div>
-                        </fieldset>
+                            <div>
+                                <div class="border-t border-gray-400 w-3/4 mx-auto pt-2"></div>
+                                <p class="font-medium text-gray-800">Representante Entidad</p>
+                                <p class="text-xs text-gray-500">(Firma y Timbre)</p>
+                            </div>
+                        </div>
+                    </fieldset>
                 </form>
             </div>
-            <div id="calculateButtonContainer" class="mt-8 text-center">
-                <button id="calculateButton" class="btn-primary w-full max-w-xs mx-auto">
-                    Terminar y Calcular Riesgo
-                </button>
+
+            <!-- Botón Calcular -->
+            <div id="calculateButtonContainer" class="mt-8">
+                <button id="calculateButton" class="btn-primary">Terminar y Calcular Riesgo</button>
             </div>
+
         </div>
     </div>
 
-    <div id="results-container" class="hidden mx-auto p-4 sm:p-8 text-center mt-8 sm:mt-16" style="max-width: 28rem;">
-        <div id="results-box" class="bg-white p-6 sm:p-10 rounded-xl shadow-lg w-full">
-            <h2 class="text-xl font-bold text-gray-800 text-center">Resultado de la Fiscalización</h2>
-            
-            <div class="my-6 text-center">
-                <span id="score-display-result" class="text-6xl font-bold text-blue-800">0</span>
-                <span class="text-lg text-gray-600">puntos</span>
-            </div>
-            
-            <div id="risk-level-container-result" class="text-center p-3 rounded-md bg-gray-100">
-                <span class="text-sm text-gray-600">Nivel de Riesgo Determinado</span>
-                <span id="risk-level-result" class="block text-2xl font-bold text-green-600">Bajo</span>
-            </div>
-            
-            <p class="text-xs text-gray-500 mt-4 text-center">
-                <strong>Nota:</strong> Este puntaje es una simulación. La lógica de cálculo debe ser ajustada según la Matriz de Riesgo oficial (Resolución Exenta N 1820).
-            </p>
+    <!-- Pantalla de Resultados -->
+    <div id="results-container" class="hidden fixed inset-0 z-50 overflow-y-auto bg-gray-100">
+        <div class="flex min-h-full items-center justify-center p-4">
+            <div class="bg-white rounded-xl shadow-2xl p-8 max-w-md w-full text-center">
+                <h2 class="text-2xl font-bold text-gray-800 mb-6">Resultado de la Fiscalización</h2>
+                
+                <div class="my-8">
+                    <span id="score-display-result" class="text-7xl font-bold text-blue-800 block">0</span>
+                    <span class="text-xl text-gray-500">puntos totales</span>
+                </div>
+                
+                <div id="risk-level-container-result" class="p-4 rounded-lg bg-gray-50 mb-8 border border-gray-200">
+                    <span class="text-sm text-gray-500 uppercase tracking-wide font-semibold">Nivel de Riesgo</span>
+                    <span id="risk-level-result" class="block text-3xl font-bold text-green-600 mt-1">BAJO</span>
+                </div>
 
-            <div id="downloadButtonContainer" class="mt-8 text-center">
-                <button id="downloadPdfButton" class="btn-primary w-full max-w-xs mx-auto">
-                    Descargar PDF
-                </button>
-            </div>
-            
-            <div id="loader" class="hidden mt-8 text-center">
-                <div class="flex justify-center items-center gap-2">
-                    <svg class="animate-spin h-5 w-5 text-blue-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                    </svg>
-                    <span class="text-blue-800 font-medium">Generando PDF, por favor espera...</span>
+                <div id="downloadButtonContainer" class="space-y-4">
+                    <button id="downloadPdfButton" class="btn-primary" onclick="generarPDFAdaptado()">
+                        Descargar PDF
+                    </button>
+                    <button id="backButton" class="text-blue-600 hover:text-blue-800 hover:underline text-sm">
+                        Volver al formulario
+                    </button>
+                </div>
+
+                <!-- Loader -->
+                <div id="loader" class="hidden mt-6">
+                    <div class="flex flex-col items-center text-blue-600">
+                        <svg class="animate-spin h-8 w-8 mb-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                        <span class="font-medium">Generando documento PDF...</span>
+                        <span class="text-xs text-gray-400">Por favor espere, esto puede tardar unos segundos.</span>
+                    </div>
                 </div>
             </div>
-
-            <div class="mt-6 text-center">
-                <button id="backButton" class="text-sm text-gray-700 hover:text-black hover:underline">
-                    &larr; Volver y editar formulario
-                </button>
-            </div>
         </div>
     </div>
 
+    <!-- Librerías y Scripts Propios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="autoguardado.js"></script>
+    <script src="pdf-optimizado.js"></script>
+    
+    <!-- Lógica de la interfaz (Botones y Cálculo) -->
     <script>
         const formPage = document.getElementById('form-page-container');
         const resultsPage = document.getElementById('results-container');
@@ -788,293 +515,43 @@
 
         function calculateScore() {
             let score = 0;
+            // Lógica simplificada de cálculo basada en tus requerimientos anteriores
             if (document.querySelector('input[name="servicio_esencial"]:checked')?.value === 'si') score += 10;
             if (document.querySelector('input[name="sector_estrategico"]:checked')?.value === 'si') score += 10;
             if (document.querySelector('input[name="servicio_unico"]:checked')?.value === 'si') score += 5;
+            
             const delitos = document.querySelector('input[name="reiteracion_delitos"]:checked')?.value;
             if (delitos === 'muy_frecuentes') score += 20;
             else if (delitos === 'algo_frecuentes') score += 10;
             else if (delitos === 'poco_frecuentes') score += 5;
+            
             if (document.querySelector('input[name="bienes_peligrosos"]:checked')?.value === 'si') score += 15;
-            if (document.querySelector('input[name="bienes_transportables"]:checked')?.value === 'si') score += 5;
-            if (document.querySelector('input[name="bienes_valor"]:checked')?.value === 'si') score += 10;
-            const efectivo = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
-            if (efectivo === '1') score += 20;
-            else if (efectivo === '2') score += 15;
-            else if (efectivo === '3') score += 10;
-            else if (efectivo === '4') score += 5;
-            const aforo = document.querySelector('input[name="frecuencia_aforo"]:checked')?.value;
-            if (aforo === 'permanentemente') score += 10;
-            else if (aforo === 'frecuentemente') score += 5;
-            if (document.querySelector('input[name="escape_autopista"]:checked')?.value === 'si') score += 5;
-            if (document.querySelector('input[name="escape_calles"]:checked')?.value === 'si') score += 5;
-            if (document.querySelector('input[name="escape_zonas"]:checked')?.value === 'si') score += 10;
+            const efec = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
+            if(efec === '1') score += 20; else if(efec === '2') score += 15;
+            
+            // Mostrar resultados
             scoreDisplay.textContent = score;
-            let level = 'Bajo';
-            let levelColor = 'text-green-600';
-            let bgColor = 'bg-green-100';
-            if (score > 80) {
-                level = 'Alto';
-                levelColor = 'text-red-600';
-                bgColor = 'bg-red-100';
-            } else if (score > 40) {
-                level = 'Medio';
-                levelColor = 'text-yellow-600';
-                bgColor = 'bg-yellow-100';
-            }
+            let level = 'BAJO';
+            let colorClass = 'text-green-600';
+            
+            if (score > 80) { level = 'ALTO'; colorClass = 'text-red-600'; }
+            else if (score > 40) { level = 'MEDIO'; colorClass = 'text-yellow-600'; }
+            
             riskLevelDisplay.textContent = level;
-            riskLevelDisplay.className = 'block text-2xl font-bold ' + levelColor;
-            riskLevelContainer.className = 'text-center p-3 rounded-md ' + bgColor;
-        }
-
-        calculateBtn.addEventListener('click', () => {
-            calculateScore();
-            formPage.classList.add('hidden');
+            riskLevelDisplay.className = 'block text-3xl font-bold mt-1 ' + colorClass;
+            
+            // Cambiar vista
+            // Ocultar body scroll
+            document.body.style.overflow = 'hidden';
             resultsPage.classList.remove('hidden');
-            window.scrollTo(0, 0);
-        });
+        }
 
+        calculateBtn.addEventListener('click', calculateScore);
+        
         backBtn.addEventListener('click', () => {
+            document.body.style.overflow = 'auto';
             resultsPage.classList.add('hidden');
-            formPage.classList.remove('hidden');
-            window.scrollTo(0, 0);
         });
-    </script>
-
-    <script>
-        function mostrarCargaPDF() {
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('downloadPdfButton').classList.add('hidden');
-            document.getElementById('backButton').classList.add('hidden');
-        }
-
-        function ocultarCargaPDF() {
-            document.getElementById('loader').classList.add('hidden');
-            document.getElementById('downloadPdfButton').classList.remove('hidden');
-            document.getElementById('backButton').classList.remove('hidden');
-        }
-
-        function generarPDFAdaptado() {
-            mostrarCargaPDF();
-            
-            const formPage = document.getElementById('form-page-container');
-            const resultsPage = document.getElementById('results-container');
-            const calculateBtnContainer = document.getElementById('calculateButtonContainer');
-            
-            const currentScrollPos = window.pageYOffset;
-
-            resultsPage.classList.add('hidden');
-            formPage.classList.remove('hidden');
-            calculateBtnContainer.style.display = 'none';
-
-            const formContent = document.getElementById('form-content');
-            
-            setTimeout(() => {
-                const opciones = {
-                    filename: `Formulario_Fiscalizacion_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`,
-                    margin: [8, 8, 8, 8],
-                    image: { type: 'jpeg', quality: 0.98 },
-                    html2canvas: {
-                        scale: 2,
-                        useCORS: true,
-                        allowTaint: false,
-                        backgroundColor: '#ffffff',
-                        logging: false,
-                        windowWidth: 750,
-                        width: 750,
-                        x: 0,
-                        y: 0,
-                        scrollX: 0,
-                        scrollY: 0,
-                        onclone: (documentClone) => {
-                            
-                            const form = document.getElementById('fiscalizacionForm');
-                            const clonedForm = documentClone.getElementById('fiscalizacionForm');
-                            
-                            // Configurar ancho del documento REDUCIDO para evitar desbordamiento
-                            documentClone.documentElement.style.width = '750px';
-                            documentClone.documentElement.style.maxWidth = '750px';
-                            documentClone.documentElement.style.overflow = 'hidden';
-                            documentClone.body.style.width = '750px';
-                            documentClone.body.style.maxWidth = '750px';
-                            documentClone.body.style.minWidth = '750px';
-                            documentClone.body.style.margin = '0';
-                            documentClone.body.style.padding = '0';
-                            documentClone.body.style.overflow = 'hidden';
-                            
-                            const clonedPageContainer = documentClone.getElementById('form-page-container');
-                            if (clonedPageContainer) {
-                                clonedPageContainer.style.padding = '8px';
-                                clonedPageContainer.style.width = '100%';
-                                clonedPageContainer.style.maxWidth = '100%';
-                                clonedPageContainer.style.overflow = 'hidden';
-                            }
-                            
-                            const clonedFormContainer = documentClone.getElementById('form-container');
-                            if (clonedFormContainer) {
-                                clonedFormContainer.style.boxShadow = 'none';
-                                clonedFormContainer.style.padding = '12px';
-                                clonedFormContainer.style.overflow = 'hidden';
-                                clonedFormContainer.style.maxWidth = '100%';
-                            }
-                            
-                            const clonedFormContent = documentClone.getElementById('form-content');
-                            if (clonedFormContent) {
-                                clonedFormContent.style.overflow = 'hidden';
-                                clonedFormContent.style.maxWidth = '100%';
-                            }
-                            
-                            // CONTROLAR TODOS LOS CONTENEDORES
-                            const allDivs = documentClone.querySelectorAll('div');
-                            allDivs.forEach(div => {
-                                div.style.maxWidth = '100%';
-                                if (div.classList.contains('grid')) {
-                                    div.style.overflow = 'visible';
-                                }
-                            });
-                            
-                            const allFieldsets = documentClone.querySelectorAll('fieldset');
-                            allFieldsets.forEach(fieldset => {
-                                fieldset.style.maxWidth = '100%';
-                                fieldset.style.overflow = 'visible';
-                            });
-                    
-                            if (!form || !clonedForm) return;
-
-                            // ============ LÓGICA ESPECÍFICA: APLICAR SOLO A CAMPOS SOLICITADOS ============
-                            
-                            // Lista de IDs específicos donde se aplicará la corrección de desbordamiento
-                            const camposParaArreglar = [
-                                'comentarios_criticidad',
-                                'comentarios_rubro',
-                                'comentarios_delitos',
-                                'comentario_objeto_2',
-                                'procesos_fuera_horario',
-                                'descripcion_flujo',
-                                'comentarios_localizacion',
-                                'anexos_comentarios'
-                            ];
-
-                            // Iterar solo sobre los IDs específicos
-                            camposParaArreglar.forEach(id => {
-                                const textareaOriginal = form.querySelector(`#${id}`);
-                                const textareaClonada = clonedForm.querySelector(`#${id}`);
-                                
-                                if (textareaOriginal && textareaClonada) {
-                                    const value = textareaOriginal.value;
-                                    
-                                    if (value) {
-                                        // Crear DIV con el contenido de la textarea
-                                        const contenidoDiv = documentClone.createElement('div');
-                                        contenidoDiv.textContent = value;
-                                        contenidoDiv.className = 'textarea-contenido-pdf';
-                                        
-                                        // ESTILOS CRÍTICOS - MÁS AGRESIVOS PARA EVITAR DESBORDAMIENTO
-                                        Object.assign(contenidoDiv.style, {
-                                            minHeight: '40px',
-                                            width: '100%',
-                                            maxWidth: '100%',
-                                            fontFamily: 'Inter, sans-serif',
-                                            fontSize: '9pt',
-                                            lineHeight: '1.25',
-                                            padding: '6px',
-                                            margin: '0',
-                                            border: '1px solid #6b7280',
-                                            borderRadius: '3px',
-                                            backgroundColor: '#f9fafb',
-                                            whiteSpace: 'pre-wrap',       // Mantiene saltos de línea
-                                            wordBreak: 'break-word',      // IMPORTANTE: rompe palabras largas
-                                            overflowWrap: 'break-word',
-                                            overflow: 'visible',
-                                            display: 'block',
-                                            boxSizing: 'border-box',
-                                            color: '#000',
-                                            textAlign: 'justify',
-                                            hyphens: 'auto'
-                                        });
-                                        
-                                        // FORZAR ANCHO EN CONTENEDOR PADRE
-                                        const parentDiv = textareaClonada.parentNode;
-                                        if (parentDiv) {
-                                            parentDiv.style.maxWidth = '100%';
-                                            parentDiv.style.overflow = 'visible';
-                                        }
-                                        
-                                        // Reemplazar el textarea por el div
-                                        textareaClonada.parentNode.insertBefore(contenidoDiv, textareaClonada);
-                                        textareaClonada.style.display = 'none';
-                                    }
-                                    // Si está vacío, dejar el textarea original (o ocultarlo si prefieres)
-                                    // En este caso, si está vacío, html2pdf renderizará el textarea vacío.
-                                }
-                            });
-
-                            // PROCESAR CHECKBOXES (se mantiene igual para todos)
-                            const formCheckboxes = form.querySelectorAll('input[type="checkbox"]');
-                            const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
-                            formCheckboxes.forEach((checkbox, index) => {
-                                if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
-                            });
-
-                            // PROCESAR RADIOS (se mantiene igual para todos)
-                            const formRadios = form.querySelectorAll('input[type="radio"]');
-                            const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
-                            formRadios.forEach((radio, index) => {
-                                if (clonedRadios[index]) clonedRadios[index].checked = radio.checked;
-                            });
-                        }
-                    },
-                    jsPDF: {
-                        unit: 'mm',
-                        format: 'legal',
-                        orientation: 'portrait',
-                        compress: true
-                    }
-                };
-                
-                html2pdf()
-                    .from(formContent)
-                    .set(opciones)
-                    .save()
-                    .then(() => {
-                        calculateBtnContainer.style.display = 'block';
-                        formPage.classList.add('hidden');
-                        resultsPage.classList.remove('hidden');
-                        window.scrollTo(0, currentScrollPos);
-                        ocultarCargaPDF();
-                    })
-                    .catch((err) => {
-                        console.error("Error generando PDF:", err);
-                        calculateBtnContainer.style.display = 'block';
-                        formPage.classList.add('hidden');
-                        resultsPage.classList.remove('hidden');
-                        window.scrollTo(0, currentScrollPos);
-                        ocultarCargaPDF();
-                    });
-
-            }, 100);
-        }
-
-        function cargarHtml2PdfYGenerar() {
-            if (typeof html2pdf === 'undefined') {
-                mostrarCargaPDF();
-                const script = document.createElement('script');
-                script.src = 'https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js';
-                script.onload = generarPDFAdaptado;
-                script.onerror = function() {
-                    ocultarCargaPDF();
-                    alert('Error: No se pudo cargar la biblioteca PDF.');
-                };
-                document.head.appendChild(script);
-            } else {
-                generarPDFAdaptado();
-            }
-        }
-
-        const downloadBtn = document.getElementById('downloadPdfButton');
-        if (downloadBtn) {
-            downloadBtn.addEventListener('click', cargarHtml2PdfYGenerar);
-        }
     </script>
 </body>
 </html>
