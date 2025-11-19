@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulario de Fiscalización en Terreno</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -16,11 +15,11 @@
             background-color: #0055C0;
         }
         
-        /* Contenedor principal limitado para lectura, pero el PDF lo forzará a ancho completo */
+        /* Contenedor visual para la pantalla */
         #form-page-container {
             width: 100%;
             max-width: 1024px;
-            margin: 0 auto;
+            margin: 0 auto; /* Centrado en pantalla, se elimina al generar PDF */
         }
 
         .form-input-field {
@@ -74,10 +73,11 @@
             padding: 0 0.5rem;
         }
 
-        /* Ocultar elementos en la impresión nativa del navegador */
+        /* Ocultar elementos en la impresión nativa */
         @media print {
             body { background-color: #fff; }
             .no-print, #calculateButtonContainer, #downloadButtonContainer, #results-container { display: none !important; }
+            #form-page-container { margin: 0; width: 100%; max-width: none; }
         }
     </style>
 </head>
@@ -515,7 +515,7 @@
 
         function calculateScore() {
             let score = 0;
-            // Lógica simplificada de cálculo basada en tus requerimientos anteriores
+            // Lógica de cálculo
             if (document.querySelector('input[name="servicio_esencial"]:checked')?.value === 'si') score += 10;
             if (document.querySelector('input[name="sector_estrategico"]:checked')?.value === 'si') score += 10;
             if (document.querySelector('input[name="servicio_unico"]:checked')?.value === 'si') score += 5;
@@ -526,8 +526,11 @@
             else if (delitos === 'poco_frecuentes') score += 5;
             
             if (document.querySelector('input[name="bienes_peligrosos"]:checked')?.value === 'si') score += 15;
+            if (document.querySelector('input[name="bienes_transportables"]:checked')?.value === 'si') score += 5;
+            if (document.querySelector('input[name="bienes_valor"]:checked')?.value === 'si') score += 10;
+
             const efec = document.querySelector('input[name="mantencion_efectivo"]:checked')?.value;
-            if(efec === '1') score += 20; else if(efec === '2') score += 15;
+            if(efec === '1') score += 20; else if(efec === '2') score += 15; else if(efec === '3') score += 10; else if(efec === '4') score += 5;
             
             // Mostrar resultados
             scoreDisplay.textContent = score;
@@ -541,7 +544,6 @@
             riskLevelDisplay.className = 'block text-3xl font-bold mt-1 ' + colorClass;
             
             // Cambiar vista
-            // Ocultar body scroll
             document.body.style.overflow = 'hidden';
             resultsPage.classList.remove('hidden');
         }
