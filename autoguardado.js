@@ -1,61 +1,54 @@
 /**
  * autoguardado.js
- * Guarda el progreso en localStorage cada vez que el usuario escribe.
+ * Guarda datos en localStorage.
  */
 
-const STORAGE_KEY_FISCALIZACION = 'datos_fiscalizacion_v1';
+const STORAGE_KEY = 'fiscalizacion_data_v2';
 
-function guardarDatos() {
-    const datos = {};
+function guardar() {
+    const data = {};
     
-    // Inputs de texto, fecha, hora, numero
+    // Inputs simples
     document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea').forEach(el => {
-        if (el.id) datos[el.id] = el.value;
+        if (el.id) data[el.id] = el.value;
     });
 
-    // Radio buttons
-    const radios = document.querySelectorAll('input[type="radio"]:checked');
-    radios.forEach(r => {
-        datos['radio_' + r.name] = r.value;
+    // Radios
+    document.querySelectorAll('input[type="radio"]:checked').forEach(el => {
+        data['radio_' + el.name] = el.value;
     });
 
     // Checkboxes
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(c => {
-        if(c.id) datos['check_' + c.id] = c.checked;
+    document.querySelectorAll('input[type="checkbox"]').forEach(el => {
+        if(el.id) data['check_' + el.id] = el.checked;
     });
 
-    localStorage.setItem(STORAGE_KEY_FISCALIZACION, JSON.stringify(datos));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
-function cargarDatos() {
-    const guardado = localStorage.getItem(STORAGE_KEY_FISCALIZACION);
-    if (!guardado) return;
+function cargar() {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const data = JSON.parse(raw);
 
-    const datos = JSON.parse(guardado);
-
-    Object.keys(datos).forEach(key => {
+    Object.keys(data).forEach(key => {
         if (key.startsWith('radio_')) {
             const name = key.replace('radio_', '');
-            const val = datos[key];
-            const radio = document.querySelector(`input[name="${name}"][value="${val}"]`);
-            if (radio) radio.checked = true;
+            const el = document.querySelector(`input[name="${name}"][value="${data[key]}"]`);
+            if(el) el.checked = true;
         } else if (key.startsWith('check_')) {
             const id = key.replace('check_', '');
-            const check = document.getElementById(id);
-            if (check) check.checked = datos[key];
+            const el = document.getElementById(id);
+            if(el) el.checked = data[key];
         } else {
             const el = document.getElementById(key);
-            if (el) el.value = datos[key];
+            if(el) el.value = data[key];
         }
     });
 }
 
-// Iniciar
 document.addEventListener('DOMContentLoaded', () => {
-    cargarDatos();
-    
-    // Escuchar eventos para guardar
-    document.body.addEventListener('input', guardarDatos);
-    document.body.addEventListener('change', guardarDatos);
+    cargar();
+    document.body.addEventListener('input', guardar);
+    document.body.addEventListener('change', guardar);
 });
