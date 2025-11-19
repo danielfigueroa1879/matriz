@@ -1,79 +1,61 @@
 /**
  * autoguardado.js
- * Guarda automáticamente el progreso del formulario en el navegador.
+ * Guarda el progreso en localStorage cada vez que el usuario escribe.
  */
 
-const STORAGE_KEY = 'formulario_fiscalizacion_data';
+const STORAGE_KEY_FISCALIZACION = 'datos_fiscalizacion_v1';
 
-// Función para guardar datos
 function guardarDatos() {
-    const data = {};
+    const datos = {};
     
-    // Guardar inputs de texto, fecha, time, number
-    const inputs = document.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"]');
-    inputs.forEach(input => {
-        if(input.id) data[input.id] = input.value;
+    // Inputs de texto, fecha, hora, numero
+    document.querySelectorAll('input:not([type="radio"]):not([type="checkbox"]), textarea').forEach(el => {
+        if (el.id) datos[el.id] = el.value;
     });
 
-    // Guardar textareas
-    const textareas = document.querySelectorAll('textarea');
-    textareas.forEach(area => {
-        if(area.id) data[area.id] = area.value;
+    // Radio buttons
+    const radios = document.querySelectorAll('input[type="radio"]:checked');
+    radios.forEach(r => {
+        datos['radio_' + r.name] = r.value;
     });
 
-    // Guardar radios (solo el seleccionado)
-    const radiosChecked = document.querySelectorAll('input[type="radio"]:checked');
-    radiosChecked.forEach(radio => {
-        if(radio.name) data['radio_' + radio.name] = radio.value;
-    });
-
-    // Guardar checkboxes
+    // Checkboxes
     const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(cb => {
-        if(cb.id) data['check_' + cb.id] = cb.checked;
+    checkboxes.forEach(c => {
+        if(c.id) datos['check_' + c.id] = c.checked;
     });
 
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    console.log('Datos guardados automáticamente.');
+    localStorage.setItem(STORAGE_KEY_FISCALIZACION, JSON.stringify(datos));
 }
 
-// Función para cargar datos
 function cargarDatos() {
-    const saved = localStorage.getItem(STORAGE_KEY);
-    if(!saved) return;
+    const guardado = localStorage.getItem(STORAGE_KEY_FISCALIZACION);
+    if (!guardado) return;
 
-    const data = JSON.parse(saved);
+    const datos = JSON.parse(guardado);
 
-    // Cargar inputs y textareas
-    Object.keys(data).forEach(key => {
-        if(key.startsWith('radio_')) {
-            // Cargar radios
+    Object.keys(datos).forEach(key => {
+        if (key.startsWith('radio_')) {
             const name = key.replace('radio_', '');
-            const value = data[key];
-            const radio = document.querySelector(`input[name="${name}"][value="${value}"]`);
-            if(radio) radio.checked = true;
+            const val = datos[key];
+            const radio = document.querySelector(`input[name="${name}"][value="${val}"]`);
+            if (radio) radio.checked = true;
         } else if (key.startsWith('check_')) {
-            // Cargar checkboxes
             const id = key.replace('check_', '');
-            const cb = document.getElementById(id);
-            if(cb) cb.checked = data[key];
+            const check = document.getElementById(id);
+            if (check) check.checked = datos[key];
         } else {
-            // Cargar standard inputs
             const el = document.getElementById(key);
-            if(el) el.value = data[key];
+            if (el) el.value = datos[key];
         }
     });
-    console.log('Datos restaurados.');
 }
 
-// Inicialización
+// Iniciar
 document.addEventListener('DOMContentLoaded', () => {
     cargarDatos();
-
-    // Escuchar cambios para autoguardado
-    const form = document.getElementById('fiscalizacionForm');
-    if(form) {
-        form.addEventListener('change', guardarDatos);
-        form.addEventListener('input', guardarDatos);
-    }
+    
+    // Escuchar eventos para guardar
+    document.body.addEventListener('input', guardarDatos);
+    document.body.addEventListener('change', guardarDatos);
 });
