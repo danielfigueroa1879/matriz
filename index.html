@@ -1,3 +1,6 @@
+Index correccion agresiva · HTML
+Copiar
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -880,8 +883,8 @@
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 850,
-                        width: 850,
+                        windowWidth: 750,
+                        width: 750,
                         x: 0,
                         y: 0,
                         scrollX: 0,
@@ -891,25 +894,53 @@
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
-                            documentClone.documentElement.style.width = '850px';
-                            documentClone.body.style.width = '850px';
-                            documentClone.body.style.minWidth = '850px';
-                            documentClone.body.style.maxWidth = '850px';
+                            // Configurar ancho del documento REDUCIDO para evitar desbordamiento
+                            documentClone.documentElement.style.width = '750px';
+                            documentClone.documentElement.style.maxWidth = '750px';
+                            documentClone.documentElement.style.overflow = 'hidden';
+                            documentClone.body.style.width = '750px';
+                            documentClone.body.style.maxWidth = '750px';
+                            documentClone.body.style.minWidth = '750px';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.padding = '0';
+                            documentClone.body.style.overflow = 'hidden';
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
-                                clonedPageContainer.style.padding = '10px';
+                                clonedPageContainer.style.padding = '8px';
                                 clonedPageContainer.style.width = '100%';
                                 clonedPageContainer.style.maxWidth = '100%';
+                                clonedPageContainer.style.overflow = 'hidden';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.boxShadow = 'none';
-                                clonedFormContainer.style.padding = '15px';
+                                clonedFormContainer.style.padding = '12px';
+                                clonedFormContainer.style.overflow = 'hidden';
+                                clonedFormContainer.style.maxWidth = '100%';
                             }
+                            
+                            const clonedFormContent = documentClone.getElementById('form-content');
+                            if (clonedFormContent) {
+                                clonedFormContent.style.overflow = 'hidden';
+                                clonedFormContent.style.maxWidth = '100%';
+                            }
+                            
+                            // CONTROLAR TODOS LOS CONTENEDORES
+                            const allDivs = documentClone.querySelectorAll('div');
+                            allDivs.forEach(div => {
+                                div.style.maxWidth = '100%';
+                                if (div.classList.contains('grid')) {
+                                    div.style.overflow = 'visible';
+                                }
+                            });
+                            
+                            const allFieldsets = documentClone.querySelectorAll('fieldset');
+                            allFieldsets.forEach(fieldset => {
+                                fieldset.style.maxWidth = '100%';
+                                fieldset.style.overflow = 'visible';
+                            });
                     
                             if (!form || !clonedForm) return;
 
@@ -931,28 +962,38 @@
                                         contenidoDiv.textContent = value;
                                         contenidoDiv.className = 'textarea-contenido-pdf';
                                         
-                                        // ESTILOS CRÍTICOS - IGUAL QUE EL EJEMPLO
+                                        // ESTILOS CRÍTICOS - MÁS AGRESIVOS PARA EVITAR DESBORDAMIENTO
                                         Object.assign(contenidoDiv.style, {
                                             minHeight: '40px',
                                             width: '100%',
                                             maxWidth: '100%',
                                             fontFamily: 'Inter, sans-serif',
-                                            fontSize: '10pt',
-                                            lineHeight: '1.3',
-                                            padding: '8px',
+                                            fontSize: '9pt',              // REDUCIDO
+                                            lineHeight: '1.25',           // AJUSTADO
+                                            padding: '6px',               // REDUCIDO
                                             margin: '0',
                                             border: '1px solid #6b7280',
-                                            borderRadius: '4px',
+                                            borderRadius: '3px',
                                             backgroundColor: '#f9fafb',
-                                            whiteSpace: 'pre-wrap',     // CLAVE: mantiene saltos de línea
-                                            wordBreak: 'break-word',    // CLAVE: rompe palabras largas
+                                            whiteSpace: 'pre-wrap',       // CLAVE: mantiene saltos de línea
+                                            wordBreak: 'break-word',      // CLAVE: rompe palabras largas
                                             overflowWrap: 'break-word',
                                             overflow: 'visible',
                                             display: 'block',
                                             boxSizing: 'border-box',
                                             color: '#000',
-                                            textAlign: 'justify'
+                                            textAlign: 'justify',
+                                            hyphens: 'auto',
+                                            WebkitHyphens: 'auto',
+                                            MozHyphens: 'auto'
                                         });
+                                        
+                                        // FORZAR ANCHO EN CONTENEDOR PADRE
+                                        const parentDiv = clonedTextarea.parentNode;
+                                        if (parentDiv) {
+                                            parentDiv.style.maxWidth = '100%';
+                                            parentDiv.style.overflow = 'visible';
+                                        }
                                         
                                         // Insertar el DIV ANTES de la textarea y ocultar la original
                                         clonedTextarea.parentNode.insertBefore(contenidoDiv, clonedTextarea);
@@ -978,18 +1019,18 @@
                                         contenidoDiv.textContent = value;
                                         contenidoDiv.className = 'input-contenido-pdf';
                                         
-                                        // ESTILOS para inputs (similar pero con menos altura mínima)
+                                        // ESTILOS para inputs - MÁS AGRESIVOS
                                         Object.assign(contenidoDiv.style, {
-                                            minHeight: '30px',
+                                            minHeight: '28px',
                                             width: '100%',
                                             maxWidth: '100%',
                                             fontFamily: 'Inter, sans-serif',
-                                            fontSize: '10pt',
-                                            lineHeight: '1.3',
-                                            padding: '6px 8px',
+                                            fontSize: '9pt',              // REDUCIDO
+                                            lineHeight: '1.25',           // AJUSTADO
+                                            padding: '5px 6px',           // REDUCIDO
                                             margin: '0',
                                             border: '1px solid #6b7280',
-                                            borderRadius: '4px',
+                                            borderRadius: '3px',
                                             backgroundColor: '#f9fafb',
                                             whiteSpace: 'pre-wrap',
                                             wordBreak: 'break-word',
@@ -998,8 +1039,18 @@
                                             display: 'block',
                                             boxSizing: 'border-box',
                                             color: '#000',
-                                            textAlign: 'left'
+                                            textAlign: 'left',
+                                            hyphens: 'auto',
+                                            WebkitHyphens: 'auto',
+                                            MozHyphens: 'auto'
                                         });
+                                        
+                                        // FORZAR ANCHO EN CONTENEDOR PADRE
+                                        const parentDiv = clonedInput.parentNode;
+                                        if (parentDiv) {
+                                            parentDiv.style.maxWidth = '100%';
+                                            parentDiv.style.overflow = 'visible';
+                                        }
                                         
                                         // Insertar el DIV ANTES del input y ocultar el original
                                         clonedInput.parentNode.insertBefore(contenidoDiv, clonedInput);
