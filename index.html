@@ -880,8 +880,8 @@
                         allowTaint: false,
                         backgroundColor: '#ffffff',
                         logging: false,
-                        windowWidth: 850,
-                        width: 850,
+                        windowWidth: 750,
+                        width: 750,
                         x: 0,
                         y: 0,
                         scrollX: 0,
@@ -891,82 +891,132 @@
                             const form = document.getElementById('fiscalizacionForm');
                             const clonedForm = documentClone.getElementById('fiscalizacionForm');
                             
-                            documentClone.documentElement.style.width = '850px';
-                            documentClone.body.style.width = '850px';
-                            documentClone.body.style.minWidth = '850px';
-                            documentClone.body.style.maxWidth = '850px';
+                            // Configurar ancho del documento REDUCIDO para evitar desbordamiento
+                            documentClone.documentElement.style.width = '750px';
+                            documentClone.documentElement.style.maxWidth = '750px';
+                            documentClone.documentElement.style.overflow = 'hidden';
+                            documentClone.body.style.width = '750px';
+                            documentClone.body.style.maxWidth = '750px';
+                            documentClone.body.style.minWidth = '750px';
                             documentClone.body.style.margin = '0';
                             documentClone.body.style.padding = '0';
+                            documentClone.body.style.overflow = 'hidden';
                             
                             const clonedPageContainer = documentClone.getElementById('form-page-container');
                             if (clonedPageContainer) {
-                                clonedPageContainer.style.padding = '10px';
+                                clonedPageContainer.style.padding = '8px';
                                 clonedPageContainer.style.width = '100%';
                                 clonedPageContainer.style.maxWidth = '100%';
+                                clonedPageContainer.style.overflow = 'hidden';
                             }
                             
                             const clonedFormContainer = documentClone.getElementById('form-container');
                             if (clonedFormContainer) {
                                 clonedFormContainer.style.boxShadow = 'none';
-                                clonedFormContainer.style.padding = '15px';
+                                clonedFormContainer.style.padding = '12px';
+                                clonedFormContainer.style.overflow = 'hidden';
+                                clonedFormContainer.style.maxWidth = '100%';
                             }
+                            
+                            const clonedFormContent = documentClone.getElementById('form-content');
+                            if (clonedFormContent) {
+                                clonedFormContent.style.overflow = 'hidden';
+                                clonedFormContent.style.maxWidth = '100%';
+                            }
+                            
+                            // CONTROLAR TODOS LOS CONTENEDORES
+                            const allDivs = documentClone.querySelectorAll('div');
+                            allDivs.forEach(div => {
+                                div.style.maxWidth = '100%';
+                                if (div.classList.contains('grid')) {
+                                    div.style.overflow = 'visible';
+                                }
+                            });
+                            
+                            const allFieldsets = documentClone.querySelectorAll('fieldset');
+                            allFieldsets.forEach(fieldset => {
+                                fieldset.style.maxWidth = '100%';
+                                fieldset.style.overflow = 'visible';
+                            });
                     
                             if (!form || !clonedForm) return;
 
-                            const inputsAndTextareas = form.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
-                            const clonedInputsAndTextareas = documentClone.querySelectorAll('input[type="text"], input[type="date"], input[type="time"], input[type="number"], textarea');
+                            // ============ LÓGICA ESPECÍFICA: APLICAR SOLO A CAMPOS SOLICITADOS ============
                             
-                            inputsAndTextareas.forEach((element, index) => {
-                                if (clonedInputsAndTextareas[index]) {
-                                    const clonedElement = clonedInputsAndTextareas[index];
-                                    const value = element.value;
+                            // Lista de IDs específicos donde se aplicará la corrección de desbordamiento
+                            const camposParaArreglar = [
+                                'comentarios_criticidad',
+                                'comentarios_rubro',
+                                'comentarios_delitos',
+                                'comentario_objeto_2',
+                                'procesos_fuera_horario',
+                                'descripcion_flujo',
+                                'comentarios_localizacion',
+                                'anexos_comentarios'
+                            ];
 
+                            // Iterar solo sobre los IDs específicos
+                            camposParaArreglar.forEach(id => {
+                                const textareaOriginal = form.querySelector(`#${id}`);
+                                const textareaClonada = clonedForm.querySelector(`#${id}`);
+                                
+                                if (textareaOriginal && textareaClonada) {
+                                    const value = textareaOriginal.value;
+                                    
                                     if (value) {
-                                        const replacementDiv = documentClone.createElement('div');
-                                        replacementDiv.textContent = value;
+                                        // Crear DIV con el contenido de la textarea
+                                        const contenidoDiv = documentClone.createElement('div');
+                                        contenidoDiv.textContent = value;
+                                        contenidoDiv.className = 'textarea-contenido-pdf';
                                         
-                                        // ESTILO CRÍTICO PARA QUE NO SE PIERDA TEXTO
-                                        replacementDiv.style.cssText = `
-                                            width: 100%;
-                                            min-height: 24px;
-                                            height: auto;
-                                            max-width: 100%;
-                                            overflow: visible; 
-                                            overflow-wrap: break-word !important;
-                                            word-wrap: break-word !important;
-                                            word-break: break-word !important;
-                                            white-space: pre-wrap !important;
-                                            font-size: 12px;
-                                            line-height: 1.5;
-                                            padding: 8px;
-                                            border: 1px solid #6b7280;
-                                            border-radius: 4px;
-                                            background-color: #f9fafb;
-                                            display: block;
-                                            box-sizing: border-box;
-                                            font-family: 'Inter', sans-serif;
-                                            color: #000;
-                                            text-align: justify;
-                                            hyphens: auto;
-                                        `;
+                                        // ESTILOS CRÍTICOS - MÁS AGRESIVOS PARA EVITAR DESBORDAMIENTO
+                                        Object.assign(contenidoDiv.style, {
+                                            minHeight: '40px',
+                                            width: '100%',
+                                            maxWidth: '100%',
+                                            fontFamily: 'Inter, sans-serif',
+                                            fontSize: '9pt',
+                                            lineHeight: '1.25',
+                                            padding: '6px',
+                                            margin: '0',
+                                            border: '1px solid #6b7280',
+                                            borderRadius: '3px',
+                                            backgroundColor: '#f9fafb',
+                                            whiteSpace: 'pre-wrap',       // Mantiene saltos de línea
+                                            wordBreak: 'break-word',      // IMPORTANTE: rompe palabras largas
+                                            overflowWrap: 'break-word',
+                                            overflow: 'visible',
+                                            display: 'block',
+                                            boxSizing: 'border-box',
+                                            color: '#000',
+                                            textAlign: 'justify',
+                                            hyphens: 'auto'
+                                        });
                                         
-                                        clonedElement.parentNode.replaceChild(replacementDiv, clonedElement);
-                                    } else {
-                                        // Mantener vacío
-                                        clonedElement.value = '';
-                                        clonedElement.style.border = '1px solid #6b7280';
-                                        clonedElement.style.padding = '6px';
-                                        clonedElement.style.fontSize = '11px';
+                                        // FORZAR ANCHO EN CONTENEDOR PADRE
+                                        const parentDiv = textareaClonada.parentNode;
+                                        if (parentDiv) {
+                                            parentDiv.style.maxWidth = '100%';
+                                            parentDiv.style.overflow = 'visible';
+                                        }
+                                        
+                                        // Reemplazar el textarea por el div
+                                        textareaClonada.parentNode.insertBefore(contenidoDiv, textareaClonada);
+                                        textareaClonada.style.display = 'none';
                                     }
+                                    // Si está vacío, dejar el textarea original (o ocultarlo si prefieres)
+                                    // En este caso, si está vacío, html2pdf renderizará el textarea vacío.
                                 }
                             });
 
+                            // PROCESAR CHECKBOXES (se mantiene igual para todos)
                             const formCheckboxes = form.querySelectorAll('input[type="checkbox"]');
                             const clonedCheckboxes = documentClone.querySelectorAll('input[type="checkbox"]');
                             formCheckboxes.forEach((checkbox, index) => {
                                 if (clonedCheckboxes[index]) clonedCheckboxes[index].checked = checkbox.checked;
                             });
 
+                            // PROCESAR RADIOS (se mantiene igual para todos)
                             const formRadios = form.querySelectorAll('input[type="radio"]');
                             const clonedRadios = documentClone.querySelectorAll('input[type="radio"]');
                             formRadios.forEach((radio, index) => {
@@ -1027,3 +1077,4 @@
         }
     </script>
 </body>
+</html>
